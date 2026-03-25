@@ -20,7 +20,7 @@ void Input::GetPointClicked(int &x, int &y) const
 
 ////////////////////////////////////////////////////////////////////////////////////////// 
 
-string Input::GetSrting(Output *pO) const 
+string Input::GetString(Output *pO) const 
 {
 	string Label;
 	char Key;
