@@ -464,6 +464,9 @@ void Output::DrawCell(const CellPosition & cellPos, color cellColor) const
 void Output::DrawPlayer(const CellPosition & cellPos, int playerNum, color playerColor, Direction direction) const
 {
 	// TODO: Validate the cell position and the playerNum, if not valid return
+
+	if (cellPos.IsValidCell() == false || playerNum < 0 || playerNum > MaxPlayerCount)
+		return;
 	
 
 	// Get the X & Y coordinates of the start point of the cell (its upper left corner)
@@ -491,6 +494,9 @@ void Output::DrawPlayer(const CellPosition & cellPos, int playerNum, color playe
 														// for not overlapping with belts
 
 	// TODO: Draw the player triangle in center(x,y) and filled with the playerColor passed to the function
+	// DONE: by Abd El Rahman Essam
+	pWind->SetPen(playerColor);
+	pWind->DrawTriangle(x - radius, y - radius, x + radius, y - radius, x, y + radius, FILLED);
 	
 }
 
@@ -498,7 +504,17 @@ void Output::DrawPlayer(const CellPosition & cellPos, int playerNum, color playe
 
 void Output::DrawBelt(const CellPosition& fromCellPos, const CellPosition& toCellPos) const
 {
+
+	int triangleDir; // the direction of the triangle to be drawn at the center of the belt line (pointing to the direction of the belt)
 	// TODO: Validate the fromCell and toCell (Must be Horizontal or Vertical, and we can't have the first cell as a starting cell for a belt)
+	if (fromCellPos.IsValidCell() == false || toCellPos.IsValidCell() == false || fromCellPos.GetCellNum() == 0)
+		return;
+	else {
+		if (fromCellPos.HCell() == toCellPos.HCell()) triangleDir = (fromCellPos.VCell() < toCellPos.VCell()) ? DOWN : UP;
+		else if (fromCellPos.VCell() == toCellPos.VCell()) triangleDir = (fromCellPos.HCell() < toCellPos.HCell()) ? RIGHT : LEFT;
+		else return; // not horizontal or vertical
+	}
+
 
 	// Get the start X and Y coordinates of the upper left corner of the fromCell and toCell
 	int fromCellStartX = GetCellStartX(fromCellPos);
@@ -517,19 +533,31 @@ void Output::DrawBelt(const CellPosition& fromCellPos, const CellPosition& toCel
 
 	// TODO: 1. Set pen color and width using the appropriate parameters of UI_Info object (UI)
 	//       2. Draw the line of the belt using the appropriate coordinates
+	pWind->SetPen(UI.BeltColor, UI.BeltLineWidth);
+	pWind->DrawEllipse(beltFromCellX, beltFromCellY, beltToCellX, beltToCellY, FRAME);
 
 	
 	// TODO: Draw the triangle at the center of the belt line pointing to the direction of the belt
-	
-
-
-
-	
-	
 	int triangleWidth = UI.CellWidth / 4;
 	int triangleHeight = UI.CellHeight / 4;
 
+	int triangleCenter = (fromCellPos.HCell() == toCellPos.HCell()) ? (beltFromCellY + beltToCellY) / 2 : (beltFromCellX + beltToCellX) / 2;
 
+	pWind->SetPen(UI.CommandBarColor);
+	switch (triangleDir) { // determine triangle vertices based on the direction of the belt
+		case UP:
+			pWind->DrawTriangle(triangleCenter - triangleWidth / 2, triangleCenter + triangleHeight / 2, triangleCenter + triangleWidth / 2, triangleCenter + triangleHeight / 2, triangleCenter, triangleCenter - triangleHeight / 2, FILLED);
+			break;
+		case DOWN:
+			pWind->DrawTriangle(triangleCenter - triangleWidth / 2, triangleCenter - triangleHeight / 2, triangleCenter + triangleWidth / 2, triangleCenter - triangleHeight / 2, triangleCenter, triangleCenter + triangleHeight / 2, FILLED);
+			break;
+		case LEFT:
+			pWind->DrawTriangle(triangleCenter + triangleHeight / 2, triangleCenter - triangleWidth / 2, triangleCenter + triangleHeight / 2, triangleCenter + triangleWidth / 2, triangleCenter - triangleHeight / 2, triangleCenter, FILLED);
+			break;
+		case RIGHT:
+			pWind->DrawTriangle(triangleCenter + triangleHeight / 2, triangleCenter - triangleWidth / 2, triangleCenter + triangleHeight / 2, triangleCenter + triangleWidth / 2, triangleCenter + triangleHeight / 2, triangleCenter, FILLED);
+			break;
+	}
 
 
 
@@ -541,6 +569,8 @@ void Output::DrawBelt(const CellPosition& fromCellPos, const CellPosition& toCel
 void Output::DrawFlag(const CellPosition& cellPos) const
 {
 	// TODO: Validate the cell position
+	if (cellPos.IsValidCell() == false)
+		return;
 
 	// Get the X and Y coordinates of the start point of the cell (its upper left corner)
 	int cellStartX = GetCellStartX(cellPos);
