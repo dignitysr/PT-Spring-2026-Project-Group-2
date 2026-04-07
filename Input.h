@@ -21,6 +21,9 @@ public:
 
 	Input(window *pW);  // Consturctor: Points to the passed window pointer
 
+
+	//Member Functions//
+
 	void GetPointClicked(int &x, int &y) const; // Wait for a Mouse Click and Gets the real coordinates (x,y) of it
 
 	string GetString(Output* pO) const;  // Returns a string entered by the user
