@@ -158,6 +158,6 @@ void CellPosition::AddCellNum(int addedNum, Direction direction)
 		int totalCells = NumVerticalCells * NumHorizontalCells;
 		if (newNum >= 1 && newNum <= totalCells)
 		{
-			GetCellPositionFromNum(newNum);
+			*this=GetCellPositionFromNum(newNum);
 		}
 	}
