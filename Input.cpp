@@ -160,8 +160,8 @@ ActionType Input::GetUserAction() const
 
 			switch (clickedItemOrder)
 			{
-			case ITM_SELECT_COMMAND: return SELECT_COMMAND;
 			case ITM_EXECUTE_COMMANDS: return EXECUTE_COMMANDS;
+			case ITM_SELECT_COMMAND: return SELECT_COMMAND;
 			case ITM_SWITCH_TO_DESIGN_MODE: return TO_DESIGN_MODE;
 			case ITM_REBOOT_REPAIR: return REBOOT_REPAIR;
 			case ITM_NEW_GAME: return NEW_GAME;
