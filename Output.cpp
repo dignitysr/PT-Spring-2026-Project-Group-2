@@ -591,18 +591,37 @@ void Output::DrawFlag(const CellPosition& cellPos) const
 	int flagPoleStartX = cellStartX + UI.CellWidth / 2;
 	int flagPoleStartY = cellStartY + UI.CellHeight / 4;
 
-	
+	pWind->SetPen(UI.FlagPoleColor, UI.FlagPoleWidth);
+	pWind->DrawLine(flagPoleStartX, flagPoleStartY, flagPoleStartX, flagPoleStartY + UI.FlagPoleHeight);
 
+	
 	// 		 2. Draw the flag (the triangle)
 	
+	int triangleCenterX = flagPoleStartX + UI.FlagWidth / 2;
+	int triangleCenterY = flagPoleStartY + UI.FlagHeight / 2;
+
+	DrawTriangle(triangleCenterX, triangleCenterY, UI.FlagHeight, UI.FlagWidth, RIGHT, UI.FlagColor, FILLED);
 	
 }
 
 void Output::DrawRotatingGear(const CellPosition& cellPos, bool clockwise) const
 {
 	// TODO: Validate the cell position
-
+	if (cellPos.IsValidCell() == false)
+		return;
+	
 	// TODO: Draw the rotating gear image in the cell based on the passed direction (clockwise or counter clockwise)
+	string gearImage;
+	if (clockwise)
+	{
+		gearImage = "images\\Gear_CW.jpg";
+	}
+	else
+	{
+		gearImage = "images\\Gear_CCW.jpg";
+	}
+
+	pWind->DrawImage(gearImage, GetCellStartX(cellPos), GetCellStartY(cellPos), UI.CellWidth, UI.CellHeight);
 
 
 }
@@ -610,8 +629,12 @@ void Output::DrawRotatingGear(const CellPosition& cellPos, bool clockwise) const
 void Output::DrawAntenna(const CellPosition& cellPos) const
 {
 	// TODO: Validate the cell position
+	if (cellPos.IsValidCell() == false)
+		return;
+
 
 	// TODO: Draw the antenna image in the cell
+	pWind->DrawImage("images\\Antenna.jpg", GetCellStartX(cellPos), GetCellStartY(cellPos), UI.CellWidth, UI.CellHeight);
 
 	
 	
@@ -620,8 +643,11 @@ void Output::DrawAntenna(const CellPosition& cellPos) const
 void Output::DrawWorkshop(const CellPosition& cellPos) const
 {
 	// TODO: Validate the cell position
+	if (cellPos.IsValidCell() == false)
+		return;
 
 	// TODO: Draw the workshop image in the cell
+	pWind->DrawImage("images\\Workshop.jpg", GetCellStartX(cellPos), GetCellStartY(cellPos), UI.CellWidth, UI.CellHeight);
 	
 
 
@@ -630,19 +656,36 @@ void Output::DrawWorkshop(const CellPosition& cellPos) const
 void Output::DrawDangerZone(const CellPosition& cellPos) const
 {
     ///TODO: Complete the implementation of the following function
+	if (cellPos.IsValidCell() == false)
+		return;
+	int x1 = GetCellStartX(cellPos);
+	int y1 = GetCellStartY(cellPos);
 
+	int x2 = x1 + UI.CellWidth;
+	int y2 = y1 + UI.CellHeight;
 
+	pWind->SetPen(UI.DangerZoneCellColor, 1);
+	pWind->SetBrush(UI.DangerZoneCellColor);
+	pWind->DrawRectangle(x1, y1, x2, y2, FILLED);
+	
 }
 
 void Output::DrawWaterPit(const CellPosition& cellPos) const
 {
 	///TODO: Complete the implementation of the following function
+	if (cellPos.IsValidCell() == false)
+		return;
 
+	int x1 = GetCellStartX(cellPos);
+	int y1 = GetCellStartY(cellPos);
+	int x2 = x1 + UI.CellWidth;
+	int y2 = y1 + UI.CellHeight;
+
+	pWind->SetPen(UI.WaterPitsCellColor, 1);
+	pWind->SetBrush(UI.WaterPitsCellColor);
+	pWind->DrawRectangle(x1, y1, x2, y2, FILLED);
 
 }
-
-
-
 Output::~Output()
 {
 	// deallocating the window object
