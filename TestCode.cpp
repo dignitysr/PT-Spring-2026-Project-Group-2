@@ -90,6 +90,9 @@ int main()
 	CellPosition cell_1(1);		// cell num 1
 
 	// TODO: Draw Water Pits in cell_10 and cell_53 and cell_1 (Invalid)
+
+	pOut->DrawWaterPit(cell_10);
+	pOut->DrawWaterPit(cell_53);
 	
 
 	pOut->PrintMessage("FINISHED - Drawing (Water Pits) Test,  Click to continue");
@@ -120,6 +123,9 @@ int main()
 	CellPosition player_2(2);
 	CellPosition player_15(2, 18);
 	CellPosition player_99(2, 5);
+
+	pOut->DrawPlayer(player_1, 0, UI.PlayerColors[0], UP);
+	pOut->DrawPlayer(player_1, 1, UI.PlayerColors[1], UP);
 
 
 	///TODO: Call Function DrawPlayer of Class Ouput Multiple Times
@@ -174,6 +180,11 @@ int main()
 	CellPosition belt_start_3(54);
 	CellPosition belt_end_3(32);
 	CellPosition belt_end_4(33);
+
+	pOut->DrawBelt(belt_start_1, belt_end_1);
+	pOut->DrawBelt(belt_start_2, belt_end_2);
+	pOut->DrawBelt(belt_start_3, belt_end_3);
+	pOut->DrawBelt(belt_end_1, belt_end_2);
 
 	// TODO: Draw 5 belts
 	//		1- from belt_start_1 to belt_end_1

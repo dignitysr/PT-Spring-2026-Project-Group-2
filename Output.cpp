@@ -48,6 +48,8 @@ Output::Output()
 	UI.BeltLineWidth = 6;
 	UI.BeltColor = DARKSLATEBLUE;
 
+	UI.WaterPitsCellColor = DARKSLATEBLUE;
+
 	// The X and Y Offsets of the Space BEFORE Drawing the Belt (offset from the start X and Y of the Cell)
 	UI.BeltXOffset = (UI.CellWidth - 2 * UI.BeltLineWidth) / 5;
 	UI.BeltYOffset = (UI.CellHeight / 4) * 3;
@@ -72,6 +74,9 @@ Output::Output()
 	UI.PlayerColors[1] = DARKSLATEBLUE;
 	/*UI.PlayerColors[2] = KHAKI;
 	UI.PlayerColors[3] = CHOCOLATE;*/
+
+	UI.cellImageHeight = 55;
+	UI.cellImageWidth = 55;
 
 	// Create the output window
 	pWind = CreateWind(UI.width + 15, UI.height, UI.wx, UI.wy); 
@@ -158,22 +163,49 @@ void Output::DrawTriangle(int triangleCenterX, int triangleCenterY, int triangle
 
 	///TODO: Calculate the coordiantes of the 3 vertices of the triangle based on the passed parameters
 
-	if (direction == UP)
-	{
-		x1 = triangleCenterX - triangleWidth / 2;
-		y1 = triangleCenterY + triangleHeight / 2;
-		x2 = triangleCenterX + triangleWidth / 2;
-		y2 = triangleCenterY + triangleHeight / 2;
-		x3 = triangleCenterX;
-		y3 = triangleCenterY - triangleHeight / 2;
+	switch (direction) {
+		case UP:
+			x1 = triangleCenterX - triangleWidth / 2;
+			y1 = triangleCenterY + triangleHeight / 2;
+			x2 = triangleCenterX + triangleWidth / 2;
+			y2 = triangleCenterY + triangleHeight / 2;
+			x3 = triangleCenterX;
+			y3 = triangleCenterY - triangleHeight / 2;
+			break;
+		case DOWN:
+			x1 = triangleCenterX - triangleWidth / 2;
+			y1 = triangleCenterY - triangleHeight / 2;
+			x2 = triangleCenterX + triangleWidth / 2;
+			y2 = triangleCenterY - triangleHeight / 2;
+			x3 = triangleCenterX;
+			y3 = triangleCenterY + triangleHeight / 2;
+			break;
+		case LEFT:
+			x1 = triangleCenterX + triangleHeight / 2;
+			y1 = triangleCenterY - triangleWidth / 2;
+			x2 = triangleCenterX + triangleHeight / 2;
+			y2 = triangleCenterY + triangleWidth / 2;
+			x3 = triangleCenterX - triangleHeight / 2;
+			y3 = triangleCenterY;
+			break;
+		case RIGHT:
+			x1 = triangleCenterX - triangleHeight / 2;
+			y1 = triangleCenterY - triangleWidth / 2;
+			x2 = triangleCenterX - triangleHeight / 2;
+			y2 = triangleCenterY + triangleWidth / 2;
+			x3 = triangleCenterX + triangleHeight / 2;
+			y3 = triangleCenterY;
+			break;
 	}
 	///TODO: Continue the implementation
+
+	pWind->DrawTriangle(x1, y1, x2, y2, x3, y3, style);
 	
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////
 
-void Output::DrawImageInCell(const CellPosition& cellPos, string image, int width, int height) const
+void Output::DrawImageInCell(const CellPosition& cellPos, string image, int width = UI.cellImageWidth, int height = UI.cellImageHeight) const
 {
 	// TODO: Validate the cell position
 	if (!cellPos.IsValidCell())
@@ -183,6 +215,11 @@ void Output::DrawImageInCell(const CellPosition& cellPos, string image, int widt
 	int y = GetCellStartY(cellPos) + UI.CellHeight / 4;
 
 	// TODO: Complete the implementation of this function
+	try {
+		pWind->DrawImage(image, x, y, width, height);
+	} catch (...) {
+		cout << "Error loading image: " << image << endl;
+	}
 
 }
 
@@ -503,18 +540,40 @@ void Output::DrawPlayer(const CellPosition & cellPos, int playerNum, color playe
 														// for not overlapping with belts
 
 	// TODO: Draw the player triangle in center(x,y) and filled with the playerColor passed to the function
-	// DONE: by Abd El Rahman Essam
 	pWind->SetPen(playerColor);
-	pWind->DrawTriangle(x - radius, y - radius, x + radius, y - radius, x, y + radius, FILLED);
+	DrawTriangle(x, y, radius, radius, direction, playerColor, FILLED);
 	
 }
 
+
+
 //////////////////////////////////////////////////////////////////////////////////////////
+
+void Output::DrawPill(int x1, int y1, int x2, int y2, int radius, Direction dir, drawstyle style) const 
+{
+	if (style == FILLED) {
+		//pWind->DrawEllipse(x1 - radius, y1 - radius, x1 + radius, y1 + radius, FILLED);
+		//pWind->DrawEllipse(x2 - radius, y2 - radius, x2 + radius, y2 + radius, FILLED);
+
+		if (dir == RIGHT || dir == LEFT) {
+			pWind->DrawRectangle(x1, y1 - radius, x2, y2 + radius, FILLED, 10, 10);
+		}
+		else {
+			pWind->DrawRectangle(x1 - radius, y1, x2 + radius, y2, FILLED, 10, 10);
+		}
+	}
+	else {
+		pWind->DrawLine(x1, y1 - radius, x2, y2 - radius);
+		pWind->DrawLine(x1, y1 + radius, x2, y2 + radius);
+		pWind->DrawArc(x1 - radius, y1 - radius, x1 + radius, y1 + radius, 90, 270);
+		pWind->DrawArc(x2 - radius, y2 - radius, x2 + radius, y2 + radius, 270, 90);
+	}
+}
 
 void Output::DrawBelt(const CellPosition& fromCellPos, const CellPosition& toCellPos) const
 {
 
-	int triangleDir; // the direction of the triangle to be drawn at the center of the belt line (pointing to the direction of the belt)
+	Direction triangleDir; // the direction of the triangle to be drawn at the center of the belt line (pointing to the direction of the belt)
 	// TODO: Validate the fromCell and toCell (Must be Horizontal or Vertical, and we can't have the first cell as a starting cell for a belt)
 	if (fromCellPos.IsValidCell() == false || toCellPos.IsValidCell() == false || fromCellPos.GetCellNum() == 0)
 		return;
@@ -531,42 +590,58 @@ void Output::DrawBelt(const CellPosition& fromCellPos, const CellPosition& toCel
 	int toCellStartX = GetCellStartX(toCellPos);
 	int toCellStartY = GetCellStartY(toCellPos);
 	
-	int beltFromCellX = fromCellStartX + (UI.CellWidth / 2) + UI.BeltXOffset;
-	int beltToCellX = toCellStartX + UI.BeltXOffset;
+	int beltFromCellX;
+	int beltToCellX;
+	int beltFromCellY;
+	int beltToCellY;
 
-	int beltFromCellY = fromCellStartY + UI.BeltYOffset;
-	int beltToCellY = toCellStartY + UI.BeltYOffset;
-
+	switch (triangleDir) {
+		case UP:
+			beltFromCellX = fromCellStartX + UI.CellWidth / 2;
+			beltFromCellY = fromCellStartY + UI.BeltYOffset;
+			beltToCellX = toCellStartX + UI.CellWidth / 2;
+			beltToCellY = toCellStartY + UI.CellHeight - UI.BeltYOffset;
+			break;
+		case DOWN:
+			beltFromCellX = fromCellStartX + UI.CellWidth / 2;
+			beltFromCellY = fromCellStartY + UI.CellHeight - UI.BeltYOffset;
+			beltToCellX = toCellStartX + UI.CellWidth / 2;
+			beltToCellY = toCellStartY + UI.BeltYOffset;
+			break;
+		case LEFT:
+			beltFromCellX = fromCellStartX + UI.BeltYOffset;
+			beltFromCellY = fromCellStartY + UI.CellHeight / 2;
+			beltToCellX = toCellStartX + UI.CellWidth - UI.BeltYOffset;
+			beltToCellY = toCellStartY + UI.CellHeight / 2;
+			break;
+		case RIGHT:
+			beltFromCellX = fromCellStartX + UI.CellWidth - UI.BeltYOffset;
+			beltFromCellY = fromCellStartY + UI.CellHeight / 2;
+			beltToCellX = toCellStartX + UI.BeltYOffset;
+			beltToCellY = toCellStartY + UI.CellHeight / 2;
+			break;
+	}
 
 	// TODO: Draw the belt line and the triangle at the center of the line pointing to the direction of the belt
 
 	// TODO: 1. Set pen color and width using the appropriate parameters of UI_Info object (UI)
 	//       2. Draw the line of the belt using the appropriate coordinates
+
+	int radius = 10;
 	pWind->SetPen(UI.BeltColor, UI.BeltLineWidth);
-	pWind->DrawEllipse(beltFromCellX, beltFromCellY, beltToCellX, beltToCellY, FRAME);
+	DrawPill(beltFromCellX, beltFromCellY, beltToCellX, beltToCellY, radius, triangleDir, FILLED); // body
 
 	
 	// TODO: Draw the triangle at the center of the belt line pointing to the direction of the belt
 	int triangleWidth = UI.CellWidth / 4;
 	int triangleHeight = UI.CellHeight / 4;
 
-	int triangleCenter = (fromCellPos.HCell() == toCellPos.HCell()) ? (beltFromCellY + beltToCellY) / 2 : (beltFromCellX + beltToCellX) / 2;
+	int triangleCenterX = triangleDir == RIGHT || triangleDir == LEFT ? (beltFromCellX + beltToCellX) / 2 : beltFromCellX;
+	int triangleCenterY = triangleDir == UP || triangleDir == DOWN ? (beltFromCellY + beltToCellY) / 2 : beltFromCellY;
+	cout << triangleCenterX << " " << beltFromCellX << " " << triangleCenterY << " " << beltFromCellY << endl;
 
 	pWind->SetPen(UI.CommandBarColor);
-	switch (triangleDir) { // determine triangle vertices based on the direction of the belt
-		case UP:
-			pWind->DrawTriangle(triangleCenter - triangleWidth / 2, triangleCenter + triangleHeight / 2, triangleCenter + triangleWidth / 2, triangleCenter + triangleHeight / 2, triangleCenter, triangleCenter - triangleHeight / 2, FILLED);
-			break;
-		case DOWN:
-			pWind->DrawTriangle(triangleCenter - triangleWidth / 2, triangleCenter - triangleHeight / 2, triangleCenter + triangleWidth / 2, triangleCenter - triangleHeight / 2, triangleCenter, triangleCenter + triangleHeight / 2, FILLED);
-			break;
-		case LEFT:
-			pWind->DrawTriangle(triangleCenter + triangleHeight / 2, triangleCenter - triangleWidth / 2, triangleCenter + triangleHeight / 2, triangleCenter + triangleWidth / 2, triangleCenter - triangleHeight / 2, triangleCenter, FILLED);
-			break;
-		case RIGHT:
-			pWind->DrawTriangle(triangleCenter + triangleHeight / 2, triangleCenter - triangleWidth / 2, triangleCenter + triangleHeight / 2, triangleCenter + triangleWidth / 2, triangleCenter + triangleHeight / 2, triangleCenter, FILLED);
-			break;
-	}
+	DrawTriangle(triangleCenterX, triangleCenterY, triangleHeight, triangleWidth, triangleDir, UI.CommandBarColor, FILLED);
 
 
 
@@ -621,7 +696,7 @@ void Output::DrawRotatingGear(const CellPosition& cellPos, bool clockwise) const
 		gearImage = "images\\Gear_CCW.jpg";
 	}
 
-	pWind->DrawImage(gearImage, GetCellStartX(cellPos), GetCellStartY(cellPos), UI.CellWidth, UI.CellHeight);
+	DrawImageInCell(cellPos, gearImage);
 
 
 }
@@ -634,7 +709,7 @@ void Output::DrawAntenna(const CellPosition& cellPos) const
 
 
 	// TODO: Draw the antenna image in the cell
-	pWind->DrawImage("images\\Antenna.jpg", GetCellStartX(cellPos), GetCellStartY(cellPos), UI.CellWidth, UI.CellHeight);
+	DrawImageInCell(cellPos, "images\\Antenna.jpg");
 
 	
 	
@@ -647,7 +722,7 @@ void Output::DrawWorkshop(const CellPosition& cellPos) const
 		return;
 
 	// TODO: Draw the workshop image in the cell
-	pWind->DrawImage("images\\Workshop.jpg", GetCellStartX(cellPos), GetCellStartY(cellPos), UI.CellWidth, UI.CellHeight);
+	DrawImageInCell(cellPos, "images\\Workshop.jpg");
 	
 
 

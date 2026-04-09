@@ -83,6 +83,10 @@ public:
 	//	Player_1
 	void DrawPlayer(const CellPosition & cellpos, int playerNum, color playerColor, Direction direction) const;  
 	
+	// Draws a pill shape (rectangle with two half circles at its ends)
+	// Helper function for DrawBelt
+	void DrawPill(int x1, int y1, int x2, int y2, int radius, Direction dir, drawstyle style) const; 
+
 	// TODO: Complete the implementation of the following function
 	// Draws a belt from start cell to end cell (start < end)
 	// Belt is drawn as a line from the start cell to the end cell

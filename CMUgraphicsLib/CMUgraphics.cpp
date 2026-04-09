@@ -1012,6 +1012,7 @@ void window::DrawEllipse(const int iX1, const int iY1, const int iX2, const int 
 
 	HRGN rgnTemp;
 
+
 	ProcessMessage(); // Kludge
 	switch(dsStyle) {
       case FILLED:

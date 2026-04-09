@@ -122,6 +122,9 @@ struct UI_Info	// User Interface Info.
 
 	///TODO: Add more members if needed
 
+	int cellImageWidth;			// Width of any image within a cell
+	int cellImageHeight;		// Height of any image within a cell
+
 } UI ;	// create a global object UI
 
 #endif
