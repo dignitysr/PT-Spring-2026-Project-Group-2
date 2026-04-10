@@ -431,6 +431,7 @@ void Output::PrintMessage(string msg) const	//Prints a message on status bar
 void Output::PrintPlayersInfo(string info)
 {
 	///TODO: Clear what was written on the toolbar
+	CreatePlayModeToolBar();
 
 	// One of the correct ways to implement the above TODO is to call CreatePlayModeToolBar(); 
 	// to clear what was written in the player info (there are other ways too � You are free to use any)
@@ -443,7 +444,7 @@ void Output::PrintPlayersInfo(string info)
 
 	///TODO: Calculate the Width and Height of the string if drawn using the current font 
 	//       (Use GetStringSize() window function) and set the "w" and "h" variables with its width and height
-
+	pWind->GetStringSize(w, h, info);
 
 
 	// Set the start X & Y coordinate of drawing the string
@@ -452,6 +453,8 @@ void Output::PrintPlayersInfo(string info)
 	int y = (UI.ToolBarHeight - h) / 2; // in the Middle of the toolbar height
 
 	///TODO: Draw the string "info" in the specified location (x, y)
+
+	pWind->DrawString(x, y, info);
 
 
 
@@ -745,22 +748,23 @@ void Output::DrawDangerZone(const CellPosition& cellPos) const
 	
 }
 
-void Output::DrawWaterPit(const CellPosition& cellPos) const
-{
-	///TODO: Complete the implementation of the following function
-	if (cellPos.IsValidCell() == false)
-		return;
 
-	int x1 = GetCellStartX(cellPos);
-	int y1 = GetCellStartY(cellPos);
-	int x2 = x1 + UI.CellWidth;
-	int y2 = y1 + UI.CellHeight;
+	void Output::DrawWaterPit(const CellPosition & cellPos) const
+	{
+		if (cellPos.IsValidCell() == false)
+			return;
 
-	pWind->SetPen(UI.WaterPitsCellColor, 1);
-	pWind->SetBrush(UI.WaterPitsCellColor);
-	pWind->DrawRectangle(x1, y1, x2, y2, FILLED);
+		int x1 = GetCellStartX(cellPos);
+		int y1 = GetCellStartY(cellPos);
+		int x2 = x1 + UI.CellWidth;
+		int y2 = y1 + UI.CellHeight;
 
-}
+		pWind->SetPen(UI.WaterPitsCellColor, 1);
+		pWind->SetBrush(UI.WaterPitsCellColor);
+		pWind->DrawRectangle(x1, y1, x2, y2, FILLED);
+	}
+
+	
 Output::~Output()
 {
 	// deallocating the window object
