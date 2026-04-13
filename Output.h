@@ -47,6 +47,8 @@ public:
 
 	window* CreateWind(int, int, int , int) const; // Creates the application window
 
+	void FlushMouseQueue() const;
+
 	Input* CreateInput() const;	// Creates a pointer to the Input object	
 
 	// ========== User Interface Functions ==========
@@ -74,6 +76,8 @@ public:
 	// Draws "Cell Rectangle" with "Cell Number"
 	// the cell rectangle's color is cellColor
 	void DrawCell(const CellPosition & cellpos, color cellColor = UI.CellColor) const;	
+
+	void DrawCellNum(const CellPosition& cellpos) const;	// Draws the cell number in the passed cell position
 
 	///TODO: COMPLETE THE IMPLEMENTATIN OF THE FOLLOWING FUNCTION	
 	// Draws "Player Triangle" filled with the passed color

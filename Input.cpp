@@ -66,8 +66,8 @@ int Input::GetInteger(Output *pO) const
 		if (key == 13) {
 			if (Label == "") {
 				return 0;//Returning 0 if nothing is entered
-				break;
 			}
+			break;
 		}
 
 		else if (key == 8) {

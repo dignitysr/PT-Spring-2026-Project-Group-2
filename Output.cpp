@@ -46,7 +46,9 @@ Output::Output()
 
 	// Belt Line Width and Color
 	UI.BeltLineWidth = 6;
-	UI.BeltColor = DARKSLATEBLUE;
+	UI.BeltOutlineColor = BLACK;
+	UI.BeltFillColor = DIMGRAY;
+	UI.BeltTriangleColor = WHITE;
 
 	UI.WaterPitsCellColor = DARKSLATEBLUE;
 
@@ -55,14 +57,18 @@ Output::Output()
 	UI.BeltYOffset = (UI.CellHeight / 4) * 3;
 
 	// Flag and Flag Pole Colors
-	UI.FlagPoleWidth = 4;
-	UI.FlagPoleHeight = UI.CellHeight / 2;
+	UI.FlagPoleWidth = 6;
+	UI.FlagPoleHeight = UI.CellHeight / 1.5;
 	UI.FlagWidth = UI.CellWidth / 4;
 	UI.FlagHeight = UI.FlagPoleHeight / 2;
 
 	UI.FlagColor = RED;
 	UI.FlagPoleColor = GHOSTWHITE;
+	UI.FlagPoleTopColor = GOLD;
 
+	// Drop Shadow Color and Offset
+	UI.DropShadowColor = BLACK;
+	UI.DropShadowOffset = 3;
 
 	// Commands X and Y Coordinates
 	UI.SpaceBetweenCommandsSlots = 10;
@@ -460,6 +466,10 @@ void Output::PrintPlayersInfo(string info)
 
 }
 
+void Output::FlushMouseQueue() const {
+	pWind->FlushMouseQueue();
+}
+
 //======================================================================================//
 //			         			Game Drawing Functions   								//
 //======================================================================================//
@@ -481,11 +491,22 @@ void Output::DrawCell(const CellPosition & cellPos, color cellColor) const
 	//       using cellStartX, cellStartY, UI.CellWidth, UI.CellHeight
 	pWind->DrawRectangle(cellStartX, cellStartY, cellStartX + UI.CellWidth, cellStartY + UI.CellHeight);
 
+	DrawCellNum(cellPos);
+
+	
+}
+
+void Output::DrawCellNum(const CellPosition& cellpos) const
+{
 	// ----- 2- Draw the CELL number (the small number at the bottom right of the cell) -----
 	pWind->SetPen(UI.CellNumColor);
-	pWind->SetFont(UI.CellNumFont, BOLD , BY_NAME, "Verdana");   
+	pWind->SetFont(UI.CellNumFont, BOLD, BY_NAME, "Verdana");
 
-	int w=0, h=0;
+	int w = 0, h = 0;
+
+	int cellNum = cellpos.GetCellNum();
+	int cellStartX = GetCellStartX(cellpos);
+	int cellStartY = GetCellStartY(cellpos);
 
 	///TODO: Get the Width and Height of the Cell Number if written using the current font 
 	//       (Use GetIntegerSize() window function) and set the "w" and "h" variables with its width and height
@@ -495,17 +516,13 @@ void Output::DrawCell(const CellPosition & cellPos, color cellColor) const
 
 	// Calculate X & Y coordinate of the start point of writing the card number (upper left point of the cell num)
 	int x = cellStartX + (UI.CellWidth - w - 1);   // space 1 from the end of the cell width
-												   // ( - w ) because x is for the start point of cell num (num's left corner)
+	// ( - w ) because x is for the start point of cell num (num's left corner)
 	int y = cellStartY + (UI.CellHeight - h - 1);  // space 1 from the end of the cell height
-												   // ( - w ) because y is for the start point of cell num (num's upper corner)
-	
+	// ( - w ) because y is for the start point of cell num (num's upper corner)
+
 	///TODO: Draw the cell number in the x and y location
 
 	pWind->DrawInteger(x, y, cellNum);
-
-	
-
-	
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -514,7 +531,7 @@ void Output::DrawPlayer(const CellPosition & cellPos, int playerNum, color playe
 {
 	// TODO: Validate the cell position and the playerNum, if not valid return
 
-	if (cellPos.IsValidCell() == false || playerNum < 0 || playerNum > MaxPlayerCount)
+	if (cellPos.IsValidCell() == false || playerNum < 0 || playerNum >= MaxPlayerCount)
 		return;
 	
 
@@ -523,7 +540,7 @@ void Output::DrawPlayer(const CellPosition & cellPos, int playerNum, color playe
 	int cellStartY = GetCellStartY(cellPos);
 
 	// Calculate the Radius of the Player's Triangle
-	int radius = UI.CellWidth / 14; // proportional to cell width
+	int radius = UI.CellWidth / 10; // proportional to cell width
 
 	// Calculate the horizontal space before drawing players triangles (space from the left border of the cell)
 	int ySpace = UI.CellHeight / 6; // proportional to cell height
@@ -544,6 +561,7 @@ void Output::DrawPlayer(const CellPosition & cellPos, int playerNum, color playe
 
 	// TODO: Draw the player triangle in center(x,y) and filled with the playerColor passed to the function
 	pWind->SetPen(playerColor);
+	pWind->SetBrush(playerColor);
 	DrawTriangle(x, y, radius, radius, direction, playerColor, FILLED);
 	
 }
@@ -566,10 +584,18 @@ void Output::DrawPill(int x1, int y1, int x2, int y2, int radius, Direction dir,
 		}
 	}
 	else {
-		pWind->DrawLine(x1, y1 - radius, x2, y2 - radius);
-		pWind->DrawLine(x1, y1 + radius, x2, y2 + radius);
-		pWind->DrawArc(x1 - radius, y1 - radius, x1 + radius, y1 + radius, 90, 270);
-		pWind->DrawArc(x2 - radius, y2 - radius, x2 + radius, y2 + radius, 270, 90);
+		if (dir == RIGHT || dir == LEFT) {
+			pWind->DrawLine(x1, y1 - radius, x2, y2 - radius);
+			pWind->DrawLine(x1, y1 + radius, x2, y2 + radius);
+			pWind->DrawArc(x1 - radius, y1 - radius, x1 + radius, y1 + radius, 90, 270);
+			pWind->DrawArc(x2 - radius, y2 - radius, x2 + radius, y2 + radius, 270, 90);
+		}
+		else {
+			pWind->DrawLine(x1 - radius, y1, x2 - radius, y2);
+			pWind->DrawLine(x1 + radius, y1, x2 + radius, y2);
+			pWind->DrawArc(x1 - radius, y1 - radius, x1 + radius, y1 + radius, 180, 360);
+			pWind->DrawArc(x2 - radius, y2 - radius, x2 + radius, y2 + radius, 0, 180);
+		}
 	}
 }
 
@@ -578,7 +604,7 @@ void Output::DrawBelt(const CellPosition& fromCellPos, const CellPosition& toCel
 
 	Direction triangleDir; // the direction of the triangle to be drawn at the center of the belt line (pointing to the direction of the belt)
 	// TODO: Validate the fromCell and toCell (Must be Horizontal or Vertical, and we can't have the first cell as a starting cell for a belt)
-	if (fromCellPos.IsValidCell() == false || toCellPos.IsValidCell() == false || fromCellPos.GetCellNum() == 0)
+	if (fromCellPos.IsValidCell() == false || toCellPos.IsValidCell() == false || fromCellPos.GetCellNum() == 1)
 		return;
 	else {
 		if (fromCellPos.HCell() == toCellPos.HCell()) triangleDir = (fromCellPos.VCell() < toCellPos.VCell()) ? DOWN : UP;
@@ -631,9 +657,29 @@ void Output::DrawBelt(const CellPosition& fromCellPos, const CellPosition& toCel
 	//       2. Draw the line of the belt using the appropriate coordinates
 
 	int radius = 10;
-	pWind->SetPen(UI.BeltColor, UI.BeltLineWidth);
+	pWind->SetPen(UI.BeltOutlineColor, UI.BeltLineWidth);
+	pWind->SetBrush(UI.BeltFillColor);
 	DrawPill(beltFromCellX, beltFromCellY, beltToCellX, beltToCellY, radius, triangleDir, FILLED); // body
 
+	// belt chevron pattern
+
+	if (triangleDir == UP) {
+		for (int i = beltFromCellY - 20; i >= beltToCellY; i -= 20) {
+			pWind->DrawLine(beltFromCellX - UI.BeltLineWidth, i, beltToCellX + UI.BeltLineWidth, i);
+		}
+	} else if (triangleDir == DOWN) {
+		for (int i = beltFromCellY + 20; i <= beltToCellY; i += 20) {
+			pWind->DrawLine(beltFromCellX - UI.BeltLineWidth, i, beltToCellX + UI.BeltLineWidth, i);
+		}
+	} else if (triangleDir == LEFT) {
+		for (int i = beltFromCellX - 20; i >= beltToCellX; i -= 20) {
+			pWind->DrawLine(i, beltFromCellY - UI.BeltLineWidth, i, beltToCellY + UI.BeltLineWidth);
+		}
+	} else if (triangleDir == RIGHT) {
+		for (int i = beltFromCellX + 20; i <= beltToCellX; i += 20) {
+			pWind->DrawLine(i, beltFromCellY - UI.BeltLineWidth, i, beltToCellY + UI.BeltLineWidth);
+		}
+	}
 	
 	// TODO: Draw the triangle at the center of the belt line pointing to the direction of the belt
 	int triangleWidth = UI.CellWidth / 4;
@@ -641,9 +687,9 @@ void Output::DrawBelt(const CellPosition& fromCellPos, const CellPosition& toCel
 
 	int triangleCenterX = triangleDir == RIGHT || triangleDir == LEFT ? (beltFromCellX + beltToCellX) / 2 : beltFromCellX;
 	int triangleCenterY = triangleDir == UP || triangleDir == DOWN ? (beltFromCellY + beltToCellY) / 2 : beltFromCellY;
-	cout << triangleCenterX << " " << beltFromCellX << " " << triangleCenterY << " " << beltFromCellY << endl;
 
-	pWind->SetPen(UI.CommandBarColor);
+	pWind->SetPen(UI.BeltOutlineColor);
+	pWind->SetBrush(UI.BeltTriangleColor);
 	DrawTriangle(triangleCenterX, triangleCenterY, triangleHeight, triangleWidth, triangleDir, UI.CommandBarColor, FILLED);
 
 
@@ -666,20 +712,36 @@ void Output::DrawFlag(const CellPosition& cellPos) const
 	// TODO: Draw the flag as a line with a triangle connected to it directed to right
 
 	// TODO: 1. Draw the flag pole (the line)
-	int flagPoleStartX = cellStartX + UI.CellWidth / 2;
-	int flagPoleStartY = cellStartY + UI.CellHeight / 4;
+	int flagPoleStartX = cellStartX + UI.CellWidth / 2.3;
+	int flagPoleStartY = cellStartY + UI.CellHeight / 5;
+
+	pWind->SetPen(UI.DropShadowColor, 3);
+	pWind->SetBrush(UI.DropShadowColor);
+	pWind->DrawLine(flagPoleStartX + UI.DropShadowOffset, flagPoleStartY + UI.DropShadowOffset, flagPoleStartX + UI.DropShadowOffset, flagPoleStartY + UI.FlagPoleHeight + UI.DropShadowOffset);
+
+	int triangleCenterX = flagPoleStartX + UI.FlagWidth / 2.5;
+	int triangleCenterY = flagPoleStartY + UI.FlagHeight / 2 - 3;
+
+	pWind->SetPen(UI.DropShadowColor, 2);
+	pWind->SetBrush(UI.DropShadowColor);
+	DrawTriangle(triangleCenterX + UI.DropShadowOffset, triangleCenterY + UI.DropShadowOffset, UI.FlagHeight, UI.FlagWidth, RIGHT, UI.FlagColor, FILLED);
 
 	pWind->SetPen(UI.FlagPoleColor, UI.FlagPoleWidth);
 	pWind->DrawLine(flagPoleStartX, flagPoleStartY, flagPoleStartX, flagPoleStartY + UI.FlagPoleHeight);
 
-	
 	// 		 2. Draw the flag (the triangle)
-	
-	int triangleCenterX = flagPoleStartX + UI.FlagWidth / 2;
-	int triangleCenterY = flagPoleStartY + UI.FlagHeight / 2;
 
+	pWind->SetPen(BLACK);
+	pWind->SetBrush(UI.FlagColor);
 	DrawTriangle(triangleCenterX, triangleCenterY, UI.FlagHeight, UI.FlagWidth, RIGHT, UI.FlagColor, FILLED);
-	
+
+	pWind->SetPen(UI.FlagPoleTopColor);
+	pWind->SetBrush(UI.FlagPoleTopColor);
+	pWind->DrawCircle(flagPoleStartX, flagPoleStartY, 4, FILLED);
+
+	//pWind->SetPen(BLACK);
+	//pWind->DrawLine(flagPoleStartX - 10, flagPoleStartY + UI.FlagPoleHeight, flagPoleStartX + 10, flagPoleStartY + UI.FlagPoleHeight, FRAME);
+	//
 }
 
 void Output::DrawRotatingGear(const CellPosition& cellPos, bool clockwise) const
@@ -734,7 +796,7 @@ void Output::DrawWorkshop(const CellPosition& cellPos) const
 void Output::DrawDangerZone(const CellPosition& cellPos) const
 {
     ///TODO: Complete the implementation of the following function
-	if (cellPos.IsValidCell() == false)
+	if (cellPos.IsValidCell() == false || cellPos.GetCellNum() == 1)
 		return;
 	int x1 = GetCellStartX(cellPos);
 	int y1 = GetCellStartY(cellPos);
@@ -745,24 +807,28 @@ void Output::DrawDangerZone(const CellPosition& cellPos) const
 	pWind->SetPen(UI.DangerZoneCellColor, 1);
 	pWind->SetBrush(UI.DangerZoneCellColor);
 	pWind->DrawRectangle(x1, y1, x2, y2, FILLED);
+
+	DrawCellNum(cellPos);
 	
 }
 
 
-	void Output::DrawWaterPit(const CellPosition & cellPos) const
-	{
-		if (cellPos.IsValidCell() == false)
-			return;
+void Output::DrawWaterPit(const CellPosition & cellPos) const
+{
+	if (cellPos.IsValidCell() == false || cellPos.GetCellNum() == 1)
+		return;
 
-		int x1 = GetCellStartX(cellPos);
-		int y1 = GetCellStartY(cellPos);
-		int x2 = x1 + UI.CellWidth;
-		int y2 = y1 + UI.CellHeight;
+	int x1 = GetCellStartX(cellPos);
+	int y1 = GetCellStartY(cellPos);
+	int x2 = x1 + UI.CellWidth;
+	int y2 = y1 + UI.CellHeight;
 
-		pWind->SetPen(UI.WaterPitsCellColor, 1);
-		pWind->SetBrush(UI.WaterPitsCellColor);
-		pWind->DrawRectangle(x1, y1, x2, y2, FILLED);
-	}
+	pWind->SetPen(UI.WaterPitsCellColor, 1);
+	pWind->SetBrush(UI.WaterPitsCellColor);
+	pWind->DrawRectangle(x1, y1, x2, y2, FILLED);
+
+	DrawCellNum(cellPos);
+}
 
 	
 Output::~Output()

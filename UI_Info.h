@@ -96,11 +96,16 @@ struct UI_Info	// User Interface Info.
 	color CellNumColor;			// Cell number color
 
 
-	color BeltColor;			// Color of the belt
+	color BeltOutlineColor;		// Color of the belt's outline
+	color BeltFillColor; 		// Color of the belt's fill (the inner color of the belt)
+	color BeltTriangleColor;    // Color of the triangle in the middle of the belt
 	color FlagColor;			// Color of the flag
 	color FlagPoleColor;		// Color of the flag pole (the vertical part of the flag)
+	color FlagPoleTopColor;     // Color of the top of the flag pole (the circle on top of the pole)
 	color DangerZoneCellColor;	// Color of the danger zone cells
 	color WaterPitsCellColor;	// Color of the water pits cells
+	color DropShadowColor;		// Color of the drop shadows
+	int DropShadowOffset; 		// The offset of the drop shadow from the original shape (both in X and Y)
 
 
 	int SpaceBetweenCommandsSlots; // Space between the slots of the saved commands in the commands bar

@@ -93,7 +93,7 @@ int main()
 
 	pOut->DrawWaterPit(cell_10);
 	pOut->DrawWaterPit(cell_53);
-	
+	pOut->DrawWaterPit(cell_1);
 
 	pOut->PrintMessage("FINISHED - Drawing (Water Pits) Test,  Click to continue");
 	pIn->GetPointClicked(x, y);	//Wait for any click
@@ -108,6 +108,10 @@ int main()
 	CellPosition cell_60(60);	// cell num 60
 
 	// TODO: Draw DangerZone in cell_20, [cell_60 and cell_1] (Invalid)
+
+	pOut->DrawDangerZone(cell_20);
+	pOut->DrawDangerZone(cell_60);
+	pOut->DrawDangerZone(cell_1);
 	
 
 	pOut->PrintMessage("FINISHED - Drawing (DangerZone) Test,  Click to continue");
@@ -123,9 +127,6 @@ int main()
 	CellPosition player_2(2);
 	CellPosition player_15(2, 18);
 	CellPosition player_99(2, 5);
-
-	pOut->DrawPlayer(player_1, 0, UI.PlayerColors[0], UP);
-	pOut->DrawPlayer(player_1, 1, UI.PlayerColors[1], UP);
 
 
 	///TODO: Call Function DrawPlayer of Class Ouput Multiple Times
@@ -146,6 +147,17 @@ int main()
 	///			in cell position (player_99 declared above) pointing down--> Invalid
 	///       playerNum (-1) with color (PlayerColors[1] defined in UI object) 
 	///			in cell position (player_99 declared above) pointing left--> Invalid
+	/// 
+	
+	pOut->DrawPlayer(player_1, 0, UI.PlayerColors[0], RIGHT);
+	pOut->DrawPlayer(player_1, 1, UI.PlayerColors[1], UP);
+	pOut->DrawPlayer(player_1, 2, UI.PlayerColors[2], DOWN);
+	pOut->DrawPlayer(player_1, 3, UI.PlayerColors[3], LEFT);
+	pOut->DrawPlayer(player_15, 0, UI.PlayerColors[0], LEFT);
+	pOut->DrawPlayer(player_99, 1, UI.PlayerColors[1], UP);
+	pOut->DrawPlayer(player_99, 5, UI.PlayerColors[1], DOWN);
+	pOut->DrawPlayer(player_99, -1, UI.PlayerColors[1], LEFT);
+
 
 	
 	pOut->PrintMessage("FINISHED - Drawing (Players) Test,  Click to continue");
@@ -162,6 +174,10 @@ int main()
 	CellPosition flag_99(99);
 
 	// TODO: Draw Flags in cell positions (flag_1, flag_60, flag_99)
+
+	pOut->DrawFlag(flag_1);
+	pOut->DrawFlag(flag_60);
+	pOut->DrawFlag(flag_99);
 
 
 	pOut->PrintMessage("FINISHED - Drawing (Flags) Test,  Click to continue");
@@ -265,6 +281,11 @@ int main()
 	//    (assuming the entered number is 116)
 	// 3- Call GetPointClicked() function
 
+	int getIntegerTest = pIn->GetInteger(pOut);
+	pOut->PrintMessage("You Entered: " + to_string(getIntegerTest));
+	pOut->FlushMouseQueue();
+	pIn->GetPointClicked(x, y);	//Wait for any click
+
 
 
 	pOut->PrintMessage("FINISHED - (GetInteger) Test, Click to continue");
@@ -281,6 +302,16 @@ int main()
 	// 2- Print on the status bar the vCell and hCell of the clicked cell
 	// 3- Repeat Step 1 and 2 five times
 
+	UI.InterfaceMode = MODE_DESIGN; // to enable the function GetCellClicked to work (it works only in design mode)
+
+	for (int i = 0; i < 5; i++)
+	{
+		CellPosition cellClicked;
+		cellClicked = pIn->GetCellClicked();
+		pOut->PrintMessage("You Clicked on Cell with vCell: " + to_string(cellClicked.VCell()) + " and hCell: " + to_string(cellClicked.HCell()));
+		pOut->FlushMouseQueue();
+		pIn->GetPointClicked(x, y);	//Wait for any click
+	}
 
 	pOut->PrintMessage("FINISHED - (GetCellClicked) Test, Click to continue");
 	pIn->GetPointClicked(x,y);	//Wait for any click
@@ -288,7 +319,7 @@ int main()
 
 	/// 3.3- Reading a String ///
 	/// =====================
-	pOut->PrintMessage("3.3- (GetSrting) Test, Click to continue");
+	pOut->PrintMessage("3.3- (GetString) Test, Click to continue");
 	pIn->GetPointClicked(x,y);	//Wait for any click
 
 
@@ -298,9 +329,15 @@ int main()
 	// 3- print on the status bar "You Entered" then print the string
 	// NOTE: GetString() is already implemented. It is just required from you to call it
 
+	pOut->ClearStatusBar();
+	string getStringTest = pIn->GetString(pOut);
+	pOut->PrintMessage("You Entered: " + getStringTest);
+	pOut->FlushMouseQueue();
+	pIn->GetPointClicked(x, y);	//Wait for any click
 
 
-	pOut->PrintMessage("FINISHED - (GetSrting) Test, Click to continue");
+
+	pOut->PrintMessage("FINISHED - (GetString) Test, Click to continue");
 	pIn->GetPointClicked(x,y);	//Wait for any click
 
 	///////////////////////////////////////////////////////////////////////////////////
@@ -323,6 +360,26 @@ int main()
 	// 4- Call GetPointClicked()
 	// 5- Repeat the above steps FIVE TIMES
 	// 6- Repeat all the above steps to test SetHCell() function instead with the needed modifications
+
+	for (int i = 0; i < 5; i++)
+	{
+		pOut->PrintMessage("Please enter an integer to set the vCell: ");
+		int vCellInput = pIn->GetInteger(pOut);
+		cellpos_1.SetVCell(vCellInput);
+		pOut->PrintMessage("Now the vCell = " + to_string(cellpos_1.VCell()));
+		pOut->FlushMouseQueue();
+		pIn->GetPointClicked(x, y);	//Wait for any click
+	}
+
+	for (int i = 0; i < 5; i++)
+	{
+		pOut->PrintMessage("Please enter an integer to set the hCell: ");
+		int hCellInput = pIn->GetInteger(pOut);
+		cellpos_1.SetHCell(hCellInput);
+		pOut->PrintMessage("Now the hCell = " + to_string(cellpos_1.HCell()));
+		pOut->FlushMouseQueue();
+		pIn->GetPointClicked(x, y);	//Wait for any click
+	}
 
 	pOut->PrintMessage("FINISHED - (Setters with Validation) Test, Click to continue");
 	pIn->GetPointClicked(x,y);	//Wait for any click
