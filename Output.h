@@ -65,6 +65,8 @@ public:
 
 	void CreateCommandsBar(Command savedCommands[], int savedCommandsCount, Command availableCommands[], int availableCommandsCount) const;
 	
+	void DrawOutlinedText(int x, int y, string text, color outlineColor, color textColor) const;
+
 	void PrintMessage(string msg) const;	// Prints a message on Status bar
 
 	///TODO: COMPLETE THE IMPLEMENTATIN OF THE FOLLOWING FUNCTION
@@ -119,6 +121,9 @@ public:
 	// TODO: Complete the implementation of the following function
 	// Draws an image indicating an antenna at the passed cell position
 	void DrawAntenna(const CellPosition& cellPos) const;
+
+	// helper function for drawdangerzone
+	color DarkenColor(color original, int subtractAmount) const;
 
 	// TODO: Complete the implementation of the following function
 	// Change the passed cell to make it appears a Danger Zone as specified in the document

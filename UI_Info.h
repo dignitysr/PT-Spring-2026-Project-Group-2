@@ -89,12 +89,14 @@ struct UI_Info	// User Interface Info.
 	color ToolBarColor;			// Toolbar color (toolbar background)
 	color StatusBarColor;		// Statusbar color (statusbar background)
 	color CommandBarColor;		// Commands Bar background color
+	color BackgroundColor;		// Background color
 
 	color GridLineColor;		// Color of the Lines separating adjacent cells
 
 	int CellNumFont;			// Font size of cell numbers
 	color CellNumColor;			// Cell number color
 
+	int CommandBarTextFont;     // Font size of the text in the command bar
 
 	color BeltOutlineColor;		// Color of the belt's outline
 	color BeltFillColor; 		// Color of the belt's fill (the inner color of the belt)

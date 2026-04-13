@@ -27,22 +27,24 @@ Output::Output()
 	UI.CellHeight = (UI.height -  UI.ToolBarHeight - UI.StatusBarHeight - UI.CommandsBarHeight) / NumVerticalCells;
 
 	// Pen Colors of messages of status bar and players' info
-	UI.MsgColor = DARKRED;
+	UI.MsgColor = GREEN;
 	UI.PlayerInfoColor = DARKSLATEBLUE;
 
 	// Background Colors of toolbar and statusbar 
-	UI.ToolBarColor = WHITE;
-	UI.StatusBarColor = LIGHTGRAY; 
-	UI.CommandBarColor = BLACK;
+	UI.ToolBarColor = color(100, 100, 100);
+	UI.StatusBarColor = BLACK; 
+	UI.CommandBarColor = UI.ToolBarColor;
+	UI.BackgroundColor = color(50, 50, 50);
 
 	// Line Colors of the borders of each cell
-	UI.GridLineColor = WHITE;
+	UI.GridLineColor = color(45, 50, 60);
 
 	// Cell Color if Empty & Cell Number Font & Color
-	UI.CellColor = LIGHTSLATEBLUE;
+	UI.CellColor = DARKGRAY;
 	UI.CellNumFont = 13;
-	UI.CellNumColor = UI.GridLineColor;
+	UI.CellNumColor = WHITE;
 
+	UI.CommandBarTextFont = 30;
 
 	// Belt Line Width and Color
 	UI.BeltLineWidth = 6;
@@ -51,6 +53,7 @@ Output::Output()
 	UI.BeltTriangleColor = WHITE;
 
 	UI.WaterPitsCellColor = DARKSLATEBLUE;
+	UI.DangerZoneCellColor = color(70, 70, 70);
 
 	// The X and Y Offsets of the Space BEFORE Drawing the Belt (offset from the start X and Y of the Cell)
 	UI.BeltXOffset = (UI.CellWidth - 2 * UI.BeltLineWidth) / 5;
@@ -72,7 +75,7 @@ Output::Output()
 
 	// Commands X and Y Coordinates
 	UI.SpaceBetweenCommandsSlots = 10;
-	UI.AvailableCommandsXOffset = ( UI.CommandItemWidth + UI.SpaceBetweenCommandsSlots ) * 6;
+	UI.AvailableCommandsXOffset = 10;
 
 
 	// Colors of the 2 Players
@@ -89,6 +92,10 @@ Output::Output()
 
 	// Change the title
 	pWind->ChangeTitle("RoboRally");
+
+	// Draw background
+	pWind->SetBrush(UI.BackgroundColor);
+	pWind->DrawRectangle(0, 0, UI.width, UI.height, FILLED);
 
 	// Create the toolbar, grid area and status bar
 	CreateDesignModeToolBar();
@@ -345,12 +352,12 @@ void Output::CreateCommandsBar(Command savedCommands[], int savedCommandsCount, 
     ClearCommandsBar();
 	UI.InterfaceMode = MODE_PLAY;
 	string CommandItemImages[COMMANDS_COUNT];
-	CommandItemImages[NO_COMMAND] = "images\\CommandSlot-grey.jpg";
+	CommandItemImages[NO_COMMAND] = "images\\NoCommandCard.jpg";
 	CommandItemImages[MOVE_FORWARD_ONE_STEP] = "images\\MoveForwardCard.jpg";
 	// TODO: Prepare images for more items with .jpg extensions and add them to the list 
 
-	DrawSavedCommands(savedCommands, savedCommandsCount, CommandItemImages);
 	DrawAvailableCommands(availableCommands, availableCommandsCount, CommandItemImages);
+	DrawSavedCommands(savedCommands, savedCommandsCount, CommandItemImages);
     
 }
 
@@ -360,6 +367,9 @@ void Output::DrawSavedCommands(Command savedCommands[], int savedCommandsCount, 
 {
 	if (UI.InterfaceMode == MODE_DESIGN)
 		return;
+
+	pWind->SetPen(UI.GridLineColor, 4);
+	pWind->DrawLine(UI.width / 2, UI.height - UI.StatusBarHeight - UI.CommandsBarHeight, UI.width / 2, UI.height - UI.StatusBarHeight);
 	
 	int spaceBetweenSlots = 10;
 	for (int i = 0; i < savedCommandsCount; ++i)
@@ -372,6 +382,24 @@ void Output::DrawSavedCommands(Command savedCommands[], int savedCommandsCount, 
 
 //////////////////////////////////////////////////////////////////////////////////////////
 
+void Output::DrawOutlinedText(int x, int y, string text, color outlineColor, color textColor) const {
+	pWind->SetPen(outlineColor);
+
+	// ugly
+	pWind->DrawString(x - 2, y, text);
+	pWind->DrawString(x + 2, y, text);
+	pWind->DrawString(x, y - 2, text);
+	pWind->DrawString(x, y + 2, text);
+	pWind->DrawString(x - 2, y - 2, text);
+	pWind->DrawString(x + 2, y - 2, text);
+	pWind->DrawString(x - 2, y + 2, text);
+	pWind->DrawString(x + 2, y + 2, text);
+
+	pWind->SetPen(textColor);
+
+	pWind->DrawString(x, y, text);
+}
+
 void Output::DrawAvailableCommands(Command availableCommands[], int availableCommandsCount, string CommandItemImages[]) const
 {
 	if (UI.InterfaceMode == MODE_DESIGN)
@@ -382,21 +410,21 @@ void Output::DrawAvailableCommands(Command availableCommands[], int availableCom
 	int availableCommandHeight = UI.CommandsBarHeight / 2;
 
 	// Define the starting position for the available commands
-	int startX = UI.AvailableCommandsXOffset;
-	int startY = UI.height - UI.StatusBarHeight - UI.CommandsBarHeight;
+	int startX = UI.AvailableCommandsXOffset + (UI.width/2);
+	int startY = UI.height - UI.StatusBarHeight - (UI.CommandsBarHeight);
+
+	string availableString = "AVAILABLE COMMANDS";
+	int textWidth = 0, textHeight = 0;
 
 	// Draw the "Available Commands" text above the command slots
-	pWind->SetPen(WHITE);
-	pWind->SetFont(UI.CellNumFont, BOLD, BY_NAME, "Arial");
-	string availableCommandsText = "Available Commands";
-	int textWidth = 0, textHeight = 0; // to be used in the next line as they are passed by reference
-	pWind->GetStringSize(textWidth, textHeight, availableCommandsText);
-	pWind->DrawString(startX, startY, availableCommandsText);
+	pWind->SetFont(UI.CommandBarTextFont, BOLD, BY_NAME, "Arial Black");
+	pWind->GetStringSize(textWidth, textHeight, availableString);
+	DrawOutlinedText(startX, startY, availableString, BLACK, WHITE);
 
 
 	
 
-	UI.AvailableCommandsYOffset = textHeight + 10;  // vertical space between the start of the command bar and the cards of available commands
+	UI.AvailableCommandsYOffset = textHeight + 2;  // vertical space between the start of the command bar and the cards of available commands
 													// will be used in detecting selected command from the user click
 	for (int i = 0; i < availableCommandsCount; ++i)
 	{
@@ -411,7 +439,7 @@ void Output::DrawAvailableCommands(Command availableCommands[], int availableCom
 
 		// Draw the command number below the card
 		pWind->SetPen(UI.CellNumColor);
-		pWind->SetFont(UI.CellNumFont, BOLD | ITALICIZED, BY_NAME, "Arial");
+		pWind->SetFont(UI.CellNumFont, BOLD, BY_NAME, "Arial");
 		int w = 0, h = 0;
 		pWind->GetIntegerSize(w, h, i + 1);
 		int numX = x + (availableCommandWidth - w) / 2;
@@ -793,6 +821,19 @@ void Output::DrawWorkshop(const CellPosition& cellPos) const
 
 }
 
+// Helper function for DrawDangerZone
+color Output::DarkenColor(color original, int subtractAmount) const {
+	int r = original.ucRed - subtractAmount;
+	int g = original.ucGreen - subtractAmount;
+	int b = original.ucBlue - subtractAmount;
+
+	if (r < 0) r = 0;
+	if (g < 0) g = 0;
+	if (b < 0) b = 0;
+
+	return color(r, g, b);
+}
+
 void Output::DrawDangerZone(const CellPosition& cellPos) const
 {
     ///TODO: Complete the implementation of the following function
@@ -804,9 +845,17 @@ void Output::DrawDangerZone(const CellPosition& cellPos) const
 	int x2 = x1 + UI.CellWidth;
 	int y2 = y1 + UI.CellHeight;
 
-	pWind->SetPen(UI.DangerZoneCellColor, 1);
+	pWind->SetPen(RED, 1);
 	pWind->SetBrush(UI.DangerZoneCellColor);
 	pWind->DrawRectangle(x1, y1, x2, y2, FILLED);
+
+	color darkerColor = UI.DangerZoneCellColor;
+	for (int i = 1; i <= 40; i += 2) {
+		darkerColor = DarkenColor(darkerColor, 4);
+		pWind->SetPen(darkerColor, 1);
+		pWind->SetBrush(darkerColor);
+		pWind->DrawRectangle(x1 + i, y1 + i, x2 - i, y2 - i, FILLED);
+	}
 
 	DrawCellNum(cellPos);
 	
@@ -823,7 +872,7 @@ void Output::DrawWaterPit(const CellPosition & cellPos) const
 	int x2 = x1 + UI.CellWidth;
 	int y2 = y1 + UI.CellHeight;
 
-	pWind->SetPen(UI.WaterPitsCellColor, 1);
+	pWind->SetPen(UI.GridLineColor, 1);
 	pWind->SetBrush(UI.WaterPitsCellColor);
 	pWind->DrawRectangle(x1, y1, x2, y2, FILLED);
 
