@@ -320,6 +320,8 @@ void Output::CreateDesignModeToolBar() const
 	for(int i=0; i < DESIGN_ITM_COUNT; i++) {
 		try {
 			pWind->DrawImage(MenuItemImages[i], i * UI.MenuItemWidth, 0, UI.MenuItemWidth, UI.ToolBarHeight);
+			pWind->SetPen(BLACK, 1);
+			pWind->DrawRectangle(i * UI.MenuItemWidth, 0, (i + 1) * UI.MenuItemWidth, UI.ToolBarHeight, FRAME);
 		}
 		catch (...) {
 			cout << "Error loading image" << endl;
@@ -359,12 +361,19 @@ void Output::CreatePlayModeToolBar() const
 
 
 	// Draw menu item one image at a time
-	for(int i=0; i < PLAY_ITM_COUNT; i++) {
+	for (int i = 0; i < PLAY_ITM_COUNT; i++) {
 		try {
-			pWind->DrawImage(MenuItemImages[i], i*UI.MenuItemWidth, 0, UI.MenuItemWidth, UI.ToolBarHeight);
+			pWind->DrawImage(MenuItemImages[i], i * UI.MenuItemWidth, 0, UI.MenuItemWidth, UI.ToolBarHeight);
+			pWind->SetPen(BLACK, 1);
+			pWind->DrawRectangle(i * UI.MenuItemWidth, 0, (i + 1) * UI.MenuItemWidth, UI.ToolBarHeight, FRAME);
 		}
 		catch (...) {
 			cout << "Error loading image" << endl;
+		}
+		if (i == PLAY_ITM_COUNT - 1) {
+			// Draw a line after the last item to separate between the menu items and the grid
+			pWind->SetPen(UI.GridLineColor, 3);
+			pWind->DrawLine((i + 1) * UI.MenuItemWidth, 0, (i + 1) * UI.MenuItemWidth, UI.ToolBarHeight);
 		}
 	}
 }
