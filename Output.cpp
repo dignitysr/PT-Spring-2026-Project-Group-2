@@ -1,6 +1,7 @@
 #include "Output.h"
 
 #include "Input.h"
+#include <random>
 
 #include <iostream>
 ////////////////////////////////////////////////////////////////////////////////////////// 
@@ -53,6 +54,8 @@ Output::Output()
 	UI.BeltTriangleColor = WHITE;
 
 	UI.WaterPitsCellColor = DARKSLATEBLUE;
+	UI.WaterWavesColor = LIGHTSLATEBLUE;
+	UI.WaterBubblesColor = GHOSTWHITE;
 	UI.DangerZoneCellColor = color(70, 70, 70);
 
 	// The X and Y Offsets of the Space BEFORE Drawing the Belt (offset from the start X and Y of the Cell)
@@ -76,6 +79,7 @@ Output::Output()
 	// Commands X and Y Coordinates
 	UI.SpaceBetweenCommandsSlots = 10;
 	UI.AvailableCommandsXOffset = 10;
+	UI.AvailableCommandsYOffset = -30;
 
 
 	// Colors of the 2 Players
@@ -354,30 +358,21 @@ void Output::CreateCommandsBar(Command savedCommands[], int savedCommandsCount, 
 	string CommandItemImages[COMMANDS_COUNT];
 	CommandItemImages[NO_COMMAND] = "images\\NoCommandCard.jpg";
 	CommandItemImages[MOVE_FORWARD_ONE_STEP] = "images\\MoveForwardCard.jpg";
+	CommandItemImages[MOVE_FORWARD_TWO_STEPS] = "images\\MoveForwardTwoCard.jpg";
+	CommandItemImages[MOVE_FORWARD_THREE_STEPS] = "images\\MoveForwardThreeCard.jpg";
+	CommandItemImages[MOVE_BACKWARD_ONE_STEP] = "images\\MoveBackwardCard.jpg";
+	CommandItemImages[MOVE_BACKWARD_TWO_STEPS] = "images\\MoveBackwardTwoCard.jpg";
+	CommandItemImages[MOVE_BACKWARD_THREE_STEPS] = "images\\MoveBackwardThreeCard.jpg";
+	CommandItemImages[ROTATE_CLOCKWISE] = "images\\RotateRight.jpg";
+	CommandItemImages[ROTATE_COUNTERCLOCKWISE] = "images\\RotateLeft.jpg";
 	// TODO: Prepare images for more items with .jpg extensions and add them to the list 
 
-	DrawAvailableCommands(availableCommands, availableCommandsCount, CommandItemImages);
-	DrawSavedCommands(savedCommands, savedCommandsCount, CommandItemImages);
-    
-}
-
-//////////////////////////////////////////////////////////////////////////////////////////
-
-void Output::DrawSavedCommands(Command savedCommands[], int savedCommandsCount, string CommandItemImages[]) const
-{
-	if (UI.InterfaceMode == MODE_DESIGN)
-		return;
-
-	pWind->SetPen(UI.GridLineColor, 4);
+	pWind->SetPen(BLACK, 4);
 	pWind->DrawLine(UI.width / 2, UI.height - UI.StatusBarHeight - UI.CommandsBarHeight, UI.width / 2, UI.height - UI.StatusBarHeight);
-	
-	int spaceBetweenSlots = 10;
-	for (int i = 0; i < savedCommandsCount; ++i)
-	{
-		int x = i * (UI.CommandItemWidth + spaceBetweenSlots);
-		int y = UI.height - UI.StatusBarHeight - UI.CommandsBarHeight;
-		pWind->DrawImage(CommandItemImages[savedCommands[i]], x, y, UI.CommandItemWidth, UI.CommandsBarHeight);
-	}
+
+	DrawCommands(availableCommands, availableCommandsCount, CommandItemImages, UI.AvailableCommandsXOffset + (UI.width / 2), UI.height - UI.StatusBarHeight - (UI.CommandsBarHeight / 2), "AVAILABLE", "COMMANDS");
+	DrawCommands(savedCommands, savedCommandsCount, CommandItemImages, UI.AvailableCommandsXOffset, UI.height - UI.StatusBarHeight - (UI.CommandsBarHeight / 2), "SAVED", "COMMANDS");
+    
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -400,7 +395,7 @@ void Output::DrawOutlinedText(int x, int y, string text, color outlineColor, col
 	pWind->DrawString(x, y, text);
 }
 
-void Output::DrawAvailableCommands(Command availableCommands[], int availableCommandsCount, string CommandItemImages[]) const
+void Output::DrawCommands(Command commands[], int commandsCount, string commandItemImages[], int startX, int startY, string word1, string word2) const
 {
 	if (UI.InterfaceMode == MODE_DESIGN)
 		return;
@@ -409,32 +404,26 @@ void Output::DrawAvailableCommands(Command availableCommands[], int availableCom
 	int availableCommandWidth = UI.CommandItemWidth / 2;
 	int availableCommandHeight = UI.CommandsBarHeight / 2;
 
-	// Define the starting position for the available commands
-	int startX = UI.AvailableCommandsXOffset + (UI.width/2);
-	int startY = UI.height - UI.StatusBarHeight - (UI.CommandsBarHeight);
 
-	string availableString = "AVAILABLE COMMANDS";
 	int textWidth = 0, textHeight = 0;
 
 	// Draw the "Available Commands" text above the command slots
-	pWind->SetFont(UI.CommandBarTextFont, BOLD, BY_NAME, "Arial Black");
-	pWind->GetStringSize(textWidth, textHeight, availableString);
-	DrawOutlinedText(startX, startY, availableString, BLACK, WHITE);
+	pWind->SetFont(UI.CommandBarTextFont, BOLD, BY_NAME, "Comic Sans MS");
+	pWind->GetStringSize(textWidth, textHeight, word1);
+	DrawOutlinedText(startX, startY - textHeight, word1, BLACK, WHITE);
 
 
-	
+	pWind->GetStringSize(textWidth, textHeight, word2);
+	DrawOutlinedText(startX, startY, word2, BLACK, WHITE);
 
-	UI.AvailableCommandsYOffset = textHeight + 2;  // vertical space between the start of the command bar and the cards of available commands
-													// will be used in detecting selected command from the user click
-	for (int i = 0; i < availableCommandsCount; ++i)
+	for (int i = 0; i < commandsCount; ++i)
 	{
-		int x = startX + i * (availableCommandWidth);
+		int x = startX + textWidth + i * (availableCommandWidth) + 10;
 		int y = startY + UI.AvailableCommandsYOffset; // Adjust the Y position to be below the text
 		
 
 		// Draw the command slot (assuming you have an image for the available commands)
-		if (availableCommands[i] != NO_COMMAND)
-			pWind->DrawImage(CommandItemImages[availableCommands[i]], x, y, availableCommandWidth, availableCommandHeight);
+		pWind->DrawImage(commandItemImages[commands[i]], x, y, availableCommandWidth, availableCommandHeight);
 		
 
 		// Draw the command number below the card
@@ -568,7 +557,7 @@ void Output::DrawPlayer(const CellPosition & cellPos, int playerNum, color playe
 	int cellStartY = GetCellStartY(cellPos);
 
 	// Calculate the Radius of the Player's Triangle
-	int radius = UI.CellWidth / 10; // proportional to cell width
+	int radius = UI.CellWidth / 8; // proportional to cell width
 
 	// Calculate the horizontal space before drawing players triangles (space from the left border of the cell)
 	int ySpace = UI.CellHeight / 6; // proportional to cell height
@@ -588,7 +577,7 @@ void Output::DrawPlayer(const CellPosition & cellPos, int playerNum, color playe
 														// for not overlapping with belts
 
 	// TODO: Draw the player triangle in center(x,y) and filled with the playerColor passed to the function
-	pWind->SetPen(playerColor);
+	pWind->SetPen(BLACK);
 	pWind->SetBrush(playerColor);
 	DrawTriangle(x, y, radius, radius, direction, playerColor, FILLED);
 	
@@ -875,6 +864,31 @@ void Output::DrawWaterPit(const CellPosition & cellPos) const
 	pWind->SetPen(UI.GridLineColor, 1);
 	pWind->SetBrush(UI.WaterPitsCellColor);
 	pWind->DrawRectangle(x1, y1, x2, y2, FILLED);
+
+	pWind->SetPen(UI.WaterWavesColor, 2);
+	pWind->SetBrush(UI.WaterWavesColor);
+	int waveStartY = y1 + UI.CellHeight / 2;
+	pWind->DrawRectangle(x1, waveStartY, x2, y2);
+	pWind->DrawArc(x1, waveStartY + 10, x1 + UI.CellWidth/2, waveStartY - 10, 0, 180, FILLED);
+	pWind->SetPen(UI.WaterPitsCellColor, 1);
+	pWind->SetBrush(UI.WaterPitsCellColor);
+	pWind->DrawArc(x1 + UI.CellWidth / 2, waveStartY - 10, x2, waveStartY + 10, 180, 360, FILLED);
+
+	int numBubbles = 10;
+	random_device rd;
+	mt19937 gen(rd());
+	uniform_int_distribution<> yPos(y1 + 10, waveStartY - 20);
+	uniform_int_distribution<> xPos(x1 + 5, x2 - 5);
+	for (int i = 1; i < 4; ++i) {
+		int bubbleX = xPos(gen);
+		int bubbleY = yPos(gen); // alternate bubble heights
+		pWind->SetPen(UI.WaterBubblesColor, 2);
+		pWind->SetBrush(UI.WaterPitsCellColor);
+		pWind->DrawCircle(bubbleX, bubbleY, 6, FRAME);
+	}
+
+	pWind->SetPen(UI.GridLineColor, 1);
+	pWind->DrawRectangle(x1, y1, x2, y2, FRAME);
 
 	DrawCellNum(cellPos);
 }

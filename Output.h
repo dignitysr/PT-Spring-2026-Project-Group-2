@@ -41,6 +41,8 @@ private:
 	void DrawSavedCommands(Command savedCommands[], int savedCommandsCount, string CommandItemImages[]) const;
 	// Draws the available commands in the commands bar during the play mode
 	void DrawAvailableCommands(Command availableCommands[], int availableCommandsCount, string CommandItemImages[]) const;
+
+	void DrawCommands(Command availableCommands[], int availableCommandsCount, string CommandItemImages[], int startX, int startY, string word1, string word2) const;
 public:
 
 	Output();	// A Constructor for any needed initializations

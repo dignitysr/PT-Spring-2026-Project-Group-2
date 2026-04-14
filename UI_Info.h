@@ -106,6 +106,8 @@ struct UI_Info	// User Interface Info.
 	color FlagPoleTopColor;     // Color of the top of the flag pole (the circle on top of the pole)
 	color DangerZoneCellColor;	// Color of the danger zone cells
 	color WaterPitsCellColor;	// Color of the water pits cells
+	color WaterWavesColor;		// Color of the waves drawn on the water pits cells
+	color WaterBubblesColor;	// Color of the bubbles drawn on the water pits cells
 	color DropShadowColor;		// Color of the drop shadows
 	int DropShadowOffset; 		// The offset of the drop shadow from the original shape (both in X and Y)
 
