@@ -23,17 +23,18 @@ enum DESIGN_MODE_ITEMS // The items of the Design Mode (you should add more item
 	// Note: Items MUST be ordered here as they appear in menu
 	// If you want to change the menu items order, change the order here
 
-	ITM_SET_FLAG_CELL,
 	ITM_EXIT,
 	ITM_SWITCH_TO_PLAY_MODE,
 
 	///TODO: Add more items names here
+	ITM_SET_FLAG_CELL,
 	ITM_ADD_ANTENNA,
 	ITM_ADD_BELT,
 	ITM_ADD_WATER_PIT,
 	ITM_ADD_DANGER_ZONE,
 	ITM_ADD_WORKSHOP,
-	ITM_ADD_ROTATING_GEAR,
+	ITM_ADD_ROTATING_GEAR_CLOCKWISE,
+	ITM_ADD_ROTATING_GEAR_ANTICLOCKWISE,
 	ITM_COPY,
 	ITM_CUT,
 	ITM_PASTE,

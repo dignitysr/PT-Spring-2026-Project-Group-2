@@ -170,6 +170,7 @@ void Output::ClearToolBar() const
 	pWind->SetPen(UI.ToolBarColor, 1);
 	pWind->SetBrush(UI.ToolBarColor);
 	pWind->DrawRectangle(0, 0, UI.width, UI.ToolBarHeight);
+	pWind->DrawImage("images\\Logo.jpg", UI.width - 97, 0, 97, 55);
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -296,8 +297,20 @@ void Output::CreateDesignModeToolBar() const
 	MenuItemImages[ITM_SWITCH_TO_PLAY_MODE] = "images\\Menu_SwitchToGame.jpg";
 	
 	///TODO: Change the path of the images as needed
-	MenuItemImages[ITM_SET_FLAG_CELL] = "images\\Menu_Dice.jpg";
-	
+	MenuItemImages[ITM_SET_FLAG_CELL] = "images\\FlagIcon.jpg";
+	MenuItemImages[ITM_ADD_ANTENNA] = "images\\AntennaIcon.jpg";
+	MenuItemImages[ITM_ADD_BELT] = "images\\BeltIcon.jpg";
+	MenuItemImages[ITM_ADD_WORKSHOP] = "images\\WorkshopIcon.jpg";
+	MenuItemImages[ITM_ADD_WATER_PIT] = "images\\WaterPitIcon.jpg";
+	MenuItemImages[ITM_ADD_DANGER_ZONE] = "images\\DangerIcon.jpg";
+	MenuItemImages[ITM_ADD_ROTATING_GEAR_CLOCKWISE] = "images\\GearClockwiseIcon.jpg";
+	MenuItemImages[ITM_ADD_ROTATING_GEAR_ANTICLOCKWISE] = "images\\GearAnticlockwiseIcon.jpg";
+	MenuItemImages[ITM_COPY] = "images\\CopyIcon.jpg";
+	MenuItemImages[ITM_CUT] = "images\\CutIcon.jpg";
+	MenuItemImages[ITM_PASTE] = "images\\PasteIcon.jpg";
+	MenuItemImages[ITM_DELETE] = "images\\DeleteIcon.jpg";
+	MenuItemImages[ITM_SAVE] = "images\\SaveIcon.jpg";
+	MenuItemImages[ITM_LOAD] = "images\\LoadIcon.jpg";
 	
 	///TODO: Prepare images for each menu item and add it to the list
 
@@ -310,6 +323,11 @@ void Output::CreateDesignModeToolBar() const
 		}
 		catch (...) {
 			cout << "Error loading image" << endl;
+		}
+		if (i == DESIGN_ITM_COUNT - 1) {
+			// Draw a line after the last item to separate between the menu items and the grid
+			pWind->SetPen(UI.GridLineColor, 3);
+			pWind->DrawLine((i + 1) * UI.MenuItemWidth, 0, (i + 1) * UI.MenuItemWidth, UI.ToolBarHeight);
 		}
 	}
 }
