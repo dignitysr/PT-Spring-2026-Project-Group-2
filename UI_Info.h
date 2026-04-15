@@ -23,7 +23,6 @@ enum DESIGN_MODE_ITEMS // The items of the Design Mode (you should add more item
 	// Note: Items MUST be ordered here as they appear in menu
 	// If you want to change the menu items order, change the order here
 
-	ITM_EXIT,
 	ITM_SWITCH_TO_PLAY_MODE,
 
 	///TODO: Add more items names here
@@ -41,6 +40,7 @@ enum DESIGN_MODE_ITEMS // The items of the Design Mode (you should add more item
 	ITM_DELETE,
 	ITM_SAVE,
 	ITM_LOAD,
+	ITM_EXIT,
 
 	DESIGN_ITM_COUNT	// no. of items ==> This should be the last line in this enum
 };
@@ -50,9 +50,9 @@ enum PLAY_MODE_ITEMS // The items of the Play Mode (you should add more items)
 	// Note: Items are ordered here as they appear in menu
 	// If you want to change the menu items order, change the order here
 
+	ITM_SWITCH_TO_DESIGN_MODE,
 	ITM_EXECUTE_COMMANDS,
 	ITM_SELECT_COMMAND,
-	ITM_SWITCH_TO_DESIGN_MODE,
 
 	///TODO: Add more items names here
 	ITM_REBOOT_REPAIR,
@@ -116,7 +116,8 @@ struct UI_Info	// User Interface Info.
 	int SpaceBetweenCommandsSlots; // Space between the slots of the saved commands in the commands bar
 	int AvailableCommandsXOffset;	// Size of the horizontal space before drawing the available commands
 	int AvailableCommandsYOffset;	// Size of the vertical space between the start of the command bar and the cards of available commands
-									// will be used in detecting selected command from the user click
+	int AvailableCommandsTextWidth; // Width of the text "Available Commands" in the command bar
+	
 	int BeltXOffset;			// Size of the horizontal space before drawing the belt
 	int BeltYOffset;			// Size of the vertical space before drawing the belt
 	int BeltLineWidth;			// Width of the belt line

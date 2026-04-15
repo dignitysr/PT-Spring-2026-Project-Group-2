@@ -29,7 +29,7 @@ Output::Output()
 
 	// Pen Colors of messages of status bar and players' info
 	UI.MsgColor = GREEN;
-	UI.PlayerInfoColor = DARKSLATEBLUE;
+	UI.PlayerInfoColor = WHITE;
 
 	// Background Colors of toolbar and statusbar 
 	UI.ToolBarColor = color(100, 100, 100);
@@ -79,7 +79,7 @@ Output::Output()
 	// Commands X and Y Coordinates
 	UI.SpaceBetweenCommandsSlots = 10;
 	UI.AvailableCommandsXOffset = 10;
-	UI.AvailableCommandsYOffset = -30;
+	UI.AvailableCommandsYOffset = 30;
 
 
 	// Colors of the 2 Players
@@ -230,7 +230,7 @@ void Output::DrawImageInCell(const CellPosition& cellPos, string image, int widt
 		return;
 
 	int x = GetCellStartX(cellPos) + UI.CellWidth / 4;
-	int y = GetCellStartY(cellPos) + UI.CellHeight / 4;
+	int y = GetCellStartY(cellPos) + UI.CellHeight / 8;
 
 	// TODO: Complete the implementation of this function
 	try {
@@ -284,6 +284,7 @@ void Output::CreateDesignModeToolBar() const
 	UI.InterfaceMode = MODE_DESIGN;
 
 	ClearToolBar(); // in order not to draw above the icons of the other mode when you switch
+	ClearCommandsBar();
 
 	// You can draw the tool bar icons in any way you want.
 	// Below is one possible way
@@ -342,6 +343,9 @@ void Output::CreatePlayModeToolBar() const
 
 	ClearToolBar(); // in order not to draw above the icons of the other mode when you switch
 
+	Command defaultSaved[] = { NO_COMMAND, NO_COMMAND, NO_COMMAND, NO_COMMAND, NO_COMMAND};
+	Command defaultAvailable[] = { MOVE_FORWARD_ONE_STEP, MOVE_BACKWARD_ONE_STEP, MOVE_FORWARD_TWO_STEPS, MOVE_BACKWARD_TWO_STEPS, MOVE_FORWARD_THREE_STEPS, MOVE_BACKWARD_THREE_STEPS, ROTATE_CLOCKWISE, ROTATE_COUNTERCLOCKWISE};
+
 	// You can draw the tool bar icons in any way you want.
 	// Below is one possible way
 
@@ -353,8 +357,11 @@ void Output::CreatePlayModeToolBar() const
 	MenuItemImages[ITM_SWITCH_TO_DESIGN_MODE] = "images\\Menu_SwitchToGrid.jpg";
 
 	///TODO: Change the path of the images as needed
-	MenuItemImages[ITM_EXECUTE_COMMANDS] = "images\\Menu_Dice.jpg";
-	MenuItemImages[ITM_SELECT_COMMAND] = "images\\Menu_Dice.jpg";
+	MenuItemImages[ITM_EXECUTE_COMMANDS] = "images\\ExecuteIcon.jpg";
+	MenuItemImages[ITM_SELECT_COMMAND] = "images\\SelectIcon.jpg";
+	MenuItemImages[ITM_EXIT_PLAY] = "images\\Menu_Exit.jpg";
+	MenuItemImages[ITM_REBOOT_REPAIR] = "images\\RebootIcon.jpg";
+	MenuItemImages[ITM_NEW_GAME] = "images\\ReplayIcon.jpg";
 
 	///TODO: Prepare images for each menu item and add it to the list
 
@@ -376,6 +383,9 @@ void Output::CreatePlayModeToolBar() const
 			pWind->DrawLine((i + 1) * UI.MenuItemWidth, 0, (i + 1) * UI.MenuItemWidth, UI.ToolBarHeight);
 		}
 	}
+
+	CreateCommandsBar(defaultSaved, 5, defaultAvailable, 8);
+
 }
 
 void Output::CreateCommandsBar(Command savedCommands[], int savedCommandsCount, Command availableCommands[], int availableCommandsCount) const
@@ -397,8 +407,8 @@ void Output::CreateCommandsBar(Command savedCommands[], int savedCommandsCount, 
 	pWind->SetPen(BLACK, 4);
 	pWind->DrawLine(UI.width / 2, UI.height - UI.StatusBarHeight - UI.CommandsBarHeight, UI.width / 2, UI.height - UI.StatusBarHeight);
 
-	DrawCommands(availableCommands, availableCommandsCount, CommandItemImages, UI.AvailableCommandsXOffset + (UI.width / 2), UI.height - UI.StatusBarHeight - (UI.CommandsBarHeight / 2), "AVAILABLE", "COMMANDS");
-	DrawCommands(savedCommands, savedCommandsCount, CommandItemImages, UI.AvailableCommandsXOffset, UI.height - UI.StatusBarHeight - (UI.CommandsBarHeight / 2), "SAVED", "COMMANDS");
+	DrawCommands(availableCommands, availableCommandsCount, CommandItemImages, UI.AvailableCommandsXOffset + (UI.width / 2), UI.height - UI.StatusBarHeight - (UI.CommandsBarHeight / 2), "AVAILABLE", "COMMANDS", AVAILABLE);
+	DrawCommands(savedCommands, savedCommandsCount, CommandItemImages, UI.AvailableCommandsXOffset, UI.height - UI.StatusBarHeight - (UI.CommandsBarHeight / 2), "SAVED", "COMMANDS", SAVED);
     
 }
 
@@ -422,7 +432,7 @@ void Output::DrawOutlinedText(int x, int y, string text, color outlineColor, col
 	pWind->DrawString(x, y, text);
 }
 
-void Output::DrawCommands(Command commands[], int commandsCount, string commandItemImages[], int startX, int startY, string word1, string word2) const
+void Output::DrawCommands(Command commands[], int commandsCount, string commandItemImages[], int startX, int startY, string word1, string word2, CommandType commandType) const
 {
 	if (UI.InterfaceMode == MODE_DESIGN)
 		return;
@@ -443,14 +453,18 @@ void Output::DrawCommands(Command commands[], int commandsCount, string commandI
 	pWind->GetStringSize(textWidth, textHeight, word2);
 	DrawOutlinedText(startX, startY, word2, BLACK, WHITE);
 
+	UI.AvailableCommandsTextWidth = textWidth;
+
 	for (int i = 0; i < commandsCount; ++i)
 	{
-		int x = startX + textWidth + i * (availableCommandWidth) + 10;
-		int y = startY + UI.AvailableCommandsYOffset; // Adjust the Y position to be below the text
+		int x = startX + UI.AvailableCommandsTextWidth + i * (availableCommandWidth) + UI.AvailableCommandsXOffset;
+		int y = startY - UI.AvailableCommandsYOffset;
 		
 
 		// Draw the command slot (assuming you have an image for the available commands)
-		pWind->DrawImage(commandItemImages[commands[i]], x, y, availableCommandWidth, availableCommandHeight);
+		if (!(commands[i] == NO_COMMAND && commandType == AVAILABLE)) {
+			pWind->DrawImage(commandItemImages[commands[i]], x, y, availableCommandWidth, availableCommandHeight);
+		}
 		
 
 		// Draw the command number below the card
@@ -498,13 +512,13 @@ void Output::PrintPlayersInfo(string info)
 
 
 	// Set the start X & Y coordinate of drawing the string
-	int x = UI.width - w - 20; // space 20 before the right-side of the window
+	int x = UI.MenuItemWidth*PLAY_ITM_COUNT + 10; // bit right of the item count
 	                           // ( - w ) because x is the coordinate of the start point of the string (upper left)
 	int y = (UI.ToolBarHeight - h) / 2; // in the Middle of the toolbar height
 
 	///TODO: Draw the string "info" in the specified location (x, y)
 
-	pWind->DrawString(x, y, info);
+	DrawOutlinedText(x, y, info, BLACK, UI.PlayerInfoColor);
 
 
 
@@ -798,11 +812,11 @@ void Output::DrawRotatingGear(const CellPosition& cellPos, bool clockwise) const
 	string gearImage;
 	if (clockwise)
 	{
-		gearImage = "images\\Gear_CW.jpg";
+		gearImage = "images\\ClockwiseGearObject.jpg";
 	}
 	else
 	{
-		gearImage = "images\\Gear_CCW.jpg";
+		gearImage = "images\\CounterclockwiseGearObject.jpg";
 	}
 
 	DrawImageInCell(cellPos, gearImage);
@@ -818,7 +832,7 @@ void Output::DrawAntenna(const CellPosition& cellPos) const
 
 
 	// TODO: Draw the antenna image in the cell
-	DrawImageInCell(cellPos, "images\\Antenna.jpg");
+	DrawImageInCell(cellPos, "images\\AntennaObject.jpg");
 
 	
 	
@@ -831,7 +845,7 @@ void Output::DrawWorkshop(const CellPosition& cellPos) const
 		return;
 
 	// TODO: Draw the workshop image in the cell
-	DrawImageInCell(cellPos, "images\\Workshop.jpg");
+	DrawImageInCell(cellPos, "images\\WorkshopObject.jpg");
 	
 
 

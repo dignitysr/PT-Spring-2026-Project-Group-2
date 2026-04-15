@@ -26,6 +26,7 @@ int main()
 	pOut->PrintMessage("TEST1: Drawing Tool bar, Grid, Status bar and Empty Command bar, Click anywhere to continue");
 	pIn->GetPointClicked(x,y);	//Wait for any click
 
+	pOut->CreatePlayModeToolBar();
 
 	// 1.1- Drawing the Command bar in the Game mode
 	// =============================================
@@ -75,7 +76,6 @@ int main()
 	/// 
 	pOut->ClearCommandsBar();
 	savedCommands[0] = MOVE_FORWARD_TWO_STEPS;
-	savedCommands[1] = MOVE_BACKWARD_THREE_STEPS;
 	pOut->CreateCommandsBar(savedCommands, 5, availableCommands, 6);
 	
 
@@ -239,6 +239,9 @@ int main()
 	CellPosition cell_13(13);
 	CellPosition cell_19(19);
 
+	pOut->DrawRotatingGear(cell_13, false);
+	pOut->DrawRotatingGear(cell_19, true);
+
 	// TODO: Draw Rotating Gears in cell positions (cell_13, cell_19)
 	//        1. At cell_13 with rotation left (anticlockwise)
 	//        2. At cell_19 with rotation right (clockwise)
@@ -254,6 +257,7 @@ int main()
 	CellPosition cell_25(25);
 	
 	// TODO: Draw Antenna in cell position (cell_25)
+	pOut->DrawAntenna(cell_25);
 
 	pOut->PrintMessage("FINISHED - Drawing (Antenna) Test,  Click to continue");
 	pIn->GetPointClicked(x, y);	//Wait for any click
@@ -267,6 +271,7 @@ int main()
 	CellPosition cell_30(30);
 
 	// TODO: Draw Workshop in cell position (cell_30)
+	pOut->DrawWorkshop(cell_30);
 	
 	pOut->PrintMessage("FINISHED - Drawing (Workshop) Test,  Click to continue");
 	pIn->GetPointClicked(x, y);	//Wait for any click
@@ -274,10 +279,10 @@ int main()
 
 
 
-	///////////////////////////////////////////////////////////////////////////////////
-	// TEST 3: 
-	//			Input Class - Part 1
-	///////////////////////////////////////////////////////////////////////////////////
+	/////////////////////////////////////////////////////////////////////////////////////
+	//// TEST 3: 
+	////			Input Class - Part 1
+	/////////////////////////////////////////////////////////////////////////////////////
 
 	pOut->PrintMessage("TEST3: Now Time to test class [ Input ], Click to continue");
 	pIn->GetPointClicked(x,y);	//Wait for any click
@@ -407,6 +412,18 @@ int main()
 	// 4- Print the Cell Number on the status bar
 	// 5- Repeat the above steps Five TIMES
 
+	for (int i = 0; i < 5; i++)
+	{
+		pOut->PrintMessage("Please enter an integer to set the vCell: ");
+		int vCellInput = pIn->GetInteger(pOut);
+		pOut->PrintMessage("Please enter an integer to set the hCell: ");
+		int hCellInput = pIn->GetInteger(pOut);
+		CellPosition cellpos(vCellInput, hCellInput);
+		pOut->PrintMessage("Cell num is: " + to_string(cellpos.GetCellNum()));
+		pOut->FlushMouseQueue();
+		pIn->GetPointClicked(x, y);	//Wait for any click
+	}
+
 	pOut->PrintMessage("FINISHED - (GetCellNumFromPosition) Test, Click to continue");
 	pIn->GetPointClicked(x,y);	//Wait for any click
 
@@ -421,6 +438,16 @@ int main()
 	// 4- Print the Cell vCell and hCell on the status bar
 	// 5- Repeat the above steps Five TIMES
 
+	for (int i = 0; i < 5; i++)
+	{
+		pOut->PrintMessage("Please enter an integer to set the cellNum: ");
+		int cellNumInput = pIn->GetInteger(pOut);
+		CellPosition cellpos(cellNumInput);
+		pOut->PrintMessage("vCell is: " + to_string(cellpos.VCell()) + " and hCell is: " + to_string(cellpos.HCell()));
+		pOut->FlushMouseQueue();
+		pIn->GetPointClicked(x, y);	//Wait for any click
+	}
+
 	pOut->PrintMessage("FINISHED - (GetCellPositionFromNum) Test, Click to continue");
 	pIn->GetPointClicked(x,y);	//Wait for any click
 
@@ -434,6 +461,19 @@ int main()
 	// 4- Print the vCell and hCell of the new Cell Position on the status bar
 	// 5- Repeat the above steps Four TIMES with each time a different direction
 
+	for (int i = 0; i < 4; i++)
+	{
+		pOut->PrintMessage("Please enter an integer to set the cellNum: ");
+		int cellNumInput = pIn->GetInteger(pOut);
+		pOut->PrintMessage("Please enter an integer to set the addedNum: ");
+		int addedNumInput = pIn->GetInteger(pOut);
+		CellPosition cellpos(cellNumInput);
+		cellpos.AddCellNum(addedNumInput, (Direction)i);
+		pOut->PrintMessage("vCell is: " + to_string(cellpos.VCell()) + " and hCell is: " + to_string(cellpos.HCell()));
+		pOut->FlushMouseQueue();
+		pIn->GetPointClicked(x, y);	//Wait for any click
+	}
+
 	pOut->PrintMessage("FINISHED - (AddCellNum) Test, Click to continue");
 	pIn->GetPointClicked(x, y);	//Wait for any click
 
@@ -445,6 +485,7 @@ int main()
 	pOut->PrintMessage("TEST5: Testing Input ability to detect User Action, click anywhere");
 
 	ActionType ActType;
+	UI.InterfaceMode = MODE_DESIGN;
 
 	///TODO:  
 	// You must add a case for EACH action (both Design mode and Game mode actions)
@@ -472,18 +513,80 @@ int main()
 				///TODO:  Call Function (PrintPlayersInfo) of Class Output with a string similar to 
 				//        the one given in the screenshot of project document 
 
+				pOut->PrintPlayersInfo("Player Info");
+
 				break;
 
 
 				///TODO:  ADD Cases similarly for ALL the remaining actions of DESIGN Mode
+			case ADD_ANTENNA:
+				pOut->PrintMessage("Action: ADD_ANTENNA , Click anywhere");
+				break;
+
+			case ADD_BELT:
+				pOut->PrintMessage("Action: ADD_BELT , Click anywhere");
+				break;
+
+			case ADD_WATER_PIT:
+				pOut->PrintMessage("Action: ADD_WATER_PIT , Click anywhere");
+				break;
+
+			case ADD_DANGER_ZONE:
+				pOut->PrintMessage("Action: ADD_DANGER_ZONE , Click anywhere");
+				break;
+
+			case ADD_WORKSHOP:
+				pOut->PrintMessage("Action: ADD_WORKSHOP , Click anywhere");
+				break;
+
+			case ADD_ROTATING_GEAR_CLOCKWISE:
+				pOut->PrintMessage("Action: ADD_ROTATING_GEAR_CLOCKWISE , Click anywhere");
+				break;
+
+			case ADD_ROTATING_GEAR_ANTICLOCKWISE:
+				pOut->PrintMessage("Action: ADD_ROTATING_GEAR_ANTICLOCKWISE , Click anywhere");
+				break;
+
+			case COPY_OBJECT:
+				pOut->PrintMessage("Action: COPY_OBJECT , Click anywhere");
+				break;
+
+			case CUT_OBJECT:
+				pOut->PrintMessage("Action: CUT_OBJECT , Click anywhere");
+				break;
+
+			case PASTE_OBJECT:
+				pOut->PrintMessage("Action: PASTE_OBJECT , Click anywhere");
+				break;
+
+			case DELETE_OBJECT:
+				pOut->PrintMessage("Action: DELETE_OBJECT , Click anywhere");
+				break;
+
+			case SAVE_GRID:
+				pOut->PrintMessage("Action: SAVE_GRID , Click anywhere");
+				break;
+
+			case LOAD_GRID:
+				pOut->PrintMessage("Action: LOAD_GRID , Click anywhere");
+				break;
 
 			case EXECUTE_COMMANDS:
 				pOut->PrintMessage("Action: EXECUTE_COMMAND , Click anywhere");
 				break;
+
 			case SELECT_COMMAND:
 				pOut->PrintMessage("Action: SELECT_COMMAND , Select a command");
 				clickedCommandItemIndex = pIn->GetSelectedCommandIndex();
 				pOut->PrintMessage("Action: SELECT_COMMAND " + to_string(clickedCommandItemIndex) + " , Click anywhere");
+				break;
+
+			case REBOOT_REPAIR:
+				pOut->PrintMessage("Action: REBOOT_REPAIR , Click anywhere");
+				break;
+
+			case NEW_GAME:
+				pOut->PrintMessage("Action: NEW_GAME, click anywhere");
 				break;
 
 			case GRID_AREA:

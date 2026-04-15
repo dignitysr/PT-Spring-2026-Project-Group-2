@@ -18,7 +18,8 @@ enum ActionType // The actions supported (add more as needed)
 	ADD_WATER_PIT,
 	ADD_DANGER_ZONE,
 	ADD_WORKSHOP,
-	ADD_ROTATING_GEAR,
+	ADD_ROTATING_GEAR_CLOCKWISE,
+	ADD_ROTATING_GEAR_ANTICLOCKWISE,
 	COPY_OBJECT,
 	CUT_OBJECT,
 	PASTE_OBJECT,
@@ -64,6 +65,12 @@ enum Command
 	ROTATE_COUNTERCLOCKWISE,
 
 	COMMANDS_COUNT,
+};
+
+enum CommandType
+{
+	AVAILABLE,
+	SAVED,
 };
 
 #endif

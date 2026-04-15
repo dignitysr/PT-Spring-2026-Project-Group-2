@@ -4,6 +4,7 @@
 
 #include "DEFS.h"
 
+#include <iostream>
 //======================================================================================//
 //								General Functions									    //
 //======================================================================================//
@@ -125,7 +126,8 @@ ActionType Input::GetUserAction() const
 			case ITM_ADD_WATER_PIT: return ADD_WATER_PIT;
 			case ITM_ADD_DANGER_ZONE: return ADD_DANGER_ZONE;
 			case ITM_ADD_WORKSHOP:  return ADD_WORKSHOP;
-			case ITM_ADD_ROTATING_GEAR: return ADD_ROTATING_GEAR;
+			case ITM_ADD_ROTATING_GEAR_CLOCKWISE: return ADD_ROTATING_GEAR_CLOCKWISE;
+			case ITM_ADD_ROTATING_GEAR_ANTICLOCKWISE: return ADD_ROTATING_GEAR_ANTICLOCKWISE;
 			case ITM_COPY: return COPY_OBJECT;
 			case ITM_CUT: return CUT_OBJECT;
 			case ITM_PASTE: return PASTE_OBJECT;
@@ -155,7 +157,7 @@ ActionType Input::GetUserAction() const
 		// perform checks similar to Design mode checks above for the Play Mode
 		// and return the corresponding ActionType
 		//start of adjustments(Abdallah)
-		if (y >= 0 && UI.ToolBarHeight) {
+		if (y >= 0 && y <= UI.ToolBarHeight) {
 			int clickedItemOrder = (x / UI.MenuItemWidth);
 
 			switch (clickedItemOrder)
@@ -229,12 +231,12 @@ int Input::GetSelectedCommandIndex() const
 	int x = -1, y = -1;
 	GetPointClicked(x, y);
 
-	if ((y >= UI.height - UI.StatusBarHeight - UI.CommandsBarHeight - UI.AvailableCommandsYOffset) && (y < UI.height - UI.StatusBarHeight))
+	if ((y >= UI.height - UI.StatusBarHeight - (UI.CommandsBarHeight / 2) - UI.AvailableCommandsYOffset) && (y < UI.height - UI.StatusBarHeight - (UI.CommandsBarHeight / 2) + UI.AvailableCommandsYOffset))
 	{
-		if (x < UI.AvailableCommandsXOffset || x > UI.AvailableCommandsXOffset + (UI.CommandItemWidth / 2) * MaxAvailableCommands)
+		if (x < (UI.width/2) + UI.AvailableCommandsTextWidth || x > (UI.width / 2) + UI.AvailableCommandsTextWidth + (UI.CommandItemWidth / 2) * MaxAvailableCommands)
 			return -1;
 
-		return (x - UI.AvailableCommandsXOffset) / (UI.CommandItemWidth / 2);;
+		return 1 + (x - ((UI.width / 2) + UI.AvailableCommandsTextWidth + (2*UI.AvailableCommandsXOffset))) / (UI.CommandItemWidth / 2);
 	}
 
 	return -1;
