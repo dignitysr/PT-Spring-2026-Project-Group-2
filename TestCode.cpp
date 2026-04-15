@@ -485,7 +485,7 @@ int main()
 	pOut->PrintMessage("TEST5: Testing Input ability to detect User Action, click anywhere");
 
 	ActionType ActType;
-	UI.InterfaceMode = MODE_DESIGN;
+	pOut->CreateDesignModeToolBar();
 
 	///TODO:  
 	// You must add a case for EACH action (both Design mode and Game mode actions)
