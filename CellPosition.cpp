@@ -98,9 +98,9 @@ int CellPosition::GetCellNumFromPosition(const CellPosition& cellPosition)
 	{
 		return -1;
 	}
-	int rowsFromBottom = (NumVerticalCells - 1 - v);
-	int cellNum = (rowsFromBottom * NumHorizontalCells) + h + 1;
-    return cellNum;
+	int rowsfrombottom = (NumVerticalCells - 1 - v);
+	int cellnum = (rowsfrombottom * NumHorizontalCells) + h + 1;
+    return cellnum;
 
 	// Note:
 	// this is a static function (do NOT need a calling object so CANNOT use the data members of the calling object, vCell&hCell)
@@ -116,8 +116,7 @@ CellPosition CellPosition::GetCellPositionFromNum(int cellNum)
 	// this is a static function (do NOT need a calling object so CANNOT use the data members of the calling object, vCell&hCell)
 
 	CellPosition position;
-	int totalcells = NumVerticalCells * NumHorizontalCells;
-	if (cellNum >= 1 && cellNum <= totalcells)
+	if (cellNum >= 1 && cellNum <= (NumVerticalCells * NumHorizontalCells))
 	{
 		int h = (cellNum - 1) % NumHorizontalCells;
 		int v = (NumVerticalCells - 1) - ((cellNum - 1) / NumHorizontalCells);
@@ -155,8 +154,7 @@ void CellPosition::AddCellNum(int addedNum, Direction direction)
 			newNum -= addedNum;
 			break;
 		}
-		int totalCells = NumVerticalCells * NumHorizontalCells;
-		if (newNum >= 1 && newNum <= totalCells)
+		if (newNum >= 1 && newNum <= (NumVerticalCells * NumHorizontalCells))
 		{
 			*this=GetCellPositionFromNum(newNum);
 		}
