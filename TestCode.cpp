@@ -12,6 +12,7 @@ int main()
 	Input * pIn = pOut->CreateInput();
 
 	//Starting the test
+
 	pOut->PrintMessage("This demo is to test classes of phase 1, Click anywhere to start the test");
 	pIn->GetPointClicked(x,y);	//Wait for any click
 
@@ -513,7 +514,7 @@ int main()
 				///TODO:  Call Function (PrintPlayersInfo) of Class Output with a string similar to 
 				//        the one given in the screenshot of project document 
 
-				pOut->PrintPlayersInfo("Player Info");
+				pOut->PrintPlayersInfo("P1(2, Right, 10), P2(2, Up, 10) | Curr = P1");
 
 				break;
 
