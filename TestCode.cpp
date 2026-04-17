@@ -27,12 +27,14 @@ int main()
 	pOut->PrintMessage("TEST1: Drawing Tool bar, Grid, Status bar and Empty Command bar, Click anywhere to continue");
 	pIn->GetPointClicked(x,y);	//Wait for any click
 
-	pOut->CreatePlayModeToolBar();
+	pOut->CreateDesignModeToolBar();
 
 	// 1.1- Drawing the Command bar in the Game mode
 	// =============================================
 	pOut->PrintMessage("1.1- Drawing the Command bar in the Game mode, Click to continue");
 	pIn->GetPointClicked(x, y);	//Wait for any click
+
+	pOut->CreatePlayModeToolBar();
 
 	Command savedCommands[5];
 	for (int i = 0; i < 5; i++)
@@ -217,7 +219,7 @@ int main()
 	pOut->DrawBelt(belt_end_1, belt_end_2);
 
 	// TODO: Draw 5 belts
-	//		1- from belt_start_1 to belt_end_1
+	//		1- from belt_start_1 to belt_end_1 (note from Abd El Rahman: isnt this supposed to be invalid as we cant have anything on the startinc cell?)
 	//		2- from belt_start_2 to belt_end_2 
 	//		3- from belt_start_3 to belt_end_3
 	//		4- from belt_start_3 to belt_end_4 --> Invalid
@@ -240,8 +242,8 @@ int main()
 	CellPosition cell_13(13);
 	CellPosition cell_19(19);
 
-	pOut->DrawRotatingGear(cell_13, false);
-	pOut->DrawRotatingGear(cell_19, true);
+	pOut->DrawRotatingGear(cell_13, true);
+	pOut->DrawRotatingGear(cell_19, false);
 
 	// TODO: Draw Rotating Gears in cell positions (cell_13, cell_19)
 	//        1. At cell_13 with rotation left (anticlockwise)
@@ -466,6 +468,28 @@ int main()
 	{
 		pOut->PrintMessage("Please enter an integer to set the cellNum: ");
 		int cellNumInput = pIn->GetInteger(pOut);
+		switch ((Direction)i) {
+			case RIGHT:
+				pOut->PrintMessage("Current direction is right");
+				pOut->FlushMouseQueue();
+				pIn->GetPointClicked(x, y);	//Wait for any click
+				break;
+			case LEFT:
+				pOut->PrintMessage("Current direction is left");
+				pOut->FlushMouseQueue();
+				pIn->GetPointClicked(x, y);	//Wait for any click
+				break;
+			case UP:
+				pOut->PrintMessage("Current direction is up");
+				pOut->FlushMouseQueue();
+				pIn->GetPointClicked(x, y);	//Wait for any click
+				break;
+			case DOWN:
+				pOut->PrintMessage("Current direction is down");
+				pOut->FlushMouseQueue();
+				pIn->GetPointClicked(x, y);	//Wait for any click
+				break;
+		}
 		pOut->PrintMessage("Please enter an integer to set the addedNum: ");
 		int addedNumInput = pIn->GetInteger(pOut);
 		CellPosition cellpos(cellNumInput);

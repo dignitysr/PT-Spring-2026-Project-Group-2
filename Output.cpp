@@ -802,7 +802,7 @@ void Output::DrawFlag(const CellPosition& cellPos) const
 	//
 }
 
-void Output::DrawRotatingGear(const CellPosition& cellPos, bool clockwise) const
+void Output::DrawRotatingGear(const CellPosition& cellPos, bool anticlockwise) const
 {
 	// TODO: Validate the cell position
 	if (cellPos.IsValidCell() == false)
@@ -810,7 +810,7 @@ void Output::DrawRotatingGear(const CellPosition& cellPos, bool clockwise) const
 	
 	// TODO: Draw the rotating gear image in the cell based on the passed direction (clockwise or counter clockwise)
 	string gearImage;
-	if (clockwise)
+	if (!anticlockwise)
 	{
 		gearImage = "images\\ClockwiseGearObject.jpg";
 	}
