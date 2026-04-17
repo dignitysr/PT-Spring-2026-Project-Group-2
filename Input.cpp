@@ -53,36 +53,16 @@ int Input::GetInteger(Output *pO) const
 	
 	//start of additions//
 	//Clearing the status bar and preparing for input
-	pO->PrintMessage("Please enter an integer: ");
+	if (pO)
+		pO->PrintMessage("Please enter an integer: ");
 
-	string Label = "";
-	char key;
+	//Call GetString() to handle the actual keyboard typing and backspacing
+	string Label = GetString(pO);
 
-	//Loop to capture the entered characters until "Enter" is pressed
-	while (true)
+	//Handling cases where the user enters nothing or cancels (Escape)
+	if (Label == "")
 	{
-		//waiting for a keyboard press
-		pWind->WaitKeyPress(key);
-
-		if (key == 13) {
-			if (Label == "") {
-				return 0;//Returning 0 if nothing is entered
-			}
-			break;
-		}
-
-		else if (key == 8) {
-			if (Label.length() > 0) //ensuring the string is not already empty
-			{
-				Label.erase(Label.length() - 1);//identifies the index of the last character and erases it
-			}
-		}
-		else if (key >= '0' && key <= '9') {
-			Label += key;//string concatenation
-		}
-		//Updating the status bar so the user sees what they are typing
-		pO->PrintMessage("Please enter an integer: " + Label);
-
+		return 0;
 	}
 
 	// Note: stoi(s) converts string s into its equivalent integer (for example, "55" is converted to 55)
