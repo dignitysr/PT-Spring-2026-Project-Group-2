@@ -30,10 +30,14 @@ string Input::GetString(Output *pO) const
 	while(1)
 	{
 		pWind->WaitKeyPress(Key);
-		if(Key == 27 )	// ESCAPE key is pressed
-			return "";	// returns nothing as user has cancelled label
-		if(Key == 13 && Label != "")	// ENTER key is pressed
+		if(Key == 27 )		// ESCAPE key is pressed
+			return "";		// returns nothing as user has cancelled label
+		if (Key == 13) {	// ENTER key is pressed
+			if (Label == "") {
+				return "0";      
+			}
 			return Label;
+		}
 		if((Key == 8) && (Label.size() >= 1))	// BackSpace is pressed
 			Label.resize(Label.size() -1 );			
 		else
