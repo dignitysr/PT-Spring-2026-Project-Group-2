@@ -67,7 +67,13 @@ int Input::GetInteger(Output *pO) const
 
 	// Note: stoi(s) converts string s into its equivalent integer (for example, "55" is converted to 55)
 
-	return stoi(Label); //converting the final string to an integer & returning it
+	try {
+		return stoi(Label);
+	}
+	catch (...) {
+		pO->PrintMessage("Invalid input! Please enter an integer: ");
+		return GetInteger(pO); // recursively call GetInteger until a valid integer is entered
+	}
 }
 
 //======================================================================================//
