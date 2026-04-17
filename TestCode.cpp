@@ -618,6 +618,10 @@ int main()
 				pOut->PrintMessage("Action: GRID_AREA , Click anywhere");
 				break;
 
+			case COMMAND:
+				pOut->PrintMessage("Action: COMMAND , Click anywhere");
+				break;
+
 			case STATUS:
 				pOut->PrintMessage("Action: STATUS , Click anywhere");
 				break;

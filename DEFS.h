@@ -41,6 +41,7 @@ enum ActionType // The actions supported (add more as needed)
 
 	EMPTY,							// Empty Area in ToolBar (NOT inside any action icon)
 	GRID_AREA,						// Inside Grid Area
+	COMMAND,						// Inside Command Bar Area
 	STATUS 							// Inside StatusBar Area
 };
 

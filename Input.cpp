@@ -141,9 +141,14 @@ ActionType Input::GetUserAction() const
 		}
 
 		// [2] User clicks on the grid area
-		if ( (y >= UI.ToolBarHeight) && (y < UI.height - UI.StatusBarHeight))
+		if ( (y >= UI.ToolBarHeight) && (y < UI.height - UI.StatusBarHeight - UI.CommandsBarHeight))
 		{
 			return GRID_AREA;	
+		}
+
+		if ((y >= UI.height - UI.StatusBarHeight - UI.CommandsBarHeight) && (y < UI.height - UI.StatusBarHeight))
+		{
+			return COMMAND;
 		}
 
 		// [3] User clicks on the status bar
@@ -172,12 +177,18 @@ ActionType Input::GetUserAction() const
 			default: return EMPTY;	// A click on empty place in toolbar
 			}
 		}
-		//This chech helps to capture whether the user was interacting with the game board or not
-		if ((y >= UI.ToolBarHeight) && (UI.height - UI.StatusBarHeight)) {
+		if ((y >= UI.ToolBarHeight) && (y < UI.height - UI.StatusBarHeight - UI.CommandsBarHeight))
+		{
 			return GRID_AREA;
 		}
 
-		return STATUS;// this indicates that the user's click wasn't in the toolbar nor the Grid Area
+		if ((y >= UI.height - UI.StatusBarHeight - UI.CommandsBarHeight) && (y < UI.height - UI.StatusBarHeight))
+		{
+			return COMMAND;
+		}
+
+		// [3] User clicks on the status bar
+		return STATUS;
 
 	}
 
@@ -194,7 +205,7 @@ CellPosition Input::GetCellClicked() const
 
 	if ( UI.InterfaceMode == MODE_DESIGN )	
 	{
-		if ( y >= UI.ToolBarHeight && y <= (UI.height - UI.StatusBarHeight))
+		if ( y >= UI.ToolBarHeight && y <= (UI.height - UI.StatusBarHeight - UI.CommandsBarHeight))
 		{
 			///TODO: SetHCell and SetVCell of the object cellPost appropriately
 			//       using the coordinates x, y and the appropriate variables of the UI_Info Object (UI)
@@ -236,7 +247,7 @@ int Input::GetSelectedCommandIndex() const
 		if (x < (UI.width/2) + UI.AvailableCommandsTextWidth || x > (UI.width / 2) + UI.AvailableCommandsTextWidth + (UI.CommandItemWidth / 2) * MaxAvailableCommands)
 			return -1;
 
-		return 1 + (x - ((UI.width / 2) + UI.AvailableCommandsTextWidth + (2*UI.AvailableCommandsXOffset))) / (UI.CommandItemWidth / 2);
+		return (x - ((UI.width / 2) + UI.AvailableCommandsTextWidth + (2*UI.AvailableCommandsXOffset))) / (UI.CommandItemWidth / 2);
 	}
 
 	return -1;
