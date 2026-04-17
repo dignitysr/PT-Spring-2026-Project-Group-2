@@ -123,6 +123,7 @@ CellPosition CellPosition::GetCellPositionFromNum(int cellNum)
 		position.SetVCell(v);
 		position.SetHCell(h);
 	}
+	else return CellPosition(-1, -1); // return an invalid cell position if the passed cellNum is not valid
 
 	/// TODO: Implement this function as described in the .h file
 
@@ -136,26 +137,20 @@ CellPosition CellPosition::GetCellPositionFromNum(int cellNum)
 void CellPosition::AddCellNum(int addedNum, Direction direction)
 	{
 
-		int currentNum = GetCellNumFromPosition(*this);
-		int newNum = currentNum;
-
 		switch (direction)
 		{
 		case UP:
-			newNum += (addedNum * NumHorizontalCells);
+			SetVCell(vCell - addedNum);
 			break;
 		case DOWN:
-			newNum -= (addedNum * NumHorizontalCells);
+			SetVCell(vCell + addedNum);
 			break;
 		case RIGHT:
-			newNum += addedNum;
+			SetHCell(hCell + addedNum);
 			break;
 		case LEFT:
-			newNum -= addedNum;
+			SetHCell(hCell - addedNum);
 			break;
 		}
-		if (newNum >= 1 && newNum <= (NumVerticalCells * NumHorizontalCells))
-		{
-			*this=GetCellPositionFromNum(newNum);
-		}
+
 	}

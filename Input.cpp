@@ -32,7 +32,7 @@ string Input::GetString(Output *pO) const
 		pWind->WaitKeyPress(Key);
 		if(Key == 27 )	// ESCAPE key is pressed
 			return "";	// returns nothing as user has cancelled label
-		if(Key == 13 )	// ENTER key is pressed
+		if(Key == 13 && Label != "")	// ENTER key is pressed
 			return Label;
 		if((Key == 8) && (Label.size() >= 1))	// BackSpace is pressed
 			Label.resize(Label.size() -1 );			
@@ -53,8 +53,6 @@ int Input::GetInteger(Output *pO) const
 	
 	//start of additions//
 	//Clearing the status bar and preparing for input
-	if (pO)
-		pO->PrintMessage("Please enter an integer: ");
 
 	//Call GetString() to handle the actual keyboard typing and backspacing
 	string Label = GetString(pO);
