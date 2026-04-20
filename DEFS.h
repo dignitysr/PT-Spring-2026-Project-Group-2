@@ -75,6 +75,8 @@ enum Command
 	COMMANDS_COUNT,
 };
 
+const int MaxSavedCommands = 5;
+
 enum CommandType
 {
 	AVAILABLE,

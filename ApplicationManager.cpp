@@ -76,11 +76,11 @@ void ApplicationManager::ExecuteAction(ActionType ActType)
 		pAct = new AddBeltAction(this);
 		break;
 
-	case ADD_ROTATINGGEAR:
+	case ADD_ROTATING_GEAR_CLOCKWISE:
 		pAct = new AddRotatingGearAction(this);
 		break;
 
-	case ADD_FLAG:
+	case SET_FLAG_CELL:
 		pAct = new AddFlagAction(this);
 		break;
 
