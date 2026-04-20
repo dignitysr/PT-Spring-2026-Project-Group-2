@@ -130,6 +130,26 @@
       <Filter>GUIClasses</Filter>
     </ClCompile>
     <ClCompile Include="TestCode.cpp" />
+    <ClCompile Include="Action.cpp" />
+    <ClCompile Include="AddBeltAction.cpp" />
+    <ClCompile Include="AddFlagAction.cpp" />
+    <ClCompile Include="AddRotatingGearAction.cpp" />
+    <ClCompile Include="Antenna.cpp" />
+    <ClCompile Include="ApplicationManager.cpp" />
+    <ClCompile Include="Belt.cpp" />
+    <ClCompile Include="Cell.cpp" />
+    <ClCompile Include="DangerZone.cpp" />
+    <ClCompile Include="Flag.cpp" />
+    <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="GameState.cpp" />
+    <ClCompile Include="Grid.cpp" />
+    <ClCompile Include="Player.cpp" />
+    <ClCompile Include="RotatingGear.cpp" />
+    <ClCompile Include="SwitchToDesignModeAction.cpp" />
+    <ClCompile Include="SwitchToPlayModeAction.cpp" />
+    <ClCompile Include="WaterPit.cpp" />
+    <ClCompile Include="Workshop.cpp" />
+    <ClCompile Include="Main.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CMUgraphicsLib\auxil.h">
@@ -205,5 +225,24 @@
     <ClInclude Include="CellPosition.h">
       <Filter>GUIClasses</Filter>
     </ClInclude>
+    <ClInclude Include="Action.h" />
+    <ClInclude Include="AddBeltAction.h" />
+    <ClInclude Include="AddFlagAction.h" />
+    <ClInclude Include="AddRotatingGearAction.h" />
+    <ClInclude Include="Antenna.h" />
+    <ClInclude Include="ApplicationManager.h" />
+    <ClInclude Include="Belt.h" />
+    <ClInclude Include="Cell.h" />
+    <ClInclude Include="DangerZone.h" />
+    <ClInclude Include="Flag.h" />
+    <ClInclude Include="GameObject.h" />
+    <ClInclude Include="GameState.h" />
+    <ClInclude Include="Grid.h" />
+    <ClInclude Include="Player.h" />
+    <ClInclude Include="RotatingGear.h" />
+    <ClInclude Include="SwitchToDesignModeAction.h" />
+    <ClInclude Include="SwitchToPlayModeAction.h" />
+    <ClInclude Include="WaterPit.h" />
+    <ClInclude Include="Workshop.h" />
   </ItemGroup>
 </Project>

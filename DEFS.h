@@ -53,6 +53,13 @@ enum Direction // Directions of the game
 	LEFT
 };
 
+enum PhaseType
+{
+	PHASE_MOVEMENT,  // players execute their saved commands
+
+	///TODO: Add more phases here as needed
+};
+
 enum Command
 {
 	NO_COMMAND,
