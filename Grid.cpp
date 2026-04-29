@@ -35,14 +35,14 @@ bool Grid::AddObjectToCell(GameObject* pNewObject)
 	return false;
 }
 
-void Grid::RemoveObjectFromCell(const CellPosition& pos)
+GameObject* Grid::RemoveObjectFromCell(const CellPosition& pos)
 {
 	if (pos.IsValidCell())
 	{
 		// Note: deallocate the object here before NULLing if ownership requires it
-		GameObject* cellObg = CellList[pos.VCell()][pos.HCell()]->GetGameObject();
-		if (cellObg) {
-			delete cellObg;
+		GameObject* cellObj = CellList[pos.VCell()][pos.HCell()]->GetGameObject();
+		if (cellObj) {
+			return cellObj;
 			CellList[pos.VCell()][pos.HCell()]->SetGameObject(NULL);
 		} else CellList[pos.VCell()][pos.HCell()]->SetGameObject(NULL);
 	}
@@ -99,20 +99,20 @@ Cell* Grid::GetCell(const CellPosition& pos) const
 
 void Grid::UpdateInterface(const GameState* pState) const
 {
-	if (UI.InterfaceMode == MODE_DESIGN)
-	{
-		// 1- Draw every cell (background colour, water pits, danger zones)
-		for (int i = NumVerticalCells - 1; i >= 0; i--)
-			for (int j = 0; j < NumHorizontalCells; j++)
-				CellList[i][j]->DrawCellOrWaterPitOrDangerZone(pOut);
+	// 1- Draw every cell (background colour, water pits, danger zones)
+	for (int i = NumVerticalCells - 1; i >= 0; i--)
+		for (int j = 0; j < NumHorizontalCells; j++)
+			CellList[i][j]->DrawCellOrWaterPitOrDangerZone(pOut);
 
-		// 2- Draw other game objects on top (belts, flags, gears, etc.)
-		for (int i = NumVerticalCells - 1; i >= 0; i--)
-			for (int j = 0; j < NumHorizontalCells; j++)
-				CellList[i][j]->DrawGameObject(pOut);
+	// 2- Draw other game objects on top (belts, flags, gears, etc.)
+	for (int i = NumVerticalCells - 1; i >= 0; i--)
+		for (int j = 0; j < NumHorizontalCells; j++)
+			CellList[i][j]->DrawGameObject(pOut);
 
-		// 3- Draw all player tokens (delegated to GameState -- Grid does not own players)
-		pState->DrawAllPlayers(pOut);
+	// 3- Draw all player tokens (delegated to GameState -- Grid does not own players)
+	pState->DrawAllPlayers(pOut);
+	if (UI.InterfaceMode == MODE_DESIGN) {
+		//idk
 	}
 	else // Play mode
 	{
@@ -143,6 +143,8 @@ Grid::~Grid()
 	for (int i = NumVerticalCells - 1; i >= 0; i--)
 		for (int j = 0; j < NumHorizontalCells; j++)
 			delete CellList[i][j];
+
+	if (Clipboard) delete Clipboard;
 
 	// Players are owned by GameState -- do NOT delete them here.
 }

@@ -91,6 +91,6 @@ void Cell::DrawCellOrWaterPitOrDangerZone(Output* pOut) const
 void Cell::DrawGameObject(Output* pOut) const
 {
 	//TODO: edit this incomplete implemntation to check for other game objects (excluding waterpits and dangerzones)
-	if (pGameObject && !(HasDangerZone() || HasBelt())) pGameObject->Draw(pOut);
+	if (pGameObject && !(HasDangerZone() || HasWaterPit())) pGameObject->Draw(pOut);
 
 }

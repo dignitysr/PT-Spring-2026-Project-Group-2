@@ -22,7 +22,7 @@ void Player::SetHealth(int h)
 {
 	///TODO: Add validation (e.g. clamp to 0..MaxHealth)
 	// done by abd el rahman
-	health = h >= 0 && h <= MaxHealth ? h : health;
+	health = max(0, min(h, MaxHealth));
 }
 int Player::GetHealth() const       { return health; }
 
@@ -69,30 +69,32 @@ void Player::ClearDrawing(Output* pOut) const
 	//       (hint: may differ from UI.CellColor if cell is a WaterPit or DangerZone)
 	// changed to determining correct cell type
 	pCell->DrawCellOrWaterPitOrDangerZone(pOut);
+	pCell->DrawGameObject(pOut);
 	///TODO: Call the appropriate Output function to draw the token using cellColor (erases it)
 }
 
 // ====== Game Logic ======
 
 void Player::ExecuteCommand(Command cmd, Grid* pGrid, GameState* pState) {
+	CellPosition newPos = pCell->GetCellPosition();
 	switch (cmd) {
 		case MOVE_FORWARD_ONE_STEP:
-			(pCell->GetCellPosition()).AddCellNum(1, currDirection);
+			newPos.AddCellNum(1, currDirection);
 			break;
 		case MOVE_FORWARD_TWO_STEPS:
-			(pCell->GetCellPosition()).AddCellNum(2, currDirection);
+			newPos.AddCellNum(2, currDirection);
 			break;
 		case MOVE_FORWARD_THREE_STEPS:
-			(pCell->GetCellPosition()).AddCellNum(3, currDirection);
+			newPos.AddCellNum(3, currDirection);
 			break;
 		case MOVE_BACKWARD_ONE_STEP:
-			(pCell->GetCellPosition()).AddCellNum(-1, currDirection);
+			newPos.AddCellNum(-1, currDirection);
 			break;
 		case MOVE_BACKWARD_TWO_STEPS:
-			(pCell->GetCellPosition()).AddCellNum(-2, currDirection);
+			newPos.AddCellNum(-2, currDirection);
 			break;
 		case MOVE_BACKWARD_THREE_STEPS:
-			(pCell->GetCellPosition()).AddCellNum(-3, currDirection);
+			newPos.AddCellNum(-3, currDirection);
 			break;
 		case ROTATE_CLOCKWISE:
 			currDirection = static_cast<Direction>((currDirection + 1) % 4);
@@ -101,7 +103,8 @@ void Player::ExecuteCommand(Command cmd, Grid* pGrid, GameState* pState) {
 			currDirection = static_cast<Direction>((currDirection + 3) % 4);
 			break;
 	}
-	pGrid->UpdatePlayerCell(this, pCell->GetCellPosition());
+	if (newPos.IsValidCell())	pGrid->UpdatePlayerCell(this, newPos);
+	else pGrid->PrintErrorMessage("Invalid move: out of bounds");
 }
 
 void Player::Move(Grid* pGrid, GameState* pState)
@@ -126,6 +129,13 @@ void Player::AppendPlayerInfo(string& playersInfo) const
 {
 	// TODO: Modify the Info as needed
 	playersInfo += "P" + to_string(playerNum) + "(";
-	playersInfo += to_string(currDirection) + ", ";
+	string dirStr = "";
+	switch (currDirection) {
+		case UP: dirStr = "UP"; break;
+		case DOWN: dirStr = "DOWN"; break;
+		case RIGHT: dirStr = "RIGHT"; break;
+		case LEFT: dirStr = "LEFT"; break;
+	}
+	playersInfo += dirStr + ", ";
 	playersInfo += to_string(health) + ")";
 }

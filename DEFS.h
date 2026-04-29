@@ -55,6 +55,7 @@ enum Direction // Directions of the game
 enum PhaseType
 {
 	PHASE_MOVEMENT,  // players execute their saved commands
+	PHASE_SHOOTING,
 
 	///TODO: Add more phases here as needed
 };
