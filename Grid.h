@@ -68,6 +68,7 @@ public:
 	Cell* GetStartCell() const;
 
 	///TODO: Add any additional board-query getters here (e.g. GetCell(CellPosition))
+	Cell* GetCell(const CellPosition& pos) const; // Returns the Cell pointer of the passed "position" if valid, otherwise returns NULL
 
 	// ========== User Interface ==========
 

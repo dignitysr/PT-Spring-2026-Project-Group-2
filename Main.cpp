@@ -3,7 +3,7 @@
 
 // This Main Function Must NOT be Changed
 
-int t()
+int main()
 {
 	ActionType ActType;
 

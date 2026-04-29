@@ -3,7 +3,7 @@
 #include <iostream>
 //This is a test code to test the Input and Output classes
 
-int main()
+int testcode()
 {
 	int x,y;
 
