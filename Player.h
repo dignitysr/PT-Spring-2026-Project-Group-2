@@ -3,6 +3,8 @@
 #include "Grid.h"
 #include "Cell.h"
 
+#define MaxHealth 10
+
 // Forward declaration: GameState is needed for Move() but we don't include it
 // here to avoid a circular dependency (GameState.h includes Player.h).
 class GameState;
@@ -23,8 +25,8 @@ class Player
 
 	// ---- [OPTIONAL BONUS] Shooting Phase data members ----
 	// Uncomment when adding the shooting phase (see DEFS.h PhaseType):
-	//   int laserDamage; // damage per shot (default = 1; double-laser consumable = 2)
-	//   bool isHacked;   // true = this player skips their turn this round
+	int laserDamage; // damage per shot (default = 1; double-laser consumable = 2)
+	bool isHacked;   // true = this player skips their turn this round
 
 	// ---- [OPTIONAL BONUS] Workshop Consumables data members ----
 	// Uncomment when adding consumables (see Workshop.h):
@@ -62,6 +64,7 @@ public:
 
 	// ====== Game Logic ======
 
+	void ExecuteCommand(Command cmd, Grid* pGrid, GameState* pState); // Helper function for Move()
 	void Move(Grid* pGrid, GameState* pState);
 
 	void AppendPlayerInfo(string& playersInfo) const; // Appends "P0(direction, health)" to the string

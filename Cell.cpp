@@ -3,6 +3,7 @@
 #include "Grid.h"
 #include "GameObject.h"
 #include "Belt.h"
+#include "Flag.h"
 #include "WaterPit.h"
 #include "Player.h"
 #include "DangerZone.h"
@@ -53,7 +54,7 @@ Flag * Cell::HasFlag() const
 
 	///TODO: Implement the following function like HasBelt() function
 
-	return false; // THIS LINE SHOULD CHANGED WITH YOUR IMPLEMENTATION
+	return dynamic_cast<Flag*>(pGameObject); // THIS LINE SHOULD CHANGED WITH YOUR IMPLEMENTATION
 
 }
 WaterPit * Cell::HasWaterPit() const
@@ -61,7 +62,7 @@ WaterPit * Cell::HasWaterPit() const
 
 	///TODO: Implement the following function like HasBelt() function
 
-	return false; // THIS LINE SHOULD CHANGED WITH YOUR IMPLEMENTATION
+	return dynamic_cast<WaterPit*>(pGameObject); // THIS LINE SHOULD CHANGED WITH YOUR IMPLEMENTATION
 
 }
 
@@ -69,7 +70,7 @@ DangerZone * Cell::HasDangerZone() const
 {
 	///TODO: Implement the following function like HasBelt() function
 
-	return false; // THIS LINE SHOULD CHANGED WITH YOUR IMPLEMENTATION
+	return dynamic_cast<DangerZone*>(pGameObject); // THIS LINE SHOULD CHANGED WITH YOUR IMPLEMENTATION
 }
 
 
@@ -81,7 +82,7 @@ void Cell::DrawCellOrWaterPitOrDangerZone(Output* pOut) const
 	if (HasDangerZone()||HasWaterPit()) // means if not NULL
 		pGameObject->Draw(pOut); // draw the dangerzone or waterpit  then
 	else
-		pOut->DrawCell(position,UI.CellColor); // draw empty cell 
+		pOut->DrawCell(position,UI.CellColor); // draw empty cell
 }
 
 // separate from the above function 
@@ -90,7 +91,6 @@ void Cell::DrawCellOrWaterPitOrDangerZone(Output* pOut) const
 void Cell::DrawGameObject(Output* pOut) const
 {
 	//TODO: edit this incomplete implemntation to check for other game objects (excluding waterpits and dangerzones)
-	if (HasFlag()|| HasBelt())
-		pGameObject->Draw(pOut); // draw game object
+	if (pGameObject && !(HasDangerZone() || HasBelt())) pGameObject->Draw(pOut);
 
 }

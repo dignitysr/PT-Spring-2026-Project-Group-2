@@ -203,6 +203,9 @@
     <ClCompile Include="Player.cpp">
       <Filter>Util</Filter>
     </ClCompile>
+    <ClCompile Include="CopyObjectAction.cpp">
+      <Filter>ActionImps</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CMUgraphicsLib\auxil.h">

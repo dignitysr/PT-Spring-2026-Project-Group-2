@@ -34,13 +34,13 @@ GameState::~GameState()
 Player* GameState::GetCurrentPlayer() const
 {
 	///TODO: Return the player whose turn it is
-	return PlayerList[0]; // wrong -- update this
+	return PlayerList[currPlayerNumber]; // wrong -- update this
 }
 
 Player* GameState::GetPlayer(int playerNum) const
 {
 	///TODO: Return the player with the given player number
-	return PlayerList[0]; // wrong -- update this
+	return PlayerList[playerNum]; // wrong -- update this
 }
 
 // ========== Turn Management ==========
@@ -91,7 +91,8 @@ void GameState::SetEndGame(bool end)
 
 void GameState::DrawAllPlayers(Output* pOut) const
 {
-	///TODO: Draw all players
+	for (int i = 0; i < MaxPlayerCount; i++)
+		PlayerList[i]->Draw(pOut);
 }
 
 void GameState::AppendPlayersInfo(string& info) const

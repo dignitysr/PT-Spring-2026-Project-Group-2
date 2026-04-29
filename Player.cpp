@@ -21,7 +21,8 @@ Cell* Player::GetCell() const       { return pCell; }
 void Player::SetHealth(int h)
 {
 	///TODO: Add validation (e.g. clamp to 0..MaxHealth)
-	health = h;
+	// done by abd el rahman
+	health = h >= 0 && h <= MaxHealth ? h : health;
 }
 int Player::GetHealth() const       { return health; }
 
@@ -58,25 +59,67 @@ void Player::Draw(Output* pOut) const
 	color playerColor = UI.PlayerColors[playerNum];
 
 	///TODO: Call the appropriate Output function to draw the player token with playerColor
+	// done by abd el rahman
+	pOut->DrawPlayer(pCell->GetCellPosition(), playerNum, playerColor, currDirection);
 }
 
 void Player::ClearDrawing(Output* pOut) const
 {
 	///TODO: Determine the correct background colour for this cell
 	//       (hint: may differ from UI.CellColor if cell is a WaterPit or DangerZone)
-	color cellColor = UI.CellColor;
-
+	// changed to determining correct cell type
+	pCell->DrawCellOrWaterPitOrDangerZone(pOut);
 	///TODO: Call the appropriate Output function to draw the token using cellColor (erases it)
 }
 
 // ====== Game Logic ======
 
+void Player::ExecuteCommand(Command cmd, Grid* pGrid, GameState* pState) {
+	switch (cmd) {
+		case MOVE_FORWARD_ONE_STEP:
+			(pCell->GetCellPosition()).AddCellNum(1, currDirection);
+			break;
+		case MOVE_FORWARD_TWO_STEPS:
+			(pCell->GetCellPosition()).AddCellNum(2, currDirection);
+			break;
+		case MOVE_FORWARD_THREE_STEPS:
+			(pCell->GetCellPosition()).AddCellNum(3, currDirection);
+			break;
+		case MOVE_BACKWARD_ONE_STEP:
+			(pCell->GetCellPosition()).AddCellNum(-1, currDirection);
+			break;
+		case MOVE_BACKWARD_TWO_STEPS:
+			(pCell->GetCellPosition()).AddCellNum(-2, currDirection);
+			break;
+		case MOVE_BACKWARD_THREE_STEPS:
+			(pCell->GetCellPosition()).AddCellNum(-3, currDirection);
+			break;
+		case ROTATE_CLOCKWISE:
+			currDirection = static_cast<Direction>((currDirection + 1) % 4);
+			break;
+		case ROTATE_COUNTERCLOCKWISE:
+			currDirection = static_cast<Direction>((currDirection + 3) % 4);
+			break;
+	}
+	pGrid->UpdatePlayerCell(this, pCell->GetCellPosition());
+}
+
 void Player::Move(Grid* pGrid, GameState* pState)
 {
+
+	int x, y;
 	///TODO: Implement this function
 	// - Execute the saved commands one by one, waiting for a mouse click between each
 	// - After all commands are executed, apply the game object effect at the final cell (if any)
 	// - Use CellPosition and Grid to handle movement and cell updates
+	for (int i = 0; i < savedCommandCount; i++)
+	{
+		Command cmd = savedCommands[i];
+		ExecuteCommand(cmd, pGrid, pState);
+		pGrid->GetInput()->GetPointClicked(x, y); // wait for input
+	}
+	GameObject* obj = pCell->GetGameObject();
+	if (obj) obj->Apply(pGrid, pState, this);
 }
 
 void Player::AppendPlayerInfo(string& playersInfo) const
