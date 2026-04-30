@@ -26,6 +26,8 @@ void SwitchToDesignModeAction::Execute()
 	pManager->UpdateInterface();
 
 	///TODO: Add any cleanup needed when leaving Play Mode.
+	pManager->ClearActiveGameObjects();
+	pState->ResetPlayerStates();
 }
 
 SwitchToDesignModeAction::~SwitchToDesignModeAction()

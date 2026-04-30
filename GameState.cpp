@@ -53,6 +53,7 @@ void GameState::AdvanceCurrentPlayer()
 void GameState::SetFirstPlayer(int playerNum)
 {
 	///TODO: Implement this function to set which player goes first this round
+	currPlayerNumber = playerNum;
 }
 
 // ========== Phase Management ==========

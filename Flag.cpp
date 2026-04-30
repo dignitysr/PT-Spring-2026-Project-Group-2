@@ -19,6 +19,9 @@ void Flag::Apply(Grid* pGrid, GameState* pState, Player* pPlayer)
 
 	// 2- Apply the flag's effect by ending the game
 	//    Review the "pGrid" functions and decide which function can be used for that
+		pOut->PrintMessage("You have reached a flag. Click to continue ...");
+		pIn->GetCellClicked();
+		pState->EndGame();
 }
 
 Flag::~Flag()

@@ -24,8 +24,43 @@ void AddBeltAction::ReadActionParameters()
 
 
 	///TODO: Make the needed validations on the read parameters
+	if (!startPos.IsValidCell() || !endpos.IsValidCell()) {
+		pOut->PrintMessage("invalid cell selection try again...");
+		return;
+	
+	}
+	if (startPos == 1) {
+		pOut->PrintMessage("Can't start the belt at cell 1.");
+		return;
+	}
+	if (startPos == endPos) {
 
+		pOut->PrintMessage("Start and end positions cannot be the same.");
 
+		return;
+
+	}
+	if (pGrid->GetCellObject(startPos) != nullptr || pGrid->GetCellObject(endPos) != nullptr) {
+
+		pOut->PrintMessage("Cannot place the belt on occupied cells.");
+
+		return;
+
+	}
+	if (startPos.GetVCell() != endPos.GetVCell() && startPos.GetHCell() != endPos.GetHCell()) {
+
+		pOut->PrintMessage("Start and End positions must be in the same row or column.");
+
+		return;
+
+	}
+	if (pGrid->GetCellObject(endPos)->IsFlag()) {
+
+		pOut->PrintMessage("Cannot place the belt at the flag.");
+
+		return;
+
+	}
 
 	// Clear messages
 	pOut->ClearStatusBar();
