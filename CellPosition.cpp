@@ -84,11 +84,7 @@ bool CellPosition::IsValidCell() const
      // this line sould be changed with your implementation
 }
 
-bool CellPosition::operator==(int cellNum) {
-	return GetCellNum() == cellNum;
-}
-
-bool CellPosition::operator==(CellPosition& other) {
+bool CellPosition::operator==(const CellPosition& other) {
 	return GetCellNum() == other.GetCellNum();
 }
 

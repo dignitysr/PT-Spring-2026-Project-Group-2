@@ -27,9 +27,7 @@ public:
 
 	// In the Grid above, C13 has vCell = 3 and hCell = 1
 
-	bool operator==(int cellNum);
-
-	bool operator==(CellPosition& other);
+	bool operator==(const CellPosition& other); //const to avoid r value error
 	
 
 	///TODO: IMPLEMENT THE FOLLOWING FUNCTION

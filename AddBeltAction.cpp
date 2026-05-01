@@ -29,7 +29,7 @@ void AddBeltAction::ReadActionParameters()
 		return;
 	
 	}
-	if (startPos == 1) {
+	if (startPos == static_cast<CellPosition>(1)) {
 		pOut->PrintMessage("Can't start the belt at cell 1.");
 		return;
 	}
