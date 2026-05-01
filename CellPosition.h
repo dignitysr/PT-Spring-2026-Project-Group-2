@@ -26,6 +26,10 @@ public:
 	//   4             C1   C2   ...  C11
 
 	// In the Grid above, C13 has vCell = 3 and hCell = 1
+
+	bool operator==(int cellNum);
+
+	bool operator==(CellPosition& other);
 	
 
 	///TODO: IMPLEMENT THE FOLLOWING FUNCTION
