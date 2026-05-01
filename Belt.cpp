@@ -25,11 +25,6 @@ void Belt::Apply(Grid* pGrid, GameState* pState, Player* pPlayer)
 
 	// 2- Apply the belt's effect by moving the player to the endCellPos
 	//    Review the "pGrid" functions and decide which function can be used for that
-	
-		pOut->PrintMessage("You have reached a belt. Click to continue ...");
-		pIn->GetCellClicked();
-		pPlayer->SetPosition(endCellPos);
-		pState->NextTurn();
 }
 CellPosition Belt::GetEndPosition() const
 {

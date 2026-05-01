@@ -21,10 +21,6 @@ void RotatingGear::Apply(Grid* pGrid, GameState* pState, Player* pPlayer)
 
 	// 1- Print a message and change the message according to direction of rotation "You have reached a rotating gear, you will rotate (clockwise/ anti-clockwise) Click to continue ..." and wait mouse click
 	//2- Apply the roating gear's effect by rotating the player according to the direction
-	pOut->PrintMessage("You are rotating! Click to continue ...");
-	pIn->GetCellClicked();
-	pPlayer->RotatePlayer(isClockWise);
-	pState->UpdatePlayerInfo(pPlayer);
 
 }
 bool RotatingGear::GetisClockWise() const
