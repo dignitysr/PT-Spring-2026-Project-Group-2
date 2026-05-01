@@ -1,4 +1,6 @@
 #include "Flag.h"
+#include "GameState.h"
+
 Flag::Flag(const CellPosition & flagposition) : GameObject(flagposition)
 {
 
@@ -11,6 +13,10 @@ void Flag::Draw(Output* pOut) const
 
 void Flag::Apply(Grid* pGrid, GameState* pState, Player* pPlayer)
 {
+
+	pGrid->GetOutput()->PrintMessage("You have reached a flag. Click to continue ... ");
+	pGrid->GetInput()->GetUserAction();
+	pState->SetEndGame(true);
 
 	///TODO: Implement this function as mentioned in the guideline steps (numbered below) below
 	// == Here are some guideline steps (numbered below) to implement this function ==

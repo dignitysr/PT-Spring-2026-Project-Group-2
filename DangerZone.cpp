@@ -1,5 +1,5 @@
 #include "DangerZone.h"
-
+#include "Player.h"
 
 
 DangerZone::DangerZone(const CellPosition & dangerZonePosition): GameObject(dangerZonePosition)
@@ -13,6 +13,16 @@ void DangerZone::Draw(Output * pOut) const
 
 void DangerZone::Apply(Grid* pGrid, GameState* pState, Player* pPlayer)
 {
+	pGrid->GetOutput()->PrintMessage("You have reached a danger zone. Click to continue ... ");
+	pGrid->GetInput()->GetUserAction();
+	int newhealth = pPlayer->GetHealth()-1;
+	if (newhealth >= 0)
+	{
+		pPlayer->SetHealth(newhealth);
+	}
+	pGrid->UpdateInterface(pState);
+
+
 	///TODO: Implement this function as mentioned in the guideline steps (numbered below) below
 
 
