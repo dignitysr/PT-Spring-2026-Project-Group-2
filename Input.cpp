@@ -30,10 +30,14 @@ string Input::GetString(Output *pO) const
 	while(1)
 	{
 		pWind->WaitKeyPress(Key);
-		if(Key == 27 )	// ESCAPE key is pressed
-			return "";	// returns nothing as user has cancelled label
-		if(Key == 13 )	// ENTER key is pressed
+		if(Key == 27 )		// ESCAPE key is pressed
+			return "";		// returns nothing as user has cancelled label
+		if (Key == 13) {	// ENTER key is pressed
+			if (Label == "") {
+				return "0";      
+			}
 			return Label;
+		}
 		if((Key == 8) && (Label.size() >= 1))	// BackSpace is pressed
 			Label.resize(Label.size() -1 );			
 		else
@@ -53,8 +57,6 @@ int Input::GetInteger(Output *pO) const
 	
 	//start of additions//
 	//Clearing the status bar and preparing for input
-	if (pO)
-		pO->PrintMessage("Please enter an integer: ");
 
 	//Call GetString() to handle the actual keyboard typing and backspacing
 	string Label = GetString(pO);
@@ -67,7 +69,13 @@ int Input::GetInteger(Output *pO) const
 
 	// Note: stoi(s) converts string s into its equivalent integer (for example, "55" is converted to 55)
 
-	return stoi(Label); //converting the final string to an integer & returning it
+	try {
+		return stoi(Label);
+	}
+	catch (...) {
+		pO->PrintMessage("Invalid input! Please enter an integer: ");
+		return GetInteger(pO); // recursively call GetInteger until a valid integer is entered
+	}
 }
 
 //======================================================================================//
@@ -106,8 +114,7 @@ ActionType Input::GetUserAction() const
 			case ITM_ADD_WATER_PIT: return ADD_WATER_PIT;
 			case ITM_ADD_DANGER_ZONE: return ADD_DANGER_ZONE;
 			case ITM_ADD_WORKSHOP:  return ADD_WORKSHOP;
-			case ITM_ADD_ROTATING_GEAR_CLOCKWISE: return ADD_ROTATING_GEAR_CLOCKWISE;
-			case ITM_ADD_ROTATING_GEAR_ANTICLOCKWISE: return ADD_ROTATING_GEAR_ANTICLOCKWISE;
+			case ITM_ADD_ROTATING_GEAR: return ADD_ROTATING_GEAR;
 			case ITM_COPY: return COPY_OBJECT;
 			case ITM_CUT: return CUT_OBJECT;
 			case ITM_PASTE: return PASTE_OBJECT;

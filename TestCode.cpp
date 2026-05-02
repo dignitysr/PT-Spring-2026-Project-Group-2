@@ -1,9 +1,9 @@
 #include "Input.h"
 #include "Output.h"
-
+#include <iostream>
 //This is a test code to test the Input and Output classes
 
-int main()
+int testcode()
 {
 	int x,y;
 
@@ -386,8 +386,8 @@ int main()
 	{
 		pOut->PrintMessage("Please enter an integer to set the vCell: ");
 		int vCellInput = pIn->GetInteger(pOut);
-		cellpos_1.SetVCell(vCellInput);
-		pOut->PrintMessage("Now the vCell = " + to_string(cellpos_1.VCell()));
+		if (cellpos_1.SetVCell(vCellInput)) pOut->PrintMessage("Now the vCell = " + to_string(cellpos_1.VCell()));
+		else pOut->PrintMessage("Invalid vCell value, vCell is still = " + to_string(cellpos_1.VCell()));
 		pOut->FlushMouseQueue();
 		pIn->GetPointClicked(x, y);	//Wait for any click
 	}
@@ -396,8 +396,8 @@ int main()
 	{
 		pOut->PrintMessage("Please enter an integer to set the hCell: ");
 		int hCellInput = pIn->GetInteger(pOut);
-		cellpos_1.SetHCell(hCellInput);
-		pOut->PrintMessage("Now the hCell = " + to_string(cellpos_1.HCell()));
+		if (cellpos_1.SetHCell(hCellInput)) pOut->PrintMessage("Now the hCell = " + to_string(cellpos_1.HCell()));
+		else pOut->PrintMessage("Invalid hCell value, hCell is still = " + to_string(cellpos_1.HCell()));
 		pOut->FlushMouseQueue();
 		pIn->GetPointClicked(x, y);	//Wait for any click
 	}

@@ -18,8 +18,7 @@ enum ActionType // The actions supported (add more as needed)
 	ADD_WATER_PIT,
 	ADD_DANGER_ZONE,
 	ADD_WORKSHOP,
-	ADD_ROTATING_GEAR_CLOCKWISE,
-	ADD_ROTATING_GEAR_ANTICLOCKWISE,
+	ADD_ROTATING_GEAR,
 	COPY_OBJECT,
 	CUT_OBJECT,
 	PASTE_OBJECT,
@@ -48,9 +47,17 @@ enum ActionType // The actions supported (add more as needed)
 enum Direction // Directions of the game
 {
 	UP,
-	DOWN,
 	RIGHT,
+	DOWN,
 	LEFT
+};
+
+enum PhaseType
+{
+	PHASE_MOVEMENT,  // players execute their saved commands
+	PHASE_SHOOTING,
+
+	///TODO: Add more phases here as needed
 };
 
 enum Command
@@ -67,6 +74,8 @@ enum Command
 
 	COMMANDS_COUNT,
 };
+
+const int MaxSavedCommands = 5;
 
 enum CommandType
 {

@@ -10,6 +10,21 @@
     <Filter Include="GUIClasses">
       <UniqueIdentifier>{03fd4e0d-92e0-4271-bb9b-d6e9f21ec35f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ActionImps">
+      <UniqueIdentifier>{d03a3039-1e71-4822-9192-6b489dbcbf52}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ActionHeaders">
+      <UniqueIdentifier>{164ebf78-bb43-4f23-a5bb-4517697f53cf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObjectImps">
+      <UniqueIdentifier>{f60fc5e3-9849-45b1-b07d-c6c121b7667b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameObjectHeaders">
+      <UniqueIdentifier>{f4522c2c-45e8-4e33-8115-5d548df33b04}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Util">
+      <UniqueIdentifier>{31bd5a7c-b1f1-4a24-868b-3ed452fbbdcb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CMUgraphicsLib\auxil.cpp">
@@ -130,6 +145,67 @@
       <Filter>GUIClasses</Filter>
     </ClCompile>
     <ClCompile Include="TestCode.cpp" />
+    <ClCompile Include="Main.cpp" />
+    <ClCompile Include="Action.cpp">
+      <Filter>ActionImps</Filter>
+    </ClCompile>
+    <ClCompile Include="AddBeltAction.cpp">
+      <Filter>ActionImps</Filter>
+    </ClCompile>
+    <ClCompile Include="AddFlagAction.cpp">
+      <Filter>ActionImps</Filter>
+    </ClCompile>
+    <ClCompile Include="AddRotatingGearAction.cpp">
+      <Filter>ActionImps</Filter>
+    </ClCompile>
+    <ClCompile Include="SwitchToDesignModeAction.cpp">
+      <Filter>ActionImps</Filter>
+    </ClCompile>
+    <ClCompile Include="SwitchToPlayModeAction.cpp">
+      <Filter>ActionImps</Filter>
+    </ClCompile>
+    <ClCompile Include="Antenna.cpp">
+      <Filter>GameObjectImps</Filter>
+    </ClCompile>
+    <ClCompile Include="Belt.cpp">
+      <Filter>GameObjectImps</Filter>
+    </ClCompile>
+    <ClCompile Include="DangerZone.cpp">
+      <Filter>GameObjectImps</Filter>
+    </ClCompile>
+    <ClCompile Include="Flag.cpp">
+      <Filter>GameObjectImps</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject.cpp">
+      <Filter>GameObjectImps</Filter>
+    </ClCompile>
+    <ClCompile Include="RotatingGear.cpp">
+      <Filter>GameObjectImps</Filter>
+    </ClCompile>
+    <ClCompile Include="WaterPit.cpp">
+      <Filter>GameObjectImps</Filter>
+    </ClCompile>
+    <ClCompile Include="Workshop.cpp">
+      <Filter>GameObjectImps</Filter>
+    </ClCompile>
+    <ClCompile Include="ApplicationManager.cpp">
+      <Filter>Util</Filter>
+    </ClCompile>
+    <ClCompile Include="Cell.cpp">
+      <Filter>Util</Filter>
+    </ClCompile>
+    <ClCompile Include="GameState.cpp">
+      <Filter>Util</Filter>
+    </ClCompile>
+    <ClCompile Include="Grid.cpp">
+      <Filter>Util</Filter>
+    </ClCompile>
+    <ClCompile Include="Player.cpp">
+      <Filter>Util</Filter>
+    </ClCompile>
+    <ClCompile Include="CopyObjectAction.cpp">
+      <Filter>ActionImps</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CMUgraphicsLib\auxil.h">
@@ -204,6 +280,66 @@
     </ClInclude>
     <ClInclude Include="CellPosition.h">
       <Filter>GUIClasses</Filter>
+    </ClInclude>
+    <ClInclude Include="Action.h">
+      <Filter>ActionHeaders</Filter>
+    </ClInclude>
+    <ClInclude Include="AddBeltAction.h">
+      <Filter>ActionHeaders</Filter>
+    </ClInclude>
+    <ClInclude Include="AddFlagAction.h">
+      <Filter>ActionHeaders</Filter>
+    </ClInclude>
+    <ClInclude Include="AddRotatingGearAction.h">
+      <Filter>ActionHeaders</Filter>
+    </ClInclude>
+    <ClInclude Include="SwitchToPlayModeAction.h">
+      <Filter>ActionHeaders</Filter>
+    </ClInclude>
+    <ClInclude Include="SwitchToDesignModeAction.h">
+      <Filter>ActionHeaders</Filter>
+    </ClInclude>
+    <ClInclude Include="Antenna.h">
+      <Filter>GameObjectHeaders</Filter>
+    </ClInclude>
+    <ClInclude Include="Belt.h">
+      <Filter>GameObjectHeaders</Filter>
+    </ClInclude>
+    <ClInclude Include="DangerZone.h">
+      <Filter>GameObjectHeaders</Filter>
+    </ClInclude>
+    <ClInclude Include="Flag.h">
+      <Filter>GameObjectHeaders</Filter>
+    </ClInclude>
+    <ClInclude Include="RotatingGear.h">
+      <Filter>GameObjectHeaders</Filter>
+    </ClInclude>
+    <ClInclude Include="Workshop.h">
+      <Filter>GameObjectHeaders</Filter>
+    </ClInclude>
+    <ClInclude Include="WaterPit.h">
+      <Filter>GameObjectHeaders</Filter>
+    </ClInclude>
+    <ClInclude Include="GameObject.h">
+      <Filter>GameObjectHeaders</Filter>
+    </ClInclude>
+    <ClInclude Include="ApplicationManager.h">
+      <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="Cell.h">
+      <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="GameState.h">
+      <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="Grid.h">
+      <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="Player.h">
+      <Filter>Util</Filter>
+    </ClInclude>
+    <ClInclude Include="CopyObjectAction.h">
+      <Filter>ActionHeaders</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

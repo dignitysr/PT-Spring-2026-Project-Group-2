@@ -304,8 +304,7 @@ void Output::CreateDesignModeToolBar() const
 	MenuItemImages[ITM_ADD_WORKSHOP] = "images\\WorkshopIcon.jpg";
 	MenuItemImages[ITM_ADD_WATER_PIT] = "images\\WaterPitIcon.jpg";
 	MenuItemImages[ITM_ADD_DANGER_ZONE] = "images\\DangerIcon.jpg";
-	MenuItemImages[ITM_ADD_ROTATING_GEAR_CLOCKWISE] = "images\\GearClockwiseIcon.jpg";
-	MenuItemImages[ITM_ADD_ROTATING_GEAR_ANTICLOCKWISE] = "images\\GearAnticlockwiseIcon.jpg";
+	MenuItemImages[ITM_ADD_ROTATING_GEAR] = "images\\GearClockwiseIcon.jpg";
 	MenuItemImages[ITM_COPY] = "images\\CopyIcon.jpg";
 	MenuItemImages[ITM_CUT] = "images\\CutIcon.jpg";
 	MenuItemImages[ITM_PASTE] = "images\\PasteIcon.jpg";
