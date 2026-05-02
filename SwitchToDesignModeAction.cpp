@@ -1,6 +1,8 @@
 #include "SwitchToDesignModeAction.h"
 #include "Grid.h"
 #include "Output.h"
+#include "GameState.h"
+
 
 SwitchToDesignModeAction::SwitchToDesignModeAction(ApplicationManager* pApp) : Action(pApp)
 {
@@ -15,6 +17,7 @@ void SwitchToDesignModeAction::Execute()
 {
 	Grid* pGrid = pManager->GetGrid();
 	Output* pOut = pGrid->GetOutput();
+	GameState* pState = pManager->GetGameState();
 
 	// 1. Switch the global interface mode to Design Mode
 	UI.InterfaceMode = MODE_DESIGN;
@@ -29,7 +32,6 @@ void SwitchToDesignModeAction::Execute()
 	pManager->ClearActiveGameObjects();
 	pState->ResetPlayerStates();
 }
-
 SwitchToDesignModeAction::~SwitchToDesignModeAction()
 {
 }

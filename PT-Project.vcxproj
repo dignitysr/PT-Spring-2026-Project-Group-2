@@ -129,9 +129,13 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Action.cpp" />
+    <ClCompile Include="AddAntennaAction.cpp" />
     <ClCompile Include="AddBeltAction.cpp" />
+    <ClCompile Include="AddDangerZoneAction.cpp" />
     <ClCompile Include="AddFlagAction.cpp" />
     <ClCompile Include="AddRotatingGearAction.cpp" />
+    <ClCompile Include="AddWaterPitAction.cpp" />
+    <ClCompile Include="AddWorkshopAction.cpp" />
     <ClCompile Include="Antenna.cpp" />
     <ClCompile Include="ApplicationManager.cpp" />
     <ClCompile Include="Belt.cpp" />
@@ -175,15 +179,19 @@
     <ClCompile Include="CMUgraphicsLib\jpeg\jutils.c" />
     <ClCompile Include="CopyObjectAction.cpp" />
     <ClCompile Include="DangerZone.cpp" />
+    <ClCompile Include="ExecuteCommandsAction.cpp" />
     <ClCompile Include="Flag.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="GameState.cpp" />
     <ClCompile Include="Grid.cpp" />
     <ClCompile Include="Input.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="NewGameAction.cpp" />
     <ClCompile Include="Output.cpp" />
     <ClCompile Include="Player.cpp" />
+    <ClCompile Include="RebootRepairAction.cpp" />
     <ClCompile Include="RotatingGear.cpp" />
+    <ClCompile Include="SelectCommandAction.cpp" />
     <ClCompile Include="SwitchToDesignModeAction.cpp" />
     <ClCompile Include="SwitchToPlayModeAction.cpp" />
     <ClCompile Include="TestCode.cpp" />
@@ -192,9 +200,13 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Action.h" />
+    <ClInclude Include="AddAntennaAction.h" />
     <ClInclude Include="AddBeltAction.h" />
+    <ClInclude Include="AddDangerZoneAction.h" />
     <ClInclude Include="AddFlagAction.h" />
     <ClInclude Include="AddRotatingGearAction.h" />
+    <ClInclude Include="AddWaterPitAction.h" />
+    <ClInclude Include="AddWorkshopAction.h" />
     <ClInclude Include="Antenna.h" />
     <ClInclude Include="ApplicationManager.h" />
     <ClInclude Include="Belt.h" />
@@ -223,14 +235,18 @@
     <ClInclude Include="CopyObjectAction.h" />
     <ClInclude Include="DangerZone.h" />
     <ClInclude Include="DEFS.h" />
+    <ClInclude Include="ExecuteCommandsAction.h" />
     <ClInclude Include="Flag.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="GameState.h" />
     <ClInclude Include="Grid.h" />
     <ClInclude Include="Input.h" />
+    <ClInclude Include="NewGameAction.h" />
     <ClInclude Include="Output.h" />
     <ClInclude Include="Player.h" />
+    <ClInclude Include="RebootRepairAction.h" />
     <ClInclude Include="RotatingGear.h" />
+    <ClInclude Include="SelectCommandAction.h" />
     <ClInclude Include="SwitchToDesignModeAction.h" />
     <ClInclude Include="SwitchToPlayModeAction.h" />
     <ClInclude Include="UI_Info.h" />

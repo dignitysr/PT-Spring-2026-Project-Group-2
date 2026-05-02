@@ -106,3 +106,4 @@ void GameState::AppendPlayersInfo(string& info) const
 	}
 	info += " | Curr = " + to_string(currPlayerNumber);
 }
+

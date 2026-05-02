@@ -1,13 +1,20 @@
 #include "ApplicationManager.h"
-
 #include "Grid.h"
-
 #include "AddBeltAction.h"
 #include "AddRotatingGearAction.h"
 #include "AddFlagAction.h"
 #include "SwitchToPlayModeAction.h"
 #include "SwitchToDesignModeAction.h"
 #include "CopyObjectAction.h"
+#include "AddAntennaAction.h"
+#include "AddDangerZoneAction.h"
+#include "AddWaterPitAction.h"
+#include "AddWorkshopAction.h"
+#include "ExecuteCommandsAction.h"
+#include "SelectCommandAction.h"
+#include "RebootRepairAction.h"
+#include "NewGameAction.h"
+
 ///TODO: Add #include for all action types
 
 #include "GameState.h"
@@ -78,19 +85,19 @@ void ApplicationManager::ExecuteAction(ActionType ActType)
 		break;
 
 	case ADD_ANTENNA:
-		//pAct = new AddAntennaAction(this);
+		pAct = new AddAntennaAction(this);
 		break;
 
 	case ADD_DANGER_ZONE:
-		//pAct = new AddDangerZoneAction(this);
+		pAct = new AddDangerZoneAction(this);
 		break;
 
 	case ADD_WATER_PIT:
-		//pAct = new AddWaterPitAction(this);
+		pAct = new AddWaterPitAction(this);
 		break;
 
 	case ADD_WORKSHOP:
-		//pAct = new AddWorkshopAction(this);
+		pAct = new AddWorkshopAction(this);
 		break;
 
 	case COPY_OBJECT:
@@ -141,18 +148,18 @@ void ApplicationManager::ExecuteAction(ActionType ActType)
 	///TODO: Add a case for EACH remaining Play Mode action type
 
 	case EXECUTE_COMMANDS:
-		//pAct = new ExecuteCommandsAction(this);
+		pAct = new ExecuteCommandsAction(this);
 		break;
 	case SELECT_COMMAND:
-		//pAct = new SelectCommandAction(this);
+		pAct = new SelectCommandAction(this);
 		break;
 	case REBOOT_REPAIR:
-		//pAct = new RebootRepairAction(this);
+		pAct = new RebootRepairAction(this);
 		break;
 	case NEW_GAME:
-		//pAct = new NewGameAction(this);
+		pAct = new NewGameAction(this);
 		break;
-
+		
 	case STATUS:	// a click on the status bar ==> no action
 		return;
 	}

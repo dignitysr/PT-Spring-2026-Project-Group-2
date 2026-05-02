@@ -34,7 +34,7 @@ void AddFlagAction::ReadActionParameters()
 		pOut->PrintMessage("Invalid cell selection for the flag. Try again...");
 		return;
 	}
-	if (pGrid->GetCellObject(flagPos) != nullptr) {
+	if (pGrid->GetCell(flagPos) != nullptr) {
 		pOut->PrintMessage("Cell is already occupied, try a different cell.");
 		return;
 	}
@@ -55,9 +55,9 @@ void AddFlagAction::Execute()
 	// 4-Check if the flag was added and print an errror message if flag couldn't be added
 	Flag* pFlag = new Flag(flagPos);
 
-	Grid* pGrid = pManager->GetGrid()
+	Grid* pGrid = pManager->GetGrid();
 
-	bool added = pGrid->AddObjectToCell(pFlag);
+		bool added = pGrid->AddObjectToCell(pFlag);
 	if (!added) {
 
 		pGrid->PrintErrorMessage("Error: Cell already has an object. Click to continue ...");
@@ -65,9 +65,7 @@ void AddFlagAction::Execute()
 		return;
 
 	}
-	pGrid->PrintMessage("Flag added successfully!");
 
-	pGrid->UpdateInterface();
 }
 
 AddFlagAction::~AddFlagAction()

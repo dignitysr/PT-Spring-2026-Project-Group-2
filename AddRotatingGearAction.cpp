@@ -30,16 +30,21 @@ void AddRotatingGearAction::ReadActionParameters()
 		pOut->PrintMessage("Invalid cell selection for the gear. Try again...");
 		return;
 	}
-	if (pGrid->GetCellObject(gearPos) != nullptr) {
+	if (pGrid->GetCell(gearPos) != nullptr) {
 		pOut->PrintMessage("Cell is already occupied. Try a different cell.");
 		return;
 	}
 	pOut->PrintMessage("Click to set the rotation direction (clockwise or counter-clockwise)...");
-	direction = pIn->GetDirection();
-
+	int x, y;
+	pIn->GetPointClicked(x, y);  
+	if (x < (UI.width / 2)) {  
+		clockwise = true;
+	}
+	else {  
+		clockwise = false;
+	}
 	pOut->ClearStatusBar();
 }
-
 void AddRotatingGearAction::Execute()
 {
 	// The first line of any Action Execution is to read its parameter first 
@@ -52,7 +57,7 @@ void AddRotatingGearAction::Execute()
 	// 2-get a pointer to the Grid from the ApplicationManager
 	// 3-Add the rotating object to the GameObject of its Cell:
 	// 4-Check if the rotating gear was added and print an errror message if flag couldn't be added
-	RotatingGear* pGear = new RotatingGear(gearPos, direction);
+	RotatingGear* pGear = new RotatingGear(gearPos, clockwise);
 
 	Grid* pGrid = pManager->GetGrid();
 
@@ -63,8 +68,6 @@ void AddRotatingGearAction::Execute()
 		return;
 	}
 
-	pGrid->PrintMessage("Rotating Gear added successfully!");
-	pGrid->UpdateInterface();
 }
 
 AddRotatingGearAction::~AddRotatingGearAction()
