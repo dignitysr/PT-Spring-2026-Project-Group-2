@@ -15,6 +15,7 @@ public:
 	virtual void Apply(Grid* pGrid, GameState* pState, Player* pPlayer); // Applies the effect of the workshop
 
 	void Workshop::Save(ofstream& OutFile, GameObjectType type);
+	bool IsType(GameObjectType type) const;
 	void Workshop::Load(ifstream& InFile);
 	~Workshop();
 };

@@ -13,6 +13,7 @@ public:
 
 	CellPosition GetEndPosition() const; // A getter for the endCellPos data member
 	void Belt::Save(ofstream& OutFile, GameObjectType type);
+	bool IsType(GameObjectType type) const;
 	void Belt::Load(ifstream& InFile);
 	virtual ~Belt();
 };

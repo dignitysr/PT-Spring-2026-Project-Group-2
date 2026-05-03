@@ -31,6 +31,7 @@ void Flag::Apply(Grid* pGrid, GameState* pState, Player* pPlayer)
 void Flag::Save(ofstream& OutFile, GameObjectType type)
 {
 	//Format:cell
+	if (type != FLAG_TYPE) return;
 	OutFile << position.GetCellNum() << endl;
 }
 
@@ -44,6 +45,7 @@ void Flag::Load(ifstream& InFile)
 	}
 }
 
+bool Flag::IsType(GameObjectType type) const { return type == FLAG_TYPE; }
 Flag::~Flag()
 {
 

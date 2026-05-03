@@ -7,14 +7,14 @@
 
 enum GameObjectType // This represents the different types of game objects
 {
-	FLAG_TYPE,          // Represents the Flag robot needs to reach
-	PIT_TYPE,           // Represents a standard Pit
-	BELT_TYPE,          // Represents a conveyor belt
-	ROTATING_GEAR_TYPE, // Represents a rotating gear (clockwise/anti-clockwise)
-	WORKSHOP_TYPE,      // Represents a repair workshop
-	WATER_PIT_TYPE,     // Represents a water pit
-	DANGER_ZONE_TYPE,   // Represents a danger zone cell
-	ANTENNA_TYPE,       // Represents the starting/priority antenna
+	FLAG_TYPE,          
+	WATER_PIT_TYPE,       
+	DANGER_ZONE_TYPE,      
+	BELT_TYPE,
+	WORKSHOP_TYPE,   
+	ANTENNA_TYPE,   
+	ROTATING_GEAR_TYPE, 
+	NUM_OBJECT_TYPES,	
 
 };
 

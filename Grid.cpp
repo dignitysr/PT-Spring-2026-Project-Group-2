@@ -16,6 +16,10 @@ Grid::Grid(Input* pIn, Output* pOut) : pIn(pIn), pOut(pOut)
 			CellList[i][j] = new Cell(i, j);
 
 	Clipboard = NULL;
+
+	for (int k = 0; k < NUM_OBJECT_TYPES; k++) {
+		ObjectCount[k] = 0;
+	}
 }
 
 
@@ -143,8 +147,32 @@ void Grid::UpdateInterface(const GameState* pState) const
 	}
 }
 
+void Grid::CountObjects() {
+	for (int k = 0; k < NUM_OBJECT_TYPES; k++) {
+		ObjectCount[k] = 0;
+	}
+
+	for (int i = NumVerticalCells - 1; i >= 0; i--)
+		for (int j = 0; j < NumHorizontalCells; j++) {
+
+			GameObject* obj = CellList[i][j]->GetGameObject();
+
+			for (int k = 0; k < NUM_OBJECT_TYPES; k++) {
+
+				GameObjectType type = static_cast<GameObjectType>(k);
+
+				if (obj && obj->IsType(type)) {
+					ObjectCount[type]++;
+					break;
+				}
+			}
+		}
+}
+
 void Grid::SaveAll(ofstream& OutFile, GameObjectType type) const
 {
+	OutFile << ObjectCount[type] << endl;
+
 	for (int i = NumVerticalCells - 1; i >= 0; i--)
 		for (int j = 0; j < NumHorizontalCells; j++)
 			if (CellList[i][j]->GetGameObject())
