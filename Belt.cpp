@@ -4,8 +4,6 @@
 Belt::Belt(const CellPosition & startCellPos, const CellPosition & endCellPos) : GameObject(startCellPos)
 {
 	this->endCellPos = endCellPos;
-	distance = CellPosition::GetCellNumFromPosition(endCellPos) - CellPosition::GetCellNumFromPosition(startCellPos);
-	dir = startCellPos.HCell() != endCellPos.HCell() ? (startCellPos.VCell() > endCellPos.VCell() ? DOWN : UP) : (startCellPos.HCell() > endCellPos.HCell() ? LEFT : RIGHT); 
 
 	///TODO: Do the needed validation
 }
@@ -34,6 +32,16 @@ void Belt::Apply(Grid* pGrid, GameState* pState, Player* pPlayer)
 CellPosition Belt::GetEndPosition() const
 {
 	return endCellPos;
+}
+
+void Belt::SetPosition(const CellPosition newPos, Grid* pGrid) {
+	int deltaX = endCellPos.HCell() - position.HCell();
+	int deltaY = endCellPos.VCell() - position.VCell();
+
+	position = newPos;
+
+	if (!endCellPos.SetHCell(position.HCell() + deltaX)) pGrid->PrintErrorMessage("Invalid belt position: end cell is out of horizontal bounds. Belt position not updated.");
+	if (!endCellPos.SetVCell(position.VCell() + deltaY)) pGrid->PrintErrorMessage("Invalid belt position: end cell is out of vertical bounds. Belt position not updated.");
 }
 
 void Belt::Save(ofstream& OutFile, GameObjectType type)

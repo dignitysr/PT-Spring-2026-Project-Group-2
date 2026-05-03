@@ -14,6 +14,7 @@ public:
 
 	virtual void Apply(Grid* pGrid, GameState* pState, Player* pPlayer); // Applies the effect of the belt by moving player to belt's end cell
 
+	virtual void SetPosition(const CellPosition newPos, Grid* pGrid) override;
 	CellPosition GetEndPosition() const; // A getter for the endCellPos data member
 	void Belt::Save(ofstream& OutFile, GameObjectType type);
 	bool IsType(GameObjectType type) const;

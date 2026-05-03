@@ -6,14 +6,14 @@
 #include "Cell.h"
 class PasteObjectAction :public Action
 {
-	Cell* cellToCut;
+	Cell* cellToPaste;
 public:
 
-	CutObjectAction(ApplicationManager* pApp);
+	PasteObjectAction(ApplicationManager* pApp);
 	virtual bool ReadActionParameters(); // Reads action parameters 
 
 	virtual void Execute(); // copies object to clipboard
 
-	~CutObjectAction();
+	~PasteObjectAction();
 };
 

@@ -178,11 +178,13 @@ void Grid::CountObjects() {
 			for (int k = 0; k < NUM_OBJECT_TYPES; k++) {
 
 				GameObjectType type = static_cast<GameObjectType>(k);
+				if (obj && obj->IsType(type)) {
 					ObjectCount[k]++;
 					break;
 				}
 			}
 		}
+	}
 
 void Grid::SaveAll(ofstream& OutFile, GameObjectType type) const
 {

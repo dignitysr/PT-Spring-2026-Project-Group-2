@@ -19,6 +19,8 @@ public:
 
 	CellPosition GetPosition() const;
 
+	virtual void SetPosition(const CellPosition pos, Grid* pGrid);
+
 	// ============ Virtual Functions ============
 
 	virtual void Draw(Output* pOut) const = 0;

@@ -18,6 +18,7 @@
 #include "SaveGridAction.h"
 #include "LoadGridAction.h"
 #include "DeleteObjectAction.h"
+#include "PasteObjectAction.h"
 
 ///TODO: Add #include for all action types
 
@@ -113,7 +114,7 @@ void ApplicationManager::ExecuteAction(ActionType ActType)
 		break;
 
 	case PASTE_OBJECT:
-		//pAct = new PasteObjectAction(this);
+		pAct = new PasteObjectAction(this);
 		break;
 
 	case DELETE_OBJECT:
