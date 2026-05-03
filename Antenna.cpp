@@ -61,7 +61,7 @@ void Antenna::Apply(Grid* pGrid, GameState* pState, Player* pPlayer)
 	// 3- Print a message indicating which player will play first
 }
 
-void Antenna::Save(ofstream& OutFile) 
+void Antenna::Save(ofstream& OutFile, GameObjectType type)
 {
 	//Format:cell
 	OutFile << position.GetCellNum() << endl;

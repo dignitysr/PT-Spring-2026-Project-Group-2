@@ -74,7 +74,7 @@ bool RotatingGear::GetisClockWise() const
 	return isClockWise;
 }
 
-void RotatingGear::Save(ofstream& OutFile) 
+void RotatingGear::Save(ofstream& OutFile, GameObjectType type)
 {
 	//Format:cell direction (1 for CW, 0 for ACW)
 	OutFile << position.GetCellNum() << " " << (isClockWise ? 1 : 0) << endl;

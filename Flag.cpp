@@ -28,7 +28,7 @@ void Flag::Apply(Grid* pGrid, GameState* pState, Player* pPlayer)
 	//    Review the "pGrid" functions and decide which function can be used for that
 }
 
-void Flag::Save(ofstream& OutFile)
+void Flag::Save(ofstream& OutFile, GameObjectType type)
 {
 	//Format:cell
 	OutFile << position.GetCellNum() << endl;

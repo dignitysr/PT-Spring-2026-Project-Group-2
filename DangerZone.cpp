@@ -32,7 +32,7 @@ void DangerZone::Apply(Grid* pGrid, GameState* pState, Player* pPlayer)
 	// 3- Update the players info which is displayed (check Grid class and decide which function to use)
 }
 
-void DangerZone::Save(ofstream& OutFile)
+void DangerZone::Save(ofstream& OutFile, GameObjectType type)
 {
 	//Format:cell
 	OutFile << position.GetCellNum() << endl;

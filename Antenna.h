@@ -8,7 +8,7 @@ public:
 
 	virtual void Apply(Grid* pGrid, GameState* pState, Player* pPlayer); // Applies the effect of the antenna
 
-	void Antenna::Save(ofstream& OutFile);
+	void Antenna::Save(ofstream& OutFile, GameObjectType type);
 	virtual ~Antenna();
 };
 

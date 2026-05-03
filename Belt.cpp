@@ -34,7 +34,7 @@ CellPosition Belt::GetEndPosition() const
 	return endCellPos;
 }
 
-void Belt::Save(ofstream& OutFile) 
+void Belt::Save(ofstream& OutFile, GameObjectType type)
 {
 	//Format:start_cell  end_cell
 	OutFile << position.GetCellNum() << " " << endCellPos.GetCellNum() << endl;
