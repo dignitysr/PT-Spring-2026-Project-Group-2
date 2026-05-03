@@ -73,9 +73,10 @@ bool RotatingGear::GetisClockWise() const
 	return isClockWise;
 }
 
-void RotatingGear::Save(ofstream& OutFile)
+void RotatingGear::Save(ofstream& OutFile) 
 {
-	OutFile << ROTATING_GEAR_TYPE << " " << position.GetCellNum() << " " << (isClockWise ? 1 : 0) << endl;
+	//Format:cell direction (1 for CW, 0 for ACW)
+	OutFile << position.GetCellNum() << " " << (isClockWise ? 1 : 0) << endl;
 }
 
 RotatingGear::~RotatingGear()

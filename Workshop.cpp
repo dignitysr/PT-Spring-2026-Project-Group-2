@@ -15,7 +15,7 @@ void Workshop::Draw(Output * pOut) const
 	pOut->DrawWorkshop(position);
 }
 
-void Workshop::Apply(Grid* pGrid, GameState* pState, Player* pPlayer, Output* pOut)
+void Workshop::Apply(Grid* pGrid, GameState* pState, Player* pPlayer)
 {
 	///TODO: Implement this function
 	// Apply the workshop's effect on the player
@@ -36,9 +36,10 @@ void Workshop::Apply(Grid* pGrid, GameState* pState, Player* pPlayer, Output* pO
 	
 }
 
-void Workshop::Save(ofstream& OutFile) 
+void Workshop::Save(ofstream& OutFile)
 {
-	OutFile << WORKSHOP_TYPE << " " << position.GetCellNum() << endl;
+	//Format:cell
+	OutFile << position.GetCellNum() << endl;
 }
 
 Workshop::~Workshop()

@@ -63,7 +63,8 @@ void Antenna::Apply(Grid* pGrid, GameState* pState, Player* pPlayer)
 
 void Antenna::Save(ofstream& OutFile) 
 {
-	OutFile << ANTENNA_TYPE << " " << position.GetCellNum() << endl;
+	//Format:cell
+	OutFile << position.GetCellNum() << endl;
 }
 
 Antenna::~Antenna()
