@@ -1,59 +1,150 @@
 #include "SelectCommandAction.h"
+
+#include "ApplicationManager.h"
 #include "Grid.h"
-#include "Player.h"
+#include "Input.h"
+#include "Output.h"
 #include "GameState.h"
+#include "Player.h"
 
-std::string ActionTypeToString(ActionType action) {
-    switch (action) {
-    case ADD_BELT: return "ADD_BELT";
-    case ADD_ANTENNA: return "ADD_ANTENNA";
-    case ADD_DANGER_ZONE: return "ADD_DANGER_ZONE";
-    case ADD_WATER_PIT: return "ADD_WATER_PIT";
-    case ADD_WORKSHOP: return "ADD_WORKSHOP";
-    default: return "UNKNOWN";
-    }
+#include <cstdlib>
+#include <ctime>
+
+SelectCommandAction::SelectCommandAction(ApplicationManager* pApp) : Action(pApp)
+{
+	availableCommandsCount = 0;
+
+	for (int i = 0; i < MaxAvailableCommands; i++)
+	{
+		availableCommands[i] = NO_COMMAND;
+	}
 }
 
-Command stringToCommand(const std::string& commandStr) {
-    if (commandStr == "MOVE_FORWARD_ONE_STEP") return MOVE_FORWARD_ONE_STEP;
-    if (commandStr == "MOVE_FORWARD_TWO_STEPS") return MOVE_FORWARD_TWO_STEPS;
-    if (commandStr == "MOVE_FORWARD_THREE_STEPS") return MOVE_FORWARD_THREE_STEPS;
-    if (commandStr == "MOVE_BACKWARD_ONE_STEP") return MOVE_BACKWARD_ONE_STEP;
-    if (commandStr == "MOVE_BACKWARD_TWO_STEPS") return MOVE_BACKWARD_TWO_STEPS;
-    if (commandStr == "MOVE_BACKWARD_THREE_STEPS") return MOVE_BACKWARD_THREE_STEPS;
-    if (commandStr == "ROTATE_CLOCKWISE") return ROTATE_CLOCKWISE;
-    if (commandStr == "ROTATE_COUNTERCLOCKWISE") return ROTATE_COUNTERCLOCKWISE;
-    return NO_COMMAND;
+bool SelectCommandAction::ReadActionParameters()
+{
+	Grid* pGrid = pManager->GetGrid();
+	GameState* pState = pManager->GetGameState();
+
+	Player* pPlayer = pState->GetCurrentPlayer();
+
+	if (pPlayer == NULL)
+	{
+		pGrid->PrintErrorMessage("Error: No current player. Click to continue ...");
+		return false;
+	}
+
+	int health = pPlayer->GetHealth();
+
+	if (health <= 0)
+	{
+		pGrid->PrintErrorMessage("Player has no health points. Click to continue ...");
+		return false;
+	}
+
+	availableCommandsCount = health;
+
+	if (availableCommandsCount > MaxAvailableCommands)
+	{
+		availableCommandsCount = MaxAvailableCommands;
+	}
+
+	static bool seeded = false;
+
+	if (!seeded)
+	{
+		srand((unsigned int)time(0));
+		seeded = true;
+	}
+
+	for (int i = 0; i < availableCommandsCount; i++)
+	{
+		int randomCommand = 1 + rand() % (COMMANDS_COUNT - 1);
+		availableCommands[i] = (Command)randomCommand;
+	}
+
+	return true;
 }
 
-SelectCommandAction::SelectCommandAction(ApplicationManager* pApp) : Action(pApp) {}
+void SelectCommandAction::Execute()
+{
+	bool valid = ReadActionParameters();
 
-bool SelectCommandAction::ReadActionParameters() {
-    Player* currentPlayer = pManager->GetGameState()->GetCurrentPlayer();
-    int health = currentPlayer->GetHealth();
-    int maxCommands = (health < 5) ? health : 5;
+	if (!valid)
+	{
+		return;
+	}
 
-    availableCommands = { "MOVE_FORWARD_ONE_STEP", "MOVE_FORWARD_TWO_STEPS", "MOVE_FORWARD_THREE_STEPS",
-                         "MOVE_BACKWARD_ONE_STEP", "MOVE_BACKWARD_TWO_STEPS", "MOVE_BACKWARD_THREE_STEPS",
-                         "ROTATE_CLOCKWISE", "ROTATE_COUNTERCLOCKWISE" };
+	Grid* pGrid = pManager->GetGrid();
+	Output* pOut = pGrid->GetOutput();
+	Input* pIn = pGrid->GetInput();
+	GameState* pState = pManager->GetGameState();
 
-    pManager->GetGrid()->GetOutput()->PrintMessage("Select up to " + std::to_string(maxCommands) + " commands.");
+	Player* pPlayer = pState->GetCurrentPlayer();
 
-    for (int i = 0; i < maxCommands; i++) {
-        std::string selectedCommand = ActionTypeToString(pManager->GetGrid()->GetInput()->GetUserAction());
-        selectedCommands.push_back(selectedCommand);
-    }
+	if (pPlayer == NULL)
+	{
+		pGrid->PrintErrorMessage("Error: No current player. Click to continue ...");
+		return;
+	}
 
-    for (int i = 0; i < selectedCommands.size(); i++) {
-        currentPlayer->AddSavedCommand(stringToCommand(selectedCommands[i]));
-    }
-    return true;
+	pPlayer->ClearSavedCommands();
+
+	Command savedCommands[MaxSavedCommands];
+
+	for (int i = 0; i < MaxSavedCommands; i++)
+	{
+		savedCommands[i] = NO_COMMAND;
+	}
+
+	int maxCommandsToSelect = MaxSavedCommands;
+
+	if (pPlayer->GetHealth() < MaxSavedCommands)
+	{
+		maxCommandsToSelect = pPlayer->GetHealth();
+	}
+
+	int savedCount = 0;
+
+	pOut->CreateCommandsBar(savedCommands, MaxSavedCommands, availableCommands, availableCommandsCount);
+
+	while (savedCount < maxCommandsToSelect)
+	{
+		pOut->PrintMessage("Select a command from Available Commands. Click outside commands to stop.");
+
+		int cmdIndex = pIn->GetSelectedCommandIndex();
+
+		if (cmdIndex == -1)
+		{
+			break;
+		}
+
+		if (cmdIndex < 0 || cmdIndex >= availableCommandsCount)
+		{
+			pGrid->PrintErrorMessage("Invalid command selection. Click to continue ...");
+			pOut->CreateCommandsBar(savedCommands, MaxSavedCommands, availableCommands, availableCommandsCount);
+			continue;
+		}
+
+		Command selectedCmd = availableCommands[cmdIndex];
+
+		pPlayer->AddSavedCommand(selectedCmd);
+
+		savedCommands[savedCount] = selectedCmd;
+		savedCount++;
+
+		pOut->CreateCommandsBar(savedCommands, MaxSavedCommands, availableCommands, availableCommandsCount);
+	}
+
+	if (savedCount == 0)
+	{
+		pGrid->PrintErrorMessage("No commands selected. Movement phase skipped. Click to continue ...");
+	}
+	else
+	{
+		pGrid->PrintErrorMessage("Commands saved successfully. Click to continue ...");
+	}
 }
 
-void SelectCommandAction::Execute() {
-    if (!ReadActionParameters()) return;
-    Player* currentPlayer = pManager->GetGameState()->GetCurrentPlayer();
-    currentPlayer->Move(pManager->GetGrid(), pManager->GetGameState());
+SelectCommandAction::~SelectCommandAction()
+{
 }
-
-SelectCommandAction::~SelectCommandAction() {}
