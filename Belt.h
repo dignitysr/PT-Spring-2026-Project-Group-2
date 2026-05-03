@@ -15,6 +15,7 @@ public:
 	void Belt::Save(ofstream& OutFile, GameObjectType type);
 	bool IsType(GameObjectType type) const;
 	void Belt::Load(ifstream& InFile);
+	Belt* Clone() const; // Creates and returns a pointer to a new copy of the Belt (used in copy/cut/paste)
 	virtual ~Belt();
 };
 

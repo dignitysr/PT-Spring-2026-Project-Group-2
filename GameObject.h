@@ -35,5 +35,7 @@ public:
 
 	virtual bool IsType(GameObjectType type) const = 0; // Checks if the object is of the passed type (e.g. FLAG_TYPE) and returns true if it is, otherwise returns false
 
+	virtual GameObject* Clone() const = 0; // Creates and returns a pointer to a new copy of the GameObject (used in copy/cut/paste)
+
 	virtual ~GameObject();
 };

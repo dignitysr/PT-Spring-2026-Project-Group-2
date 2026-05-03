@@ -54,6 +54,11 @@ void Workshop::Load(ifstream& InFile)
 	}
 }
 
+Workshop* Workshop::Clone() const
+{
+	return new Workshop(*this);
+}
+
 Workshop::~Workshop()
 {
 }

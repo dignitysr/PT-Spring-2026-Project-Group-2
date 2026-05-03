@@ -92,6 +92,11 @@ void RotatingGear::Load(ifstream& InFile) {
 	this->isClockWise = (direction == 1);
 }
 
+RotatingGear* RotatingGear::Clone() const
+{
+	return new RotatingGear(*this);
+}
+
 RotatingGear::~RotatingGear()
 {
 }

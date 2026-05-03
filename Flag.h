@@ -9,5 +9,6 @@ public:
 	void Flag::Save(ofstream& OutFile, GameObjectType type);
 	bool IsType(GameObjectType type) const;
 	void Flag::Load(ifstream& InFile);
+	Flag* Clone() const; // Creates and returns a pointer to a new copy of the Flag (used in copy/cut/paste)
 	virtual ~Flag(); // Virtual destructor
 };

@@ -11,6 +11,8 @@ public:
 	void Antenna::Save(ofstream& OutFile, GameObjectType type);
 
 	void Antenna::Load(ifstream& InFile);
+	
+	Antenna* Clone() const; // Creates and returns a pointer to a new copy of the Antenna (used in copy/cut/paste)
 
 	bool IsType(GameObjectType type) const;
 	virtual ~Antenna();

@@ -17,6 +17,7 @@ public:
 	void Workshop::Save(ofstream& OutFile, GameObjectType type);
 	bool IsType(GameObjectType type) const;
 	void Workshop::Load(ifstream& InFile);
+	Workshop* Clone() const; // Creates and returns a pointer to a new copy of the Workshop (used in copy/cut/paste)
 	~Workshop();
 };
 

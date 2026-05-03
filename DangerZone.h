@@ -11,6 +11,7 @@ public:
 	void DangerZone::Save(ofstream& OutFile, GameObjectType type);
 	bool IsType(GameObjectType type) const;
 	void DangerZone::Load(ifstream& InFile);
+	DangerZone* Clone() const; // Creates and returns a pointer to a new copy of the DangerZone (used in copy/cut/paste)
 	virtual ~DangerZone();
 };
 

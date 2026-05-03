@@ -49,6 +49,11 @@ void DangerZone::Load(ifstream& InFile)
 	}
 }
 
+DangerZone* DangerZone::Clone() const
+{
+	return new DangerZone(*this);
+}
+
 bool DangerZone::IsType(GameObjectType type) const { return type == DANGER_ZONE_TYPE; }
 DangerZone::~DangerZone()
 {

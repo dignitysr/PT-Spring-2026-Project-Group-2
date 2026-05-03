@@ -56,6 +56,11 @@ void WaterPit::Load(ifstream& InFile)
 	}
 }
 
+WaterPit* WaterPit::Clone() const
+{
+	return new WaterPit(*this);
+}
+
 
 WaterPit::~WaterPit()
 {
