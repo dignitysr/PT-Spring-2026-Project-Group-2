@@ -39,8 +39,11 @@ void DeleteObjectAction::Execute()
         return;
     }
     Grid* pGrid = pManager->GetGrid();
-    pGrid->RemoveObjectFromCell(celltodelete->GetCellPosition());
+    delete pGrid->RemoveObjectFromCell(celltodelete->GetCellPosition());
     pGrid->GetOutput()->PrintMessage("Object deleted successfully!");
+    pGrid->GetInput()->GetCellClicked();
+    pGrid->GetOutput()->ClearStatusBar();
+
 }
 
 DeleteObjectAction::~DeleteObjectAction()

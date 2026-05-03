@@ -39,11 +39,15 @@ void Antenna::Apply(Grid* pGrid, GameState* pState, Player* pPlayer)
 		{
 			firstPlayerNum=0;
 			pGrid->GetOutput()->PrintMessage("player 0 will play first !");
+			pGrid->GetInput()->GetCellClicked();
+			pGrid->GetOutput()->ClearStatusBar();
 		}
 		else
 		{
 			firstPlayerNum=1;
 			pGrid->GetOutput()->PrintMessage("player 1 will play first !");
+			pGrid->GetInput()->GetCellClicked();
+			pGrid->GetOutput()->ClearStatusBar();
 		}
 		pState->SetFirstPlayer(firstPlayerNum);
 
