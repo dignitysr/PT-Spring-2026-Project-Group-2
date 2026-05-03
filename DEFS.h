@@ -5,6 +5,17 @@
 
 // This file contains some global constants and definitions to be used in the project.
 
+enum GameObjectType // This represents the different types of game objects
+{
+	FLAG,
+	WATER_PIT,
+	DANGER_ZONE,
+	BELT,
+	WORKSHOP,
+	ANTENNA,
+	ROTATING_GEAR
+};
+
 enum ActionType // The actions supported (add more as needed)
 {
 	//  [1] Actions of Design Mode
