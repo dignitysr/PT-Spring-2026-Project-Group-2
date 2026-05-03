@@ -7,9 +7,10 @@ SwitchToPlayModeAction::SwitchToPlayModeAction(ApplicationManager* pApp) : Actio
 {
 }
 
-void SwitchToPlayModeAction::ReadActionParameters()
+bool SwitchToPlayModeAction::ReadActionParameters()
 {
 	// No parameters needed -- a mode switch requires no user input
+	return true;
 }
 
 void SwitchToPlayModeAction::Execute()
@@ -30,8 +31,6 @@ void SwitchToPlayModeAction::Execute()
 	pManager->UpdateInterface();
 
 	///TODO: Add any other initialisation needed when entering Play Mode.
-	pState->ResetPlayerStates();
-	pManager->InitializeGameObjects();
 
 }
 

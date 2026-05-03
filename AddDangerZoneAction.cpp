@@ -9,7 +9,7 @@ AddDangerZoneAction::AddDangerZoneAction(ApplicationManager* pApp) : Action(pApp
 
 }
 
-void AddDangerZoneAction::ReadActionParameters()
+bool AddDangerZoneAction::ReadActionParameters()
 {
     
     Grid* pGrid = pManager->GetGrid();
@@ -23,40 +23,39 @@ void AddDangerZoneAction::ReadActionParameters()
     
     if (!pos.IsValidCell()) {
         pOut->PrintMessage("Invalid cell selection. Try again...");
-        return;
+        return false;
     }
 
-    if (pGrid->GetCell(pos) != nullptr) {
+    if (pGrid->GetCell(pos)->GetGameObject() != nullptr) {
         pOut->PrintMessage("Cannot place the Danger Zone on an occupied cell.");
-        return;
+        return false;
     }
 
     
     pOut->ClearStatusBar();
+    return true;
 }
 
 void AddDangerZoneAction::Execute()
 {
     
-    ReadActionParameters();
+    if (!ReadActionParameters()) return;
 
     
-    if (pos.IsValidCell() && pManager->GetGrid()->GetCell(pos) == nullptr) {
         
-        DangerZone* pDangerZone = new DangerZone(pos);  
+    DangerZone* pDangerZone = new DangerZone(pos);  
 
         
-        Grid* pGrid = pManager->GetGrid();
-        bool added = pGrid->AddObjectToCell(pDangerZone);
+    Grid* pGrid = pManager->GetGrid();
+    bool added = pGrid->AddObjectToCell(pDangerZone);
 
         
-        if (!added) {
-            pGrid->PrintErrorMessage("Error: Cell already has an object! Click to continue...");
-        }
-        else {
+    if (!added) {
+        pGrid->PrintErrorMessage("Error: Cell already has an object! Click to continue...");
+    }
+    else {
             
-            pGrid->GetCell(pos)->DrawCellOrWaterPitOrDangerZone(pGrid->GetOutput());  
-        }
+        pGrid->GetCell(pos)->DrawCellOrWaterPitOrDangerZone(pGrid->GetOutput());  
     }
 }
 

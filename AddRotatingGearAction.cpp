@@ -4,7 +4,7 @@ AddRotatingGearAction::AddRotatingGearAction(ApplicationManager * pApp):Action(p
 {
 }
 
-void AddRotatingGearAction::ReadActionParameters()
+bool AddRotatingGearAction::ReadActionParameters()
 {
 	///TODO: Implement this function as mentioned in the guideline steps (numbered below) below
 
@@ -28,11 +28,11 @@ void AddRotatingGearAction::ReadActionParameters()
 
 	if (!gearPos.IsValidCell()) {
 		pOut->PrintMessage("Invalid cell selection for the gear. Try again...");
-		return;
+		return false;
 	}
-	if (pGrid->GetCell(gearPos) != nullptr) {
+	if (pGrid->GetCell(gearPos)->GetGameObject() != nullptr) {
 		pOut->PrintMessage("Cell is already occupied. Try a different cell.");
-		return;
+		return false;
 	}
 	pOut->PrintMessage("Click to set the rotation direction (clockwise or counter-clockwise)...");
 	int x, y;
@@ -44,12 +44,13 @@ void AddRotatingGearAction::ReadActionParameters()
 		clockwise = false;
 	}
 	pOut->ClearStatusBar();
+	return true;
 }
 void AddRotatingGearAction::Execute()
 {
 	// The first line of any Action Execution is to read its parameter first 
 	// and hence initializes its data members
-	ReadActionParameters();
+	if (!ReadActionParameters()) return;
 	///TODO: Implement this function as mentioned in the guideline steps (numbered below) below
 	// == Here are some guideline steps (numbered below) to implement this function ==
 

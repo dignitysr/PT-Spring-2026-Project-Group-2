@@ -2,13 +2,13 @@
 #include "Grid.h"
 #include "GameState.h"
 #include "Workshop.h"  
-
+#include <iostream>
 AddWorkshopAction::AddWorkshopAction(ApplicationManager* pApp) : Action(pApp)
 {
    
 }
 
-void AddWorkshopAction::ReadActionParameters()
+bool AddWorkshopAction::ReadActionParameters()
 {
     Grid* pGrid = pManager->GetGrid();
     Output* pOut = pGrid->GetOutput();
@@ -19,36 +19,33 @@ void AddWorkshopAction::ReadActionParameters()
 
     if (!pos.IsValidCell()) {
         pOut->PrintMessage("Invalid cell selection. Try again...");
-        return;
+        return false;
     }
 
-    if (pGrid->GetCell(pos) != nullptr) {
+    if (pGrid->GetCell(pos)->GetGameObject() != nullptr) {
         pOut->PrintMessage("Cannot place the workshop on an occupied cell.");
-        return;
+        return false;
     }
 
     pOut->ClearStatusBar();  
+    return true;
 }
 
 void AddWorkshopAction::Execute()
 {
-    ReadActionParameters();
-
-    if (pos.IsValidCell() && pManager->GetGrid()->GetCell(pos) == nullptr) {
+    if (!ReadActionParameters()) return;
 
        
-        Workshop* pWorkshop = new Workshop(pos);
+    Workshop* pWorkshop = new Workshop(pos);
 
-        Grid* pGrid = pManager->GetGrid();
-        bool added = pGrid->AddObjectToCell(pWorkshop);
+    Grid* pGrid = pManager->GetGrid();
+    bool added = pGrid->AddObjectToCell(pWorkshop);
 
-        if (!added) {
-            pGrid->PrintErrorMessage("Error: Cell already has an object! Click to continue...");
-        }
-        else {
-            
-            pGrid->GetCell(pos)->DrawCellOrWaterPitOrDangerZone(pGrid->GetOutput());  
-        }
+    if (!added) {
+        pGrid->PrintErrorMessage("Error: Cell already has an object! Click to continue...");
+    }
+    else {
+        pGrid->GetCell(pos)->DrawCellOrWaterPitOrDangerZone(pGrid->GetOutput());  
     }
 }
 

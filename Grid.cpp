@@ -42,8 +42,8 @@ GameObject* Grid::RemoveObjectFromCell(const CellPosition& pos)
 		// Note: deallocate the object here before NULLing if ownership requires it
 		GameObject* cellObj = CellList[pos.VCell()][pos.HCell()]->GetGameObject();
 		if (cellObj) {
-			return cellObj;
 			CellList[pos.VCell()][pos.HCell()]->SetGameObject(NULL);
+			return cellObj;
 		} else CellList[pos.VCell()][pos.HCell()]->SetGameObject(NULL);
 	}
 }

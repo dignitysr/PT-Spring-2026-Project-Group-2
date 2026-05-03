@@ -11,7 +11,7 @@ private:
 
 public:
     AddWaterPitAction(ApplicationManager* pApp);  
-    virtual void ReadActionParameters();          
+    virtual bool ReadActionParameters();          
     virtual void Execute();                       
     virtual ~AddWaterPitAction();                
 };

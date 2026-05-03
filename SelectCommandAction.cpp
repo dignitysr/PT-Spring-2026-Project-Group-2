@@ -28,7 +28,7 @@ Command stringToCommand(const std::string& commandStr) {
 
 SelectCommandAction::SelectCommandAction(ApplicationManager* pApp) : Action(pApp) {}
 
-void SelectCommandAction::ReadActionParameters() {
+bool SelectCommandAction::ReadActionParameters() {
     Player* currentPlayer = pManager->GetGameState()->GetCurrentPlayer();
     int health = currentPlayer->GetHealth();
     int maxCommands = (health < 5) ? health : 5;
@@ -47,9 +47,11 @@ void SelectCommandAction::ReadActionParameters() {
     for (int i = 0; i < selectedCommands.size(); i++) {
         currentPlayer->AddSavedCommand(stringToCommand(selectedCommands[i]));
     }
+    return true;
 }
 
 void SelectCommandAction::Execute() {
+    if (!ReadActionParameters()) return;
     Player* currentPlayer = pManager->GetGameState()->GetCurrentPlayer();
     currentPlayer->Move(pManager->GetGrid(), pManager->GetGameState());
 }

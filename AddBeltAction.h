@@ -14,7 +14,7 @@ class AddBeltAction :public Action
 	// Note: These parameters should be read in ReadActionParameters()
 public:
 	AddBeltAction(ApplicationManager *pApp);
-	virtual void ReadActionParameters(); // Reads AddBeltAction action parameters (startPos, endPos)
+	virtual bool ReadActionParameters(); // Reads AddBeltAction action parameters (startPos, endPos)
 
 	virtual void Execute(); // Creates a new belt Object 
 							// then Sets this belt object to the GameObject Pointer of its Cell

@@ -12,7 +12,7 @@ class SwitchToPlayModeAction : public Action
 public:
 	SwitchToPlayModeAction(ApplicationManager* pApp);
 
-	virtual void ReadActionParameters(); // No parameters needed for a mode switch
+	virtual bool ReadActionParameters(); // No parameters needed for a mode switch
 
 	virtual void Execute(); // Performs the switch to Play Mode
 

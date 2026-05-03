@@ -20,6 +20,8 @@ void Workshop::Apply(Grid* pGrid, GameState* pState, Player* pPlayer)
 	///TODO: Implement this function
 	// Apply the workshop's effect on the player
 	
+	Output* pOut = pGrid->GetOutput();
+
 	//start of addition
 	//1.validity of player
 	if (!pPlayer) return;
@@ -28,7 +30,7 @@ void Workshop::Apply(Grid* pGrid, GameState* pState, Player* pPlayer)
 	pPlayer->SetHealth(MaxHealth);
 
 	// 3.Feedback to the User
-	pOut->printMessage("You reached a Workshop! Health repaired.");
+	pOut->PrintMessage("You reached a Workshop! Health repaired.");
 
 	// [OPTIONAL BONUS] Consumables can be given to the player here
 	

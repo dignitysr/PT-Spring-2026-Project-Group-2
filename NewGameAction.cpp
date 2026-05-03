@@ -7,9 +7,10 @@ NewGameAction::NewGameAction(ApplicationManager* pApp) : Action(pApp)
 {
 }
 
-void NewGameAction::ReadActionParameters()
+bool NewGameAction::ReadActionParameters()
 {
     // No parameters are needed, this action simply resets the game state.
+    return true;
 }
 
 void NewGameAction::Execute()

@@ -8,7 +8,7 @@ AddAntennaAction::AddAntennaAction(ApplicationManager* pApp) : Action(pApp)
     
 }
 
-void AddAntennaAction::ReadActionParameters()
+bool AddAntennaAction::ReadActionParameters()
 {
     Grid* pGrid = pManager->GetGrid();
     Output* pOut = pGrid->GetOutput();
@@ -19,33 +19,31 @@ void AddAntennaAction::ReadActionParameters()
 
     if (!pos.IsValidCell()) {
         pOut->PrintMessage("Invalid cell selection. Try again...");
-        return;
+        return false;
     }
 
-    if (pGrid->GetCell(pos) != nullptr) {
+    if (pGrid->GetCell(pos)->GetGameObject() != nullptr) {
         pOut->PrintMessage("Cannot place the antenna on an occupied cell.");
-        return;
+        return false;
     }
 
-    pOut->ClearStatusBar();  
+    pOut->ClearStatusBar(); 
+    return true;
 }
 
 void AddAntennaAction::Execute()
 {
-    ReadActionParameters();
+    if (!ReadActionParameters()) return;
 
-    if (pos.IsValidCell() && pManager->GetGrid()->GetCell(pos) == nullptr) {
 
-        Antenna* pAntenna = new Antenna(pos);
+    Antenna* pAntenna = new Antenna(pos);
 
-        Grid* pGrid = pManager->GetGrid();
-        bool added = pGrid->AddObjectToCell(pAntenna);
+    Grid* pGrid = pManager->GetGrid();
+    bool added = pGrid->AddObjectToCell(pAntenna);
 
         
-        if (!added) {
-            pGrid->PrintErrorMessage("Error: Cell already has an object! Click to continue...");
-        }
-    
+    if (!added) {
+        pGrid->PrintErrorMessage("Error: Cell already has an object! Click to continue...");
     }
 }
 

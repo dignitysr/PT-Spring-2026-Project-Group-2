@@ -14,6 +14,7 @@
 #include "SelectCommandAction.h"
 #include "RebootRepairAction.h"
 #include "NewGameAction.h"
+#include "CutObjectAction.h"
 
 ///TODO: Add #include for all action types
 
@@ -105,7 +106,7 @@ void ApplicationManager::ExecuteAction(ActionType ActType)
 		break;
 
 	case CUT_OBJECT:
-		//pAct = new CutObjectAction(this);
+		pAct = new CutObjectAction(this);
 		break;
 
 	case PASTE_OBJECT:

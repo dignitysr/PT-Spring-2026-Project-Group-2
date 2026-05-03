@@ -1,5 +1,12 @@
 #include "CellPosition.h"
 #include "UI_Info.h"
+#include <iostream>
+
+ostream& operator<<(ostream& out, const CellPosition& cellPos)
+{
+	out << "(" << cellPos.VCell() << ", " << cellPos.HCell() << ")";
+	return out;
+}
 
 CellPosition::CellPosition () 
 {
