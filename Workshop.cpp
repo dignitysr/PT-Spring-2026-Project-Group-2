@@ -39,7 +39,7 @@ void Workshop::Apply(Grid* pGrid, GameState* pState, Player* pPlayer)
 void Workshop::Save(ofstream& OutFile, GameObjectType type)
 {
 	//Format:cell
-	if (type != WORKSHOP_TYPE) return;
+	if (type == WORKSHOP_TYPE)
 	OutFile << position.GetCellNum() << endl;
 }
 

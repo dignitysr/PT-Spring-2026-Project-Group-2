@@ -5,6 +5,14 @@
 #include "Belt.h"
 #include "Player.h"
 #include "GameState.h"
+#include "Belt.h"
+#include "Flag.h"
+#include "WaterPit.h"
+#include "Player.h"
+#include "DangerZone.h"
+#include "Workshop.h"
+#include "Antenna.h"
+#include "RotatingGear.h"
 #include <iostream>
 #include <fstream>
 
@@ -160,9 +168,30 @@ void Grid::CountObjects() {
 			for (int k = 0; k < NUM_OBJECT_TYPES; k++) {
 
 				GameObjectType type = static_cast<GameObjectType>(k);
-
 				if (obj && obj->IsType(type)) {
-					ObjectCount[type]++;
+					if (dynamic_cast<Belt*>(obj)) {
+						cout << "is belt" << endl;
+					}
+					else if (dynamic_cast<Flag*>(obj)) {
+						cout << "is flag" << endl;
+					}
+					else if (dynamic_cast<WaterPit*>(obj)) {
+						cout << "is water pit" << endl;
+					}
+					else if (dynamic_cast<DangerZone*>(obj)) {
+						cout << "is danger zone" << endl;
+					}
+					else if (dynamic_cast<Workshop*>(obj)) {
+						cout << "is workshop" << endl;
+					}
+					else if (dynamic_cast<Antenna*>(obj)) {
+						cout << "is antenna" << endl;
+					}
+					else if (dynamic_cast<RotatingGear*>(obj)) {
+						cout << "is rotating gear" << endl;
+					}
+					cout << "this is object type " << k << endl;
+					ObjectCount[k]++;
 					break;
 				}
 			}
@@ -172,6 +201,7 @@ void Grid::CountObjects() {
 void Grid::SaveAll(ofstream& OutFile, GameObjectType type) const
 {
 	OutFile << ObjectCount[type] << endl;
+
 
 	for (int i = NumVerticalCells - 1; i >= 0; i--)
 		for (int j = 0; j < NumHorizontalCells; j++)

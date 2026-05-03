@@ -64,8 +64,8 @@ void Antenna::Apply(Grid* pGrid, GameState* pState, Player* pPlayer)
 void Antenna::Save(ofstream& OutFile, GameObjectType type)
 {
 	//Format:cell
-	if (type != ANTENNA_TYPE) return;
-	OutFile << position.GetCellNum() << "im a bad boy" << endl;
+	if (type == ANTENNA_TYPE) 
+	OutFile << position.GetCellNum() << endl;
 }
 
 bool Antenna::IsType(GameObjectType type) const { return type == ANTENNA_TYPE;}

@@ -4,6 +4,7 @@
 #include "Output.h"
 #include <fstream>
 #include <cstdlib>
+#include <iostream>
 
 SaveGridAction::SaveGridAction(ApplicationManager* pApp) :Action(pApp)
 {
@@ -45,10 +46,25 @@ void SaveGridAction::Execute()
 
 		//This Action tells the Grid to save itself (polymorphism used)
 		//tell the grid to save and loop throughout all cells and call save()
-		for (int i = 0; i < NUM_OBJECT_TYPES; i++) {
-			GameObjectType type = static_cast<GameObjectType>(i);
-			pGrid->SaveAll(OutFile, type);
-		}
+		pGrid->SaveAll(OutFile, FLAG_TYPE);
+		cout << "flag type: " << FLAG_TYPE << endl;
+		pGrid->SaveAll(OutFile, WATER_PIT_TYPE);
+		cout << "water pit type: " << WATER_PIT_TYPE << endl;
+		pGrid->SaveAll(OutFile, DANGER_ZONE_TYPE);
+		cout << "danger zone type: " << DANGER_ZONE_TYPE << endl;
+		pGrid->SaveAll(OutFile, BELT_TYPE);
+		cout << "belt type: " << BELT_TYPE << endl;
+		pGrid->SaveAll(OutFile, WORKSHOP_TYPE);
+		cout << "workshop type: " << WORKSHOP_TYPE << endl;
+		pGrid->SaveAll(OutFile, ANTENNA_TYPE);
+		cout << "antenna type: " << ANTENNA_TYPE << endl;
+		pGrid->SaveAll(OutFile, ROTATING_GEAR_TYPE);
+		cout << "rotating gear type: " << ROTATING_GEAR_TYPE << endl;
+
+		//for (int i = 0; i < NUM_OBJECT_TYPES; i++) {
+		//	GameObjectType type = static_cast<GameObjectType>(i);
+		//	pGrid->SaveAll(OutFile, type);
+		//}
 
 
 		//closing file to save & free memory

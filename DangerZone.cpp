@@ -35,7 +35,7 @@ void DangerZone::Apply(Grid* pGrid, GameState* pState, Player* pPlayer)
 void DangerZone::Save(ofstream& OutFile, GameObjectType type)
 {
 	//Format:cell
-	if (type != DANGER_ZONE_TYPE) return;
+	if (type == DANGER_ZONE_TYPE) 
 	OutFile << position.GetCellNum() << endl;
 }
 
