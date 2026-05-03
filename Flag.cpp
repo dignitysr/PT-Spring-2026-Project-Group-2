@@ -15,7 +15,8 @@ void Flag::Apply(Grid* pGrid, GameState* pState, Player* pPlayer)
 {
 
 	pGrid->GetOutput()->PrintMessage("You have reached a flag. Click to continue ... ");
-	pGrid->GetInput()->GetUserAction();
+	int x, y;
+	pGrid->GetInput()->GetPointClicked(x, y);
 	pState->SetEndGame(true);
 
 	///TODO: Implement this function as mentioned in the guideline steps (numbered below) below
