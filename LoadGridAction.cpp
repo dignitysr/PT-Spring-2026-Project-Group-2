@@ -27,7 +27,6 @@ bool LoadGridAction::ReadActionParameters()
 
 	//receiving the file name from the user
 	pOut->PrintMessage("Enter filename:   ");
-	const string user = getenv("USERNAME");
 
 	//using GetString() to recieve what the user types and concatenate .txt with it to make it a file
 	filename = pIn->GetString(pOut) + ".txt";
@@ -49,18 +48,7 @@ void LoadGridAction::Execute()
 	Grid* pGrid = pManager->GetGrid();
 
 	//clearing the grid before loading new data
-	for (int r = 0; r < 10; r++) {      // NumVerticalCells
-		for (int c = 0; c < 11; c++) {  // NumHorizontalCells
-			// Note: You can't access pCellList directly if it's private in Grid!
-			// You would have to do something like this:
-			GameObject* pObj = pGrid->GetCell(CellPosition(r, c))->GetGameObject();
-			if (pObj) {
-				delete pObj;
-				CellPosition pos(r, c);
-				pGrid->RemoveObjectFromCell(pos); // You'd need this helper
-			}
-		}
-	}
+	pGrid->ClearBoard();
 
 	int count;
 	CellPosition tempPos(1, 1);
@@ -127,6 +115,7 @@ void LoadGridAction::Execute()
 	InFile.close();
 	Output* pOut = pGrid->GetOutput();
 	pOut->PrintMessage("Grid Loaded successfully! Click to continue...");
+	pOut->ClearStatusBar();
 }
 
 LoadGridAction::~LoadGridAction()

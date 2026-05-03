@@ -58,6 +58,8 @@ public:
 	// Returns the first Belt found at or after 'position' (used when adding connected belts).
 	Belt* GetNextBelt(const CellPosition& position);
 
+	void ClearBoard(); // Deletes all game objects on the board and sets the cells' pGameObject to NULL (used in LoadGridAction)
+
 	// ========== Setters / Getters ==========
 
 	Input*  GetInput()  const;
@@ -78,6 +80,7 @@ public:
 	void CountObjects();
 
 	void SaveAll(ofstream& OutFile, GameObjectType type) const; // Saves the grid to the passed output file stream (OutFile)
+
 
 	// It Updates the Grid according to the last state of the game
 	// In Design mode, it draws all cells THEN all game objects THEN all players

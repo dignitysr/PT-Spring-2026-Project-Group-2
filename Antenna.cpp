@@ -68,6 +68,8 @@ void Antenna::Save(ofstream& OutFile, GameObjectType type)
 	OutFile << position.GetCellNum() << endl;
 }
 
+bool Antenna::IsType(GameObjectType type) const { return type == ANTENNA_TYPE; }
+
 void Antenna::Load(ifstream& InFile)
 {
 	int cellNum;
@@ -77,8 +79,6 @@ void Antenna::Load(ifstream& InFile)
 		this->position = CellPosition::GetCellPositionFromNum(cellNum);
 	}
 }
-
-bool Antenna::IsType(GameObjectType type) const { return type == ANTENNA_TYPE;}
 
 
 

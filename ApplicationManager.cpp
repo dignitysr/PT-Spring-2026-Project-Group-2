@@ -16,6 +16,7 @@
 #include "NewGameAction.h"
 #include "CutObjectAction.h"
 #include "SaveGridAction.h"
+#include "LoadGridAction.h"
 
 ///TODO: Add #include for all action types
 
@@ -123,7 +124,7 @@ void ApplicationManager::ExecuteAction(ActionType ActType)
 		break;
 
 	case LOAD_GRID:
-		//pAct = new LoadGridAction(this);
+		pAct = new LoadGridAction(this);
 		break;
 
 	case ADD_ROTATING_GEAR:
