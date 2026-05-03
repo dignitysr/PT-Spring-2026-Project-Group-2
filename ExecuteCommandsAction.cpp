@@ -2,68 +2,59 @@
 #include "Grid.h"
 #include "Player.h"
 #include "GameState.h"
+#include "Output.h"
 
 ExecuteCommandsAction::ExecuteCommandsAction(ApplicationManager* pApp) : Action(pApp)
 {
-    
 }
 
 bool ExecuteCommandsAction::ReadActionParameters()
 {
-    return true;
-}
+	Grid* pGrid = pManager->GetGrid();
+	GameState* pState = pManager->GetGameState();
+	Player* pPlayer = pState->GetCurrentPlayer();
 
+	if (pPlayer == NULL)
+	{
+		pGrid->PrintErrorMessage("Error: No current player. Click to continue ...");
+		return false;
+	}
+
+	if (pPlayer->GetSavedCommandCount() == 0)
+	{
+		pGrid->PrintErrorMessage("No saved commands to execute. Click to continue ...");
+		return false;
+	}
+
+	return true;
+}
 
 void ExecuteCommandsAction::Execute()
 {
-    
-    Player* currentPlayer = pManager->GetGameState()->GetCurrentPlayer();
+	bool valid = ReadActionParameters();
 
-    int health = currentPlayer->GetHealth();
+	if (!valid)
+		return;
 
+	Grid* pGrid = pManager->GetGrid();
+	GameState* pState = pManager->GetGameState();
 
-    if (commands.size() > health) {
-        
-        pManager->GetGrid()->GetOutput()->PrintMessage("Cannot select more commands than your health!");
-        return;
-    }
+	Player* pPlayer = pState->GetCurrentPlayer();
 
-    
-    for (int i = 0; i < commands.size(); i++) {
-        
-        if (commands[i] == "MOVE_FORWARD_ONE_STEP") {
-            currentPlayer->AddSavedCommand(MOVE_FORWARD_ONE_STEP);
-        }
-        else if (commands[i] == "MOVE_FORWARD_TWO_STEPS") {
-            currentPlayer->AddSavedCommand(MOVE_FORWARD_TWO_STEPS);
-        }
-        else if (commands[i] == "MOVE_FORWARD_THREE_STEPS") {
-            currentPlayer->AddSavedCommand(MOVE_FORWARD_THREE_STEPS);
-        }
-        else if (commands[i] == "MOVE_BACKWARD_ONE_STEP") {
-            currentPlayer->AddSavedCommand(MOVE_BACKWARD_ONE_STEP);
-        }
-        else if (commands[i] == "MOVE_BACKWARD_TWO_STEPS") {
-            currentPlayer->AddSavedCommand(MOVE_BACKWARD_TWO_STEPS);
-        }
-        else if (commands[i] == "MOVE_BACKWARD_THREE_STEPS") {
-            currentPlayer->AddSavedCommand(MOVE_BACKWARD_THREE_STEPS);
-        }
-        else if (commands[i] == "ROTATE_CLOCKWISE") {
-            currentPlayer->AddSavedCommand(ROTATE_CLOCKWISE);
-        }
-        else if (commands[i] == "ROTATE_COUNTERCLOCKWISE") {
-            currentPlayer->AddSavedCommand(ROTATE_COUNTERCLOCKWISE);
-        }
-        
-    }
+	Player* movingPlayer = pPlayer;
 
-    currentPlayer->Move(pManager->GetGrid(), pManager->GetGameState());
+	pPlayer->Move(pGrid, pState);
 
-  
+	pPlayer->ClearSavedCommands();
+
+	if (pState->GetCurrentPlayer() == movingPlayer)
+	{
+		pState->AdvanceCurrentPlayer();
+	}
+
+	pManager->UpdateInterface();
 }
 
 ExecuteCommandsAction::~ExecuteCommandsAction()
 {
-    
 }

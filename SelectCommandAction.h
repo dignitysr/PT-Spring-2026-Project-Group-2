@@ -1,19 +1,19 @@
 #pragma once
+
 #include "Action.h"
-#include "Input.h"
-#include "Output.h"
-#include "Player.h"
-#include <vector>
+#include "DEFS.h"
+#include "UI_Info.h"
 
 class SelectCommandAction : public Action
 {
-private:
-    std::vector<std::string> availableCommands;  
-    std::vector<std::string> selectedCommands;   
+	Command availableCommands[MaxAvailableCommands];
+	int availableCommandsCount;
 
 public:
-    SelectCommandAction(ApplicationManager* pApp);  
-    virtual void Execute();                         
-    virtual bool ReadActionParameters();            
-    virtual ~SelectCommandAction();                 
+	SelectCommandAction(ApplicationManager* pApp);
+
+	virtual bool ReadActionParameters();
+	virtual void Execute();
+
+	virtual ~SelectCommandAction();
 };
