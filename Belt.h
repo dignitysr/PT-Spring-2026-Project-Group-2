@@ -5,6 +5,9 @@ class Belt: public GameObject
 	// Note: the "position" data member inherited from the GameObject class is used as the belt's "Start Cell Position"
 
 	CellPosition endCellPos; // here is the belt's End Cell Position
+
+	int distance;
+	Direction dir; // these are for pasting
 public:
 	Belt(const CellPosition & startCellPos, const CellPosition & endCellPos); // A constructor for initialization
 	virtual void Draw(Output* pOut) const; // Draws a belt from its start cell to its end cell

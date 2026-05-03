@@ -191,6 +191,7 @@
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="NewGameAction.cpp" />
     <ClCompile Include="Output.cpp" />
+    <ClCompile Include="PasteObjectAction.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="RebootRepairAction.cpp" />
     <ClCompile Include="RotatingGear.cpp" />
@@ -250,6 +251,7 @@
     <ClInclude Include="LoadGridAction.h" />
     <ClInclude Include="NewGameAction.h" />
     <ClInclude Include="Output.h" />
+    <ClInclude Include="PasteObjectAction.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="RebootRepairAction.h" />
     <ClInclude Include="RotatingGear.h" />

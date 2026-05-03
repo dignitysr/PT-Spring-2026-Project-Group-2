@@ -4,6 +4,8 @@
 Belt::Belt(const CellPosition & startCellPos, const CellPosition & endCellPos) : GameObject(startCellPos)
 {
 	this->endCellPos = endCellPos;
+	distance = CellPosition::GetCellNumFromPosition(endCellPos) - CellPosition::GetCellNumFromPosition(startCellPos);
+	dir = startCellPos.HCell() != endCellPos.HCell() ? (startCellPos.VCell() > endCellPos.VCell() ? DOWN : UP) : (startCellPos.HCell() > endCellPos.HCell() ? LEFT : RIGHT); 
 
 	///TODO: Do the needed validation
 }

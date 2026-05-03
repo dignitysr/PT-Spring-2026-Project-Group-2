@@ -17,6 +17,7 @@
 #include "CutObjectAction.h"
 #include "SaveGridAction.h"
 #include "LoadGridAction.h"
+#include "DeleteObjectAction.h"
 
 ///TODO: Add #include for all action types
 
@@ -116,7 +117,7 @@ void ApplicationManager::ExecuteAction(ActionType ActType)
 		break;
 
 	case DELETE_OBJECT:
-		//pAct = new DeleteObjectAction(this);
+		pAct = new DeleteObjectAction(this);
 		break;
 
 	case SAVE_GRID:
