@@ -10,7 +10,7 @@ public:
     //constructor
     SaveGridAction(ApplicationManager* pApp);
     //Reading file name
-    virtual void ReadActionParameters();
+    virtual bool ReadActionParameters();
     //Executes the saving process
     virtual void Execute();
     // Destructor

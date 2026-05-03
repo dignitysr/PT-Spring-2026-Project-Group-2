@@ -6,6 +6,7 @@
 #include "Player.h"
 #include "GameState.h"
 #include <iostream>
+#include <fstream>
 
 Grid::Grid(Input* pIn, Output* pOut) : pIn(pIn), pOut(pOut)
 {
@@ -140,6 +141,14 @@ void Grid::UpdateInterface(const GameState* pState) const
 
 		// Note: UpdatePlayerCell() already redraws players step-by-step during Play mode.
 	}
+}
+
+void Grid::SaveAll(ofstream& OutFile, GameObjectType type) const
+{
+	for (int i = NumVerticalCells - 1; i >= 0; i--)
+		for (int j = 0; j < NumHorizontalCells; j++)
+			if (CellList[i][j]->GetGameObject())
+				CellList[i][j]->GetGameObject()->Save(OutFile, type);
 }
 
 void Grid::PrintErrorMessage(string msg)

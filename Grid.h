@@ -1,5 +1,5 @@
 #pragma once
-
+#include <fstream>
 #include "UI_Info.h"
 #include "DEFS.h"
 
@@ -72,6 +72,8 @@ public:
 	Cell* GetCell(const CellPosition& pos) const; // Returns the Cell pointer of the passed "position" if valid, otherwise returns NULL
 
 	// ========== User Interface ==========
+
+	void SaveAll(ofstream& OutFile, GameObjectType type) const; // Saves the grid to the passed output file stream (OutFile)
 
 	// It Updates the Grid according to the last state of the game
 	// In Design mode, it draws all cells THEN all game objects THEN all players
