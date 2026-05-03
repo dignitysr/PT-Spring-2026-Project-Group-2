@@ -32,7 +32,24 @@ void DangerZone::Apply(Grid* pGrid, GameState* pState, Player* pPlayer)
 	// 3- Update the players info which is displayed (check Grid class and decide which function to use)
 }
 
+void DangerZone::Save(ofstream& OutFile, GameObjectType type)
+{
+	//Format:cell
+	if (type == DANGER_ZONE_TYPE) 
+	OutFile << position.GetCellNum() << endl;
+}
 
+void DangerZone::Load(ifstream& InFile)
+{
+	int cellNum;
+	if (InFile >> cellNum) // Read the cell number from the file
+	{
+		// Update the position using the helper function
+		this->position = CellPosition::GetCellPositionFromNum(cellNum);
+	}
+}
+
+bool DangerZone::IsType(GameObjectType type) const { return type == DANGER_ZONE_TYPE; }
 DangerZone::~DangerZone()
 {
 }

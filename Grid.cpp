@@ -5,6 +5,16 @@
 #include "Belt.h"
 #include "Player.h"
 #include "GameState.h"
+#include "Belt.h"
+#include "Flag.h"
+#include "WaterPit.h"
+#include "Player.h"
+#include "DangerZone.h"
+#include "Workshop.h"
+#include "Antenna.h"
+#include "RotatingGear.h"
+#include <iostream>
+#include <fstream>
 
 Grid::Grid(Input* pIn, Output* pOut) : pIn(pIn), pOut(pOut)
 {
@@ -14,6 +24,10 @@ Grid::Grid(Input* pIn, Output* pOut) : pIn(pIn), pOut(pOut)
 			CellList[i][j] = new Cell(i, j);
 
 	Clipboard = NULL;
+
+	for (int k = 0; k < NUM_OBJECT_TYPES; k++) {
+		ObjectCount[k] = 0;
+	}
 }
 
 
@@ -42,8 +56,8 @@ GameObject* Grid::RemoveObjectFromCell(const CellPosition& pos)
 		// Note: deallocate the object here before NULLing if ownership requires it
 		GameObject* cellObj = CellList[pos.VCell()][pos.HCell()]->GetGameObject();
 		if (cellObj) {
-			return cellObj;
 			CellList[pos.VCell()][pos.HCell()]->SetGameObject(NULL);
+			return cellObj;
 		} else CellList[pos.VCell()][pos.HCell()]->SetGameObject(NULL);
 	}
 }
@@ -56,6 +70,15 @@ void Grid::UpdatePlayerCell(Player* player, const CellPosition& newPosition)
 	player->Draw(pOut);
 }
 
+bool Grid::FlagExists() const
+{
+	for (int i = NumVerticalCells - 1; i >= 0; i--)
+		for (int j = 0; j < NumHorizontalCells; j++)
+			if (CellList[i][j]->HasFlag())
+				return true;
+	return false;
+}
+
 Belt* Grid::GetNextBelt(const CellPosition& position)
 {
 	int startH = position.HCell(); // represents the start hCell in the current row to search for the belt in
@@ -64,13 +87,23 @@ Belt* Grid::GetNextBelt(const CellPosition& position)
 		for (int j = startH; j < NumHorizontalCells; j++) // searching from startH and RIGHT
 		{
 			///TODO: Check if CellList[i][j] has a belt, if yes return it
-			if (CellList[i][j].HasBelt()) {
-				return dynamic_cast<Belt*>(CellList[i][j].GetGameObject());
-
-		}
+			if (CellList[i][j]->HasBelt()) {
+				return dynamic_cast<Belt*>(CellList[i][j]->GetGameObject());
+			}
 		startH = 0; // because in the next above rows, we will search from the first left cell (hCell = 0) to the right
 	}
 	return NULL; // not found
+	}
+}
+
+void Grid::ClearBoard()
+{
+	for (int i = NumVerticalCells - 1; i >= 0; i--)
+		for (int j = 0; j < NumHorizontalCells; j++)
+			if (CellList[i][j]->GetGameObject()) {
+				delete CellList[i][j]->GetGameObject();
+				CellList[i][j]->SetGameObject(NULL);
+			}
 }
 
 
@@ -80,7 +113,10 @@ Belt* Grid::GetNextBelt(const CellPosition& position)
 Input* Grid::GetInput() const  { return pIn; }
 Output* Grid::GetOutput() const { return pOut; }
 
-void Grid::SetClipboard(GameObject* gameObject) { Clipboard = gameObject; } // to be used in copy/cut
+void Grid::SetClipboard(GameObject* gameObject) {
+	if (Clipboard) delete Clipboard; //mem management
+	Clipboard = gameObject;
+} // to be used in copy/cut
 GameObject* Grid::GetClipboard() const          { return Clipboard; }       // to be used in paste
 
 Cell* Grid::GetStartCell() const
@@ -127,6 +163,36 @@ void Grid::UpdateInterface(const GameState* pState) const
 
 		// Note: UpdatePlayerCell() already redraws players step-by-step during Play mode.
 	}
+}
+
+void Grid::CountObjects() {
+	for (int k = 0; k < NUM_OBJECT_TYPES; k++) {
+		ObjectCount[k] = 0;
+	}
+
+	for (int i = NumVerticalCells - 1; i >= 0; i--)
+		for (int j = 0; j < NumHorizontalCells; j++) {
+
+			GameObject* obj = CellList[i][j]->GetGameObject();
+
+			for (int k = 0; k < NUM_OBJECT_TYPES; k++) {
+
+				GameObjectType type = static_cast<GameObjectType>(k);
+					ObjectCount[k]++;
+					break;
+				}
+			}
+		}
+
+void Grid::SaveAll(ofstream& OutFile, GameObjectType type) const
+{
+	OutFile << ObjectCount[type] << endl;
+
+
+	for (int i = NumVerticalCells - 1; i >= 0; i--)
+		for (int j = 0; j < NumHorizontalCells; j++)
+			if (CellList[i][j]->GetGameObject())
+				CellList[i][j]->GetGameObject()->Save(OutFile, type);
 }
 
 void Grid::PrintErrorMessage(string msg)

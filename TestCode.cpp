@@ -564,12 +564,8 @@ int testcode()
 				pOut->PrintMessage("Action: ADD_WORKSHOP , Click anywhere");
 				break;
 
-			case ADD_ROTATING_GEAR_CLOCKWISE:
+			case ADD_ROTATING_GEAR:
 				pOut->PrintMessage("Action: ADD_ROTATING_GEAR_CLOCKWISE , Click anywhere");
-				break;
-
-			case ADD_ROTATING_GEAR_ANTICLOCKWISE:
-				pOut->PrintMessage("Action: ADD_ROTATING_GEAR_ANTICLOCKWISE , Click anywhere");
 				break;
 
 			case COPY_OBJECT:

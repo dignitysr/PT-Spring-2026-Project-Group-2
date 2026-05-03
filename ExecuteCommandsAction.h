@@ -13,6 +13,6 @@ private:
 public:
     ExecuteCommandsAction(ApplicationManager* pApp);  // المُنشئ
     virtual void Execute();                           // تنفيذ الأوامر
-    virtual void ReadActionParameters();
+    virtual bool ReadActionParameters();
     virtual ~ExecuteCommandsAction();                 // المدمر
 };

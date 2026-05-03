@@ -10,7 +10,7 @@ public:
     NewGameAction(ApplicationManager* pApp);
 
     // Reads the parameters required for action to execute
-    virtual void ReadActionParameters();
+    virtual bool ReadActionParameters();
 
     // Executes the action of starting a new game
     virtual void Execute();

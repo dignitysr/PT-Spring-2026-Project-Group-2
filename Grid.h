@@ -1,5 +1,5 @@
 #pragma once
-
+#include <fstream>
 #include "UI_Info.h"
 #include "DEFS.h"
 
@@ -38,6 +38,8 @@ class Grid
 
 	GameObject* Clipboard; // Used in copy / cut / paste
 
+	int ObjectCount[NUM_OBJECT_TYPES]; // Used in Save/Load to count the number of each object type on the board (for saving)
+
 public:
 
 	Grid(Input* pIn, Output* pOut); // Allocates all Cells; does NOT create Players (GameState does that)
@@ -51,9 +53,12 @@ public:
 	void UpdatePlayerCell(Player* player, const CellPosition& newPosition); // Update the player's pCell with the CellList's Cell pointer of the "newPosition",
 	                                                                          // Clears the player's circle from the previous cell
 	    																	  // and Draws it in the new cell
-
+	
+	bool FlagExists() const; // Checks if there is a flag on the board and returns true if there is at least one flag or returns false if there is no flag
 	// Returns the first Belt found at or after 'position' (used when adding connected belts).
 	Belt* GetNextBelt(const CellPosition& position);
+
+	void ClearBoard(); // Deletes all game objects on the board and sets the cells' pGameObject to NULL (used in LoadGridAction)
 
 	// ========== Setters / Getters ==========
 
@@ -71,6 +76,11 @@ public:
 	Cell* GetCell(const CellPosition& pos) const; // Returns the Cell pointer of the passed "position" if valid, otherwise returns NULL
 
 	// ========== User Interface ==========
+
+	void CountObjects();
+
+	void SaveAll(ofstream& OutFile, GameObjectType type) const; // Saves the grid to the passed output file stream (OutFile)
+
 
 	// It Updates the Grid according to the last state of the game
 	// In Design mode, it draws all cells THEN all game objects THEN all players

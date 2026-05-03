@@ -61,6 +61,26 @@ void Antenna::Apply(Grid* pGrid, GameState* pState, Player* pPlayer)
 	// 3- Print a message indicating which player will play first
 }
 
+void Antenna::Save(ofstream& OutFile, GameObjectType type)
+{
+	//Format:cell
+	if (type == ANTENNA_TYPE) 
+	OutFile << position.GetCellNum() << endl;
+}
+
+bool Antenna::IsType(GameObjectType type) const { return type == ANTENNA_TYPE; }
+
+void Antenna::Load(ifstream& InFile)
+{
+	int cellNum;
+	if (InFile >> cellNum) // Read the cell number from the file
+	{
+		// Update the position using the helper function
+		this->position = CellPosition::GetCellPositionFromNum(cellNum);
+	}
+}
+
+
 
 Antenna::~Antenna()
 {

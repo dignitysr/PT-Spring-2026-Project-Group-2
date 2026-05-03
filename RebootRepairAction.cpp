@@ -8,13 +8,14 @@
 
 RebootRepairAction::RebootRepairAction(ApplicationManager* pApp) : Action(pApp)
 {
-    
+ 
 }
 
-void RebootRepairAction::ReadActionParameters()
+bool RebootRepairAction::ReadActionParameters()
 {
     
     pManager->GetGrid()->GetOutput()->PrintMessage("Reboot and repair your robot!");
+    return true;
 }
 
 void RebootRepairAction::Execute()

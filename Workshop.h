@@ -1,5 +1,8 @@
 #pragma once
 #include "GameObject.h"
+#include "Player.h"
+#include "Output.h"
+
 
 // Workshop: a special cell that applies an effect on the player who lands on it.
 // [OPTIONAL BONUS] Consumables can be added as an extension.
@@ -11,6 +14,9 @@ public:
 
 	virtual void Apply(Grid* pGrid, GameState* pState, Player* pPlayer); // Applies the effect of the workshop
 
+	void Workshop::Save(ofstream& OutFile, GameObjectType type);
+	bool IsType(GameObjectType type) const;
+	void Workshop::Load(ifstream& InFile);
 	~Workshop();
 };
 

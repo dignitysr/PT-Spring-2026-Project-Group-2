@@ -1,5 +1,6 @@
 #include "AddFlagAction.h"
-
+#include "CellPosition.h"
+#include <iostream>
 
 
 AddFlagAction::AddFlagAction(ApplicationManager *pApp) : Action(pApp)
@@ -8,9 +9,9 @@ AddFlagAction::AddFlagAction(ApplicationManager *pApp) : Action(pApp)
 }
 
 
-void AddFlagAction::ReadActionParameters()
+bool AddFlagAction::ReadActionParameters()
 {
-
+	
 	///TODO: Implement this function as mentioned in the guideline steps (numbered below) below
 
 
@@ -27,25 +28,31 @@ void AddFlagAction::ReadActionParameters()
 	Output* pOut = pGrid->GetOutput();
 	Input* pIn = pGrid->GetInput();
 
+	if (pGrid->FlagExists()) {
+		pOut->PrintMessage("A flag already exists on the board. Cannot add another flag.");
+		pIn->GetCellClicked(); pOut->ClearStatusBar(); return false;
+	}
+
 	pOut->PrintMessage("New Flag: Click on the cell to place the flag ...");
-	CellPosition flagPos = pIn->GetCellClicked();
+	flagPos = pIn->GetCellClicked();
 
 	if (!flagPos.IsValidCell()) {
 		pOut->PrintMessage("Invalid cell selection for the flag. Try again...");
-		return;
+		pIn->GetCellClicked(); pOut->ClearStatusBar(); return false;
 	}
-	if (pGrid->GetCell(flagPos) != nullptr) {
+	if (pGrid->GetCell(flagPos)->GetGameObject() != nullptr) {
 		pOut->PrintMessage("Cell is already occupied, try a different cell.");
-		return;
+		pIn->GetCellClicked(); pOut->ClearStatusBar(); return false;
 	}
 	pOut->ClearStatusBar();
+	return true;
 }
 
 void AddFlagAction::Execute()
 {
 	// The first line of any Action Execution is to read its parameter first 
 	// and hence initializes its data members
-	ReadActionParameters();
+	if (!ReadActionParameters()) return;
 	///TODO: Implement this function as mentioned in the guideline steps (numbered below) below
 	// == Here are some guideline steps (numbered below) to implement this function ==
 
@@ -57,7 +64,7 @@ void AddFlagAction::Execute()
 
 	Grid* pGrid = pManager->GetGrid();
 
-		bool added = pGrid->AddObjectToCell(pFlag);
+	bool added = pGrid->AddObjectToCell(pFlag);
 	if (!added) {
 
 		pGrid->PrintErrorMessage("Error: Cell already has an object. Click to continue ...");

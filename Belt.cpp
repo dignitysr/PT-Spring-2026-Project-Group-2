@@ -34,6 +34,24 @@ CellPosition Belt::GetEndPosition() const
 	return endCellPos;
 }
 
+void Belt::Save(ofstream& OutFile, GameObjectType type)
+{
+	//Format:start_cell  end_cell
+	if (type == BELT_TYPE) 	OutFile << position.GetCellNum() << " " << endCellPos.GetCellNum() << endl; 
+}
+void Belt::Load(ifstream& InFile) {
+	int startCell, endCell;
+	InFile >> startCell >> endCell;
+
+	// Update the start position (inherited from GameObject)
+	this->position = CellPosition::GetCellPositionFromNum(startCell);
+
+	// Update the end position (specific to Belt)
+	this->endCellPos = CellPosition::GetCellPositionFromNum(endCell);
+}
+
+bool Belt::IsType(GameObjectType type) const { return type == BELT_TYPE;}
+
 
 Belt::~Belt()
 {

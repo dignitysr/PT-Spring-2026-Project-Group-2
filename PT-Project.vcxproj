@@ -17,13 +17,13 @@
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v145</PlatformToolset>
     <UseOfMfc>false</UseOfMfc>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v145</PlatformToolset>
     <UseOfMfc>false</UseOfMfc>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
@@ -178,6 +178,7 @@
     <ClCompile Include="CMUgraphicsLib\jpeg\jquant2.c" />
     <ClCompile Include="CMUgraphicsLib\jpeg\jutils.c" />
     <ClCompile Include="CopyObjectAction.cpp" />
+    <ClCompile Include="CutObjectAction.cpp" />
     <ClCompile Include="DangerZone.cpp" />
     <ClCompile Include="ExecuteCommandsAction.cpp" />
     <ClCompile Include="Flag.cpp" />
@@ -185,12 +186,14 @@
     <ClCompile Include="GameState.cpp" />
     <ClCompile Include="Grid.cpp" />
     <ClCompile Include="Input.cpp" />
+    <ClCompile Include="LoadGridAction.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="NewGameAction.cpp" />
     <ClCompile Include="Output.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="RebootRepairAction.cpp" />
     <ClCompile Include="RotatingGear.cpp" />
+    <ClCompile Include="SaveGridAction.cpp" />
     <ClCompile Include="SelectCommandAction.cpp" />
     <ClCompile Include="SwitchToDesignModeAction.cpp" />
     <ClCompile Include="SwitchToPlayModeAction.cpp" />
@@ -233,6 +236,7 @@
     <ClInclude Include="CMUgraphicsLib\jpeg\jpeglib.h" />
     <ClInclude Include="CMUgraphicsLib\jpeg\jversion.h" />
     <ClInclude Include="CopyObjectAction.h" />
+    <ClInclude Include="CutObjectAction.h" />
     <ClInclude Include="DangerZone.h" />
     <ClInclude Include="DEFS.h" />
     <ClInclude Include="ExecuteCommandsAction.h" />
@@ -241,11 +245,13 @@
     <ClInclude Include="GameState.h" />
     <ClInclude Include="Grid.h" />
     <ClInclude Include="Input.h" />
+    <ClInclude Include="LoadGridAction.h" />
     <ClInclude Include="NewGameAction.h" />
     <ClInclude Include="Output.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="RebootRepairAction.h" />
     <ClInclude Include="RotatingGear.h" />
+    <ClInclude Include="SaveGridAction.h" />
     <ClInclude Include="SelectCommandAction.h" />
     <ClInclude Include="SwitchToDesignModeAction.h" />
     <ClInclude Include="SwitchToPlayModeAction.h" />

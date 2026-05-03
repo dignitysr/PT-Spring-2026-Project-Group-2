@@ -6,7 +6,7 @@ AddBeltAction::AddBeltAction(ApplicationManager *pApp) : Action(pApp)
 }
 
 
-void AddBeltAction::ReadActionParameters()
+bool AddBeltAction::ReadActionParameters()
 {
 	// Get a Pointer to the Input / Output Interfaces
 	Grid* pGrid = pManager->GetGrid();
@@ -26,51 +26,52 @@ void AddBeltAction::ReadActionParameters()
 	///TODO: Make the needed validations on the read parameters
 	if (!startPos.IsValidCell() || !endPos.IsValidCell()) {
 		pOut->PrintMessage("invalid cell selection try again...");
-		return;
+		pIn->GetCellClicked(); pOut->ClearStatusBar(); return false;
 	
 	}
 	if (startPos == static_cast<CellPosition>(1)) {
 		pOut->PrintMessage("Can't start the belt at cell 1.");
-		return;
+		pIn->GetCellClicked(); pOut->ClearStatusBar(); return false;
 	}
 	if (startPos == endPos) {
 
 		pOut->PrintMessage("Start and end positions cannot be the same.");
 
-		return;
+		pIn->GetCellClicked(); pOut->ClearStatusBar(); return false;
 
 	}
-	if (pGrid->GetCell(startPos) != nullptr || pGrid->GetCell(endPos) != nullptr) {
+	if (pGrid->GetCell(startPos)->GetGameObject() != nullptr || pGrid->GetCell(endPos)->GetGameObject() != nullptr) {
 
 		pOut->PrintMessage("Cannot place the belt on occupied cells.");
 
-		return;
+		pIn->GetCellClicked(); pOut->ClearStatusBar(); return false;
 
 	}
 	if (startPos.VCell() != endPos.VCell() && startPos.HCell() != endPos.HCell()) {
 
 		pOut->PrintMessage("Start and End positions must be in the same row or column.");
 
-		return;
+		pIn->GetCellClicked(); pOut->ClearStatusBar(); return false;
 
 	}
 	if (pGrid->GetCell(endPos)->HasFlag()) {
 
 		pOut->PrintMessage("Cannot place the belt at the flag.");
 
-		return;
+		pIn->GetCellClicked(); pOut->ClearStatusBar(); return false;
 
 	}
 
 	// Clear messages
 	pOut->ClearStatusBar();
+	return true;
 }
 
 void AddBeltAction::Execute()
 {
 	// The first line of any Action Execution is to read its parameter first 
 	// and hence initializes its data members
-	ReadActionParameters();
+	if (!ReadActionParameters()) return;
 
 	// Create a belt object with the parameters read from the user
 	Belt * pBelt = new Belt(startPos, endPos);

@@ -28,6 +28,24 @@ void Flag::Apply(Grid* pGrid, GameState* pState, Player* pPlayer)
 	//    Review the "pGrid" functions and decide which function can be used for that
 }
 
+void Flag::Save(ofstream& OutFile, GameObjectType type)
+{
+	//Format:cell
+	if (type == FLAG_TYPE) 
+	OutFile << position.GetCellNum() << endl;
+}
+
+void Flag::Load(ifstream& InFile)
+{
+	int cellNum;
+	if (InFile >> cellNum) // Read the cell number from the file
+	{
+		// Update the position using the helper function
+		this->position = CellPosition::GetCellPositionFromNum(cellNum);
+	}
+}
+
+bool Flag::IsType(GameObjectType type) const { return type == FLAG_TYPE; }
 Flag::~Flag()
 {
 

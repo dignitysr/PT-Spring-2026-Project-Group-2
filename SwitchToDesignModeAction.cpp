@@ -8,9 +8,10 @@ SwitchToDesignModeAction::SwitchToDesignModeAction(ApplicationManager* pApp) : A
 {
 }
 
-void SwitchToDesignModeAction::ReadActionParameters()
+bool SwitchToDesignModeAction::ReadActionParameters()
 {
 	// No parameters needed -- a mode switch requires no user input
+	return true;
 }
 
 void SwitchToDesignModeAction::Execute()
@@ -29,8 +30,6 @@ void SwitchToDesignModeAction::Execute()
 	pManager->UpdateInterface();
 
 	///TODO: Add any cleanup needed when leaving Play Mode.
-	pManager->ClearActiveGameObjects();
-	pState->ResetPlayerStates();
 }
 SwitchToDesignModeAction::~SwitchToDesignModeAction()
 {

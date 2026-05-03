@@ -8,9 +8,9 @@ ExecuteCommandsAction::ExecuteCommandsAction(ApplicationManager* pApp) : Action(
     
 }
 
-void ExecuteCommandsAction::ReadActionParameters()
+bool ExecuteCommandsAction::ReadActionParameters()
 {
-
+    return true;
 }
 
 

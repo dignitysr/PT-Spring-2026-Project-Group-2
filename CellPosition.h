@@ -28,6 +28,7 @@ public:
 	// In the Grid above, C13 has vCell = 3 and hCell = 1
 
 	bool operator==(const CellPosition& other); //const to avoid r value error
+	friend ostream& operator<<(ostream& os, const CellPosition& obj); // just for testing dont kill me :pray:
 	
 
 	///TODO: IMPLEMENT THE FOLLOWING FUNCTION
