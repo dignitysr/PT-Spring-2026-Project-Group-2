@@ -39,6 +39,16 @@ void Belt::Save(ofstream& OutFile, GameObjectType type)
 	//Format:start_cell  end_cell
 	OutFile << position.GetCellNum() << " " << endCellPos.GetCellNum() << endl;
 }
+void Belt::Load(ifstream& InFile) {
+	int startCell, endCell;
+	InFile >> startCell >> endCell;
+
+	// Update the start position (inherited from GameObject)
+	this->position = CellPosition::GetCellPositionFromNum(startCell);
+
+	// Update the end position (specific to Belt)
+	this->endCellPos = CellPosition::GetCellPositionFromNum(endCell);
+}
 
 Belt::~Belt()
 {

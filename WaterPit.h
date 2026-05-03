@@ -9,6 +9,7 @@ public:
 	virtual void Apply(Grid* pGrid, GameState* pState, Player* pPlayer); // Applies the effect of the water pit
 
 	void WaterPit::Save(ofstream& OutFile, GameObjectType type);
+	void WaterPit::Load(ifstream& InFile);
 	virtual ~WaterPit();
 };
 

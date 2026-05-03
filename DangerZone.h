@@ -9,6 +9,7 @@ public:
 	virtual void Apply(Grid* pGrid, GameState* pState, Player* pPlayer); // Applies the effect of the danger zone
 
 	void DangerZone::Save(ofstream& OutFile, GameObjectType type);
+	void DangerZone::Load(ifstream& InFile);
 	virtual ~DangerZone();
 };
 

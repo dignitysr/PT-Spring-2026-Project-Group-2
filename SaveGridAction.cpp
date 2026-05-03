@@ -54,7 +54,9 @@ void SaveGridAction::Execute()
 		//closing file to save & free memory
 		OutFile.close();
 
-		pGrid->PrintErrorMessage("Grid saved successfully to" + filename + ". Click to continue");
+		Output* pOut = pGrid->GetOutput();
+
+		pOut->PrintMessage("Grid saved successfully to" + filename + ". Click to continue");
 	}
 	else
 		pManager->GetGrid()->PrintErrorMessage("Error: Unable to create file!");

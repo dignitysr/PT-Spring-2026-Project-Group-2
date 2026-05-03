@@ -30,7 +30,7 @@ public:
 	//pure virtual:every object defines how to write itself to a file(overriding fns)
 	virtual void Save(ofstream& OutFile,GameObjectType type) = 0;
 
-	//virtual void Load(ifstream& Infile)  = 0;
+	virtual void Load(ifstream& Infile)  = 0;
 	//end of editing
 
 	virtual ~GameObject();

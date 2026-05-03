@@ -43,6 +43,16 @@ void WaterPit::Save(ofstream& OutFile, GameObjectType type)
 	OutFile << position.GetCellNum() << endl;
 }
 
+void WaterPit::Load(ifstream& InFile)
+{
+	int cellNum;
+	if (InFile >> cellNum) // Read the cell number from the file
+	{
+		// Update the position using the helper function
+		this->position = CellPosition::GetCellPositionFromNum(cellNum);
+	}
+}
+
 
 WaterPit::~WaterPit()
 {

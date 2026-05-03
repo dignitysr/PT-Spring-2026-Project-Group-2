@@ -13,6 +13,7 @@ public:
 	virtual void Apply(Grid* pGrid, GameState* pState, Player* pPlayer); // Applies the effect of the rotating gear
 	bool GetisClockWise() const; // Getter for the direction
 	void RotatingGear::Save(ofstream& OutFile, GameObjectType type);
+	void RotatingGear::Load(ifstream& InFile);
 	virtual ~RotatingGear();
 };
 
