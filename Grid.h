@@ -38,6 +38,8 @@ class Grid
 
 	GameObject* Clipboard; // Used in copy / cut / paste
 
+	int ObjectCount[NUM_OBJECT_TYPES]; // Used in Save/Load to count the number of each object type on the board (for saving)
+
 public:
 
 	Grid(Input* pIn, Output* pOut); // Allocates all Cells; does NOT create Players (GameState does that)
@@ -72,6 +74,8 @@ public:
 	Cell* GetCell(const CellPosition& pos) const; // Returns the Cell pointer of the passed "position" if valid, otherwise returns NULL
 
 	// ========== User Interface ==========
+
+	void CountObjects();
 
 	void SaveAll(ofstream& OutFile, GameObjectType type) const; // Saves the grid to the passed output file stream (OutFile)
 

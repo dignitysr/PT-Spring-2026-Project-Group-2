@@ -16,6 +16,8 @@ public:
 
 	void Workshop::Save(ofstream& OutFile, GameObjectType type);
 
+	bool IsType(GameObjectType type) const;
+
 	~Workshop();
 };
 

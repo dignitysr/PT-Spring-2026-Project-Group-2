@@ -30,25 +30,25 @@ void SaveGridAction::Execute()
 {
 	//Calling the Function to get the filename
 	ReadActionParameters();
-	
+
+	//get grid pointer
+	Grid* pGrid = pManager->GetGrid();
+
+
 	//creating a "output file stream" object to write on
 	ofstream OutFile(filename);
 
 	//check for file validity and creation
 	if (OutFile.is_open())
 	{
-		//get grid pointer
-		Grid* pGrid = pManager->GetGrid();
+		pGrid->CountObjects();
 
 		//This Action tells the Grid to save itself (polymorphism used)
 		//tell the grid to save and loop throughout all cells and call save()
-		pGrid->SaveAll(OutFile, FLAG_TYPE);
-		pGrid->SaveAll(OutFile, PIT_TYPE);
-		pGrid->SaveAll(OutFile, BELT_TYPE);
-		pGrid->SaveAll(OutFile, ROTATING_GEAR_TYPE);
-		pGrid->SaveAll(OutFile, WORKSHOP_TYPE);
-		pGrid->SaveAll(OutFile, WATER_PIT_TYPE);
-		pGrid->SaveAll(OutFile, DANGER_ZONE_TYPE);
+		for (int i = 0; i < NUM_OBJECT_TYPES; i++) {
+			GameObjectType type = static_cast<GameObjectType>(i);
+			pGrid->SaveAll(OutFile, type);
+		}
 
 
 		//closing file to save & free memory

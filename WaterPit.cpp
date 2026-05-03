@@ -40,8 +40,12 @@ void WaterPit::Apply(Grid* pGrid, GameState* pState, Player* pPlayer)
 void WaterPit::Save(ofstream& OutFile, GameObjectType type)
 {
 	//Format:cell
+	if (type != WATER_PIT_TYPE) return;
 	OutFile << position.GetCellNum() << endl;
 }
+
+bool WaterPit::IsType(GameObjectType type) const { return type == WATER_PIT_TYPE; }
+
 
 
 WaterPit::~WaterPit()

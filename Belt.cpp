@@ -37,8 +37,12 @@ CellPosition Belt::GetEndPosition() const
 void Belt::Save(ofstream& OutFile, GameObjectType type)
 {
 	//Format:start_cell  end_cell
+	if (type != BELT_TYPE) return; 
 	OutFile << position.GetCellNum() << " " << endCellPos.GetCellNum() << endl;
 }
+
+bool Belt::IsType(GameObjectType type) const { return type == BELT_TYPE;}
+
 
 Belt::~Belt()
 {

@@ -15,6 +15,7 @@
 #include "RebootRepairAction.h"
 #include "NewGameAction.h"
 #include "CutObjectAction.h"
+#include "SaveGridAction.h"
 
 ///TODO: Add #include for all action types
 
@@ -118,7 +119,7 @@ void ApplicationManager::ExecuteAction(ActionType ActType)
 		break;
 
 	case SAVE_GRID:
-		//pAct = new SaveGridAction(this);
+		pAct = new SaveGridAction(this);
 		break;
 
 	case LOAD_GRID:
