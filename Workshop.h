@@ -1,5 +1,7 @@
 #pragma once
 #include "GameObject.h"
+#include "Player.h"
+#include "Output.h"
 
 
 // Workshop: a special cell that applies an effect on the player who lands on it.
@@ -10,7 +12,7 @@ public:
 	Workshop(const CellPosition & workshopPosition);
 	virtual void Draw(Output* pOut) const; // Draws workshop
 
-	virtual void Apply(Grid* pGrid, GameState* pState, Player* pPlayer); // Applies the effect of the workshop
+	virtual void Apply(Grid* pGrid, GameState* pState, Player* pPlayer, Output* pOut); // Applies the effect of the workshop
 
 	~Workshop();
 };

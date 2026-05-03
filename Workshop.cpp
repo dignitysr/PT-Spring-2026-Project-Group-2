@@ -15,7 +15,7 @@ void Workshop::Draw(Output * pOut) const
 	pOut->DrawWorkshop(position);
 }
 
-void Workshop::Apply(Grid* pGrid, GameState* pState, Player* pPlayer)
+void Workshop::Apply(Grid* pGrid, GameState* pState, Player* pPlayer, Output* pOut)
 {
 	///TODO: Implement this function
 	// Apply the workshop's effect on the player
@@ -28,7 +28,7 @@ void Workshop::Apply(Grid* pGrid, GameState* pState, Player* pPlayer)
 	pPlayer->SetHealth(MaxHealth);
 
 	// 3.Feedback to the User
-	pOut->printMessage("You reached a Workshop! Health repaired.");
+	pOut->PrintMessage("You reached a Workshop! Health repaired.");
 
 	// [OPTIONAL BONUS] Consumables can be given to the player here
 	

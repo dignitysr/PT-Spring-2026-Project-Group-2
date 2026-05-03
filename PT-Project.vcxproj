@@ -192,6 +192,7 @@
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="RebootRepairAction.cpp" />
     <ClCompile Include="RotatingGear.cpp" />
+    <ClCompile Include="SaveGridAction.cpp" />
     <ClCompile Include="SelectCommandAction.cpp" />
     <ClCompile Include="SwitchToDesignModeAction.cpp" />
     <ClCompile Include="SwitchToPlayModeAction.cpp" />
@@ -248,6 +249,7 @@
     <ClInclude Include="Player.h" />
     <ClInclude Include="RebootRepairAction.h" />
     <ClInclude Include="RotatingGear.h" />
+    <ClInclude Include="SaveGridAction.h" />
     <ClInclude Include="SelectCommandAction.h" />
     <ClInclude Include="SwitchToDesignModeAction.h" />
     <ClInclude Include="SwitchToPlayModeAction.h" />
