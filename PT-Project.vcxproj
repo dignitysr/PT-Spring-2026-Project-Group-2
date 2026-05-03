@@ -180,6 +180,7 @@
     <ClCompile Include="CopyObjectAction.cpp" />
     <ClCompile Include="CutObjectAction.cpp" />
     <ClCompile Include="DangerZone.cpp" />
+    <ClCompile Include="DeleteObjectAction.cpp" />
     <ClCompile Include="ExecuteCommandsAction.cpp" />
     <ClCompile Include="Flag.cpp" />
     <ClCompile Include="GameObject.cpp" />
@@ -239,6 +240,7 @@
     <ClInclude Include="CutObjectAction.h" />
     <ClInclude Include="DangerZone.h" />
     <ClInclude Include="DEFS.h" />
+    <ClInclude Include="DeleteObjectAction.h" />
     <ClInclude Include="ExecuteCommandsAction.h" />
     <ClInclude Include="Flag.h" />
     <ClInclude Include="GameObject.h" />
