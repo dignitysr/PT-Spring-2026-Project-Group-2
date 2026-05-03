@@ -20,7 +20,7 @@ void WaterPit::Apply(Grid* pGrid, GameState* pState, Player* pPlayer)
 	CellPosition startcell(4,0);
 	pGrid->UpdatePlayerCell(pPlayer,startcell);
 	int newhealth = pPlayer->GetHealth() - 3;
-	pPlayer->SetHealth(newhealth);
+	pPlayer->SetHealth(newhealth); 
 	pGrid->UpdateInterface(pState);
 
 	
