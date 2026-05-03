@@ -15,7 +15,7 @@ void RotatingGear::Draw(Output* pOut) const
 	pOut->DrawRotatingGear(position, isClockWise);
 }
 
-void RotatingGear::Apply(Grid* pGrid, GameState* pState, Player* pPlayer, Output* pOut)
+void RotatingGear::Apply(Grid* pGrid, GameState* pState, Player* pPlayer)
 {
 
 	///TODO: Implement this function as mentioned in the guideline steps (numbered below) below
@@ -26,6 +26,7 @@ void RotatingGear::Apply(Grid* pGrid, GameState* pState, Player* pPlayer, Output
 
 	// 1- Print a message and change the message according to direction of rotation "You have reached a rotating gear, you will rotate (clockwise/ anti-clockwise) Click to continue ..." and wait mouse click
 	string DirectionMessage = isClockWise ? "clockwise" : "/ anti-clockwise";
+	Output* pOut = pGrid->GetOutput();
 	pOut->PrintMessage("You have reached a rotating gear, you will rotate" + DirectionMessage + "Click to continue ...");
 	
 
