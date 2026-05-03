@@ -80,9 +80,17 @@ void RotatingGear::Save(ofstream& OutFile, GameObjectType type)
 	if (type == ROTATING_GEAR_TYPE)
 	OutFile << position.GetCellNum() << " " << (isClockWise ? 1 : 0) << endl;
 }
-
 bool RotatingGear::IsType(GameObjectType type) const { return type == ROTATING_GEAR_TYPE; }
 
+void RotatingGear::Load(ifstream& InFile) {
+	int cellNum, direction;
+	InFile >> cellNum >> direction; // Read cell and 1/0
+
+	this->position = CellPosition::GetCellPositionFromNum(cellNum);
+
+	//convert integer (0/1) into bool
+	this->isClockWise = (direction == 1);
+}
 
 RotatingGear::~RotatingGear()
 {

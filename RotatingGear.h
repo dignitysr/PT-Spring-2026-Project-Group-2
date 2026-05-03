@@ -14,6 +14,7 @@ public:
 	bool GetisClockWise() const; // Getter for the direction
 	void RotatingGear::Save(ofstream& OutFile, GameObjectType type);
 	bool IsType(GameObjectType type) const;
+	void RotatingGear::Load(ifstream& InFile);
 	virtual ~RotatingGear();
 };
 

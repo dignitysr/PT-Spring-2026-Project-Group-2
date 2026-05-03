@@ -42,8 +42,17 @@ void Workshop::Save(ofstream& OutFile, GameObjectType type)
 	if (type == WORKSHOP_TYPE)
 	OutFile << position.GetCellNum() << endl;
 }
-
 bool Workshop::IsType(GameObjectType type) const { return type == WORKSHOP_TYPE; }
+
+void Workshop::Load(ifstream& InFile)
+{
+	int cellNum;
+	if (InFile >> cellNum) // Read the cell number from the file
+	{
+		// Update the position using the helper function
+		this->position = CellPosition::GetCellPositionFromNum(cellNum);
+	}
+}
 
 Workshop::~Workshop()
 {

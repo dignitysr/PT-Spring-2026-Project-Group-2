@@ -8,6 +8,6 @@ public:
 	virtual void Apply(Grid* pGrid, GameState* pState, Player* pPlayer); // Applies the effect of the flag
 	void Flag::Save(ofstream& OutFile, GameObjectType type);
 	bool IsType(GameObjectType type) const;
-
+	void Flag::Load(ifstream& InFile);
 	virtual ~Flag(); // Virtual destructor
 };

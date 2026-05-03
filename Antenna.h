@@ -9,8 +9,10 @@ public:
 	virtual void Apply(Grid* pGrid, GameState* pState, Player* pPlayer); // Applies the effect of the antenna
 
 	void Antenna::Save(ofstream& OutFile, GameObjectType type);
-	bool IsType(GameObjectType type) const;
 
+	void Antenna::Load(ifstream& InFile);
+
+	bool IsType(GameObjectType type) const;
 	virtual ~Antenna();
 };
 

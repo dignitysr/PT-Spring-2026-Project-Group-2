@@ -30,7 +30,7 @@ public:
 	//pure virtual:every object defines how to write itself to a file(overriding fns)
 	virtual void Save(ofstream& OutFile,GameObjectType type) = 0;
 
-	//virtual void Load(ifstream& Infile)  = 0;
+	virtual void Load(ifstream& Infile)  = 0;
 	//end of editing
 
 	virtual bool IsType(GameObjectType type) const = 0; // Checks if the object is of the passed type (e.g. FLAG_TYPE) and returns true if it is, otherwise returns false
