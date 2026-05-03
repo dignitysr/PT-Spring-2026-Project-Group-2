@@ -64,13 +64,13 @@ Belt* Grid::GetNextBelt(const CellPosition& position)
 		for (int j = startH; j < NumHorizontalCells; j++) // searching from startH and RIGHT
 		{
 			///TODO: Check if CellList[i][j] has a belt, if yes return it
-			if (CellList[i][j].HasBelt()) {
-				return dynamic_cast<Belt*>(CellList[i][j].GetGameObject());
-
-		}
+			if (CellList[i][j]->HasBelt()) {
+				return dynamic_cast<Belt*>(CellList[i][j]->GetGameObject());
+			}
 		startH = 0; // because in the next above rows, we will search from the first left cell (hCell = 0) to the right
 	}
 	return NULL; // not found
+	}
 }
 
 

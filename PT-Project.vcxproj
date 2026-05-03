@@ -178,6 +178,7 @@
     <ClCompile Include="CMUgraphicsLib\jpeg\jquant2.c" />
     <ClCompile Include="CMUgraphicsLib\jpeg\jutils.c" />
     <ClCompile Include="CopyObjectAction.cpp" />
+    <ClCompile Include="CutObjectAction.cpp" />
     <ClCompile Include="DangerZone.cpp" />
     <ClCompile Include="ExecuteCommandsAction.cpp" />
     <ClCompile Include="Flag.cpp" />
@@ -233,6 +234,7 @@
     <ClInclude Include="CMUgraphicsLib\jpeg\jpeglib.h" />
     <ClInclude Include="CMUgraphicsLib\jpeg\jversion.h" />
     <ClInclude Include="CopyObjectAction.h" />
+    <ClInclude Include="CutObjectAction.h" />
     <ClInclude Include="DangerZone.h" />
     <ClInclude Include="DEFS.h" />
     <ClInclude Include="ExecuteCommandsAction.h" />
