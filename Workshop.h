@@ -14,6 +14,8 @@ public:
 
 	virtual void Apply(Grid* pGrid, GameState* pState, Player* pPlayer, Output* pOut); // Applies the effect of the workshop
 
+	void Workshop::Save(ofstream& OutFile);
+
 	~Workshop();
 };
 

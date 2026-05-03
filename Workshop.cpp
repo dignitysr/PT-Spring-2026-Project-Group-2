@@ -36,6 +36,11 @@ void Workshop::Apply(Grid* pGrid, GameState* pState, Player* pPlayer, Output* pO
 	
 }
 
+void Workshop::Save(ofstream& OutFile) 
+{
+	OutFile << WORKSHOP_TYPE << " " << position.GetCellNum() << endl;
+}
+
 Workshop::~Workshop()
 {
 }

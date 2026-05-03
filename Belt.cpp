@@ -34,6 +34,10 @@ CellPosition Belt::GetEndPosition() const
 	return endCellPos;
 }
 
+void Belt::Save(ofstream& OutFile) 
+{
+	OutFile << BELT_TYPE << " " << position.GetCellNum() << " " << endCellPos.GetCellNum() << endl;
+}
 
 Belt::~Belt()
 {
