@@ -14,7 +14,8 @@ void WaterPit::Draw(Output * pOut) const
 
 void WaterPit::Apply(Grid* pGrid, GameState* pState, Player* pPlayer)
 {
-	pGrid->GetOutput()->PrintMessage("You drowned in a water pit. Click to continue ... ");
+	Output* pOut = pGrid->GetOutput();
+	pOut->PrintMessage("You drowned in a water pit. Click to continue ... ");
 	int x, y;
 	pGrid->GetInput()->GetPointClicked(x, y);
 	CellPosition startcell(4,0);
@@ -22,7 +23,7 @@ void WaterPit::Apply(Grid* pGrid, GameState* pState, Player* pPlayer)
 	int newhealth = pPlayer->GetHealth() - 3;
 	pPlayer->SetHealth(newhealth); 
 	pGrid->UpdateInterface(pState);
-
+	pOut->ClearStatusBar();
 	
 
 	///TODO: Implement this function as mentioned in the guideline steps (numbered below) below

@@ -9,6 +9,7 @@ class Output;
 class GameObject;
 class Belt;
 class WaterPit;
+class Workshop;
 class Flag;
 class Player;
 class DangerZone;
@@ -36,6 +37,7 @@ public:
 	Flag * HasFlag() const;	    // Checks if pGameObject is a Flag Then returns true if it is a flag or returns NULL if not flag
 	WaterPit* HasWaterPit() const;
 	DangerZone* HasDangerZone() const;
+	Workshop* HasWorkshop() const;
 	// ======= Drawing Functions ======= 
 
 	void DrawCellOrWaterPitOrDangerZone(Output* pOut) const;	// Draws the Cell either has waterpit or dangerzone(either of the gameobjects changes the cell color)

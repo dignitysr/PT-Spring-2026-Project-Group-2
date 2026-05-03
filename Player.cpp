@@ -2,6 +2,7 @@
 
 #include "GameObject.h"
 #include "GameState.h"
+#include <random>
 
 Player::Player(Cell* pCell, int playerNum)
 	: playerNum(playerNum), health(10), currDirection(RIGHT), savedCommandCount(0)
@@ -29,6 +30,8 @@ int Player::GetHealth() const       { return health; }
 Direction Player::GetDirection() const      { return currDirection; }
 void      Player::SetDirection(Direction d) { currDirection = d; }
 
+int Player::GetPlayerNum() const {return playerNum;}
+
 // ====== Saved Commands ======
 
 void Player::AddSavedCommand(Command cmd)
@@ -52,6 +55,29 @@ Command Player::GetSavedCommand(int index) const
 	return NO_COMMAND;
 }
 
+Command Player::GetAvailableCommand(int index) const
+{
+	if (index >= 0 && index < availabeCommandCount)
+		return availableCommands[index];
+	return NO_COMMAND;
+}
+
+int Player::GetAvailableCommandCount() const { return availabeCommandCount; }
+
+void Player::RandomizeAvailableCommands()
+{
+	static random_device rd;
+	static mt19937 gen(rd());
+	uniform_int_distribution<> dis(0, COMMANDS_COUNT - 1);
+	for (int i = 0; i < MaxAvailableCommands; i++) { 
+		Command command = static_cast<Command>(dis(gen));
+		while (command == NO_COMMAND) {
+			command = static_cast<Command>(dis(gen));
+		}
+		availableCommands[i] = command;
+	}
+}
+
 // ====== Drawing Functions ======
 
 void Player::Draw(Output* pOut) const
@@ -61,6 +87,11 @@ void Player::Draw(Output* pOut) const
 	///TODO: Call the appropriate Output function to draw the player token with playerColor
 	// done by abd el rahman
 	pOut->DrawPlayer(pCell->GetCellPosition(), playerNum, playerColor, currDirection);
+}
+
+void Player::DrawCommands(Output* pOut)
+{
+	pOut->CreateCommandsBar(savedCommands, savedCommandCount, availableCommands, availabeCommandCount);
 }
 
 void Player::ClearDrawing(Output* pOut) const
@@ -105,6 +136,13 @@ void Player::ExecuteCommand(Command cmd, Grid* pGrid, GameState* pState) {
 	}
 	if (newPos.IsValidCell())	pGrid->UpdatePlayerCell(this, newPos);
 	else pGrid->PrintErrorMessage("Invalid move: out of bounds");
+
+	if (!pCell->HasWorkshop()) {
+		GameObject* obj = pCell->GetGameObject();
+		if (obj) obj->Apply(pGrid, pState, this);
+	}
+
+	pGrid->UpdateInterface(pState);
 }
 
 void Player::Move(Grid* pGrid, GameState* pState)
@@ -121,8 +159,10 @@ void Player::Move(Grid* pGrid, GameState* pState)
 		ExecuteCommand(cmd, pGrid, pState);
 		pGrid->GetInput()->GetPointClicked(x, y); // wait for input
 	}
-	GameObject* obj = pCell->GetGameObject();
-	if (obj) obj->Apply(pGrid, pState, this);
+	if (pCell->HasWorkshop()) {
+		GameObject* obj = pCell->GetGameObject();
+		if (obj) obj->Apply(pGrid, pState, this);
+	}
 }
 
 void Player::AppendPlayerInfo(string& playersInfo) const

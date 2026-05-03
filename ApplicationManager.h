@@ -34,7 +34,7 @@ public:
 	Grid*      GetGrid()      const; // Returns the game board
 	GameState* GetGameState() const; // Returns the game state
 
-	void UpdateInterface() const;    // Redraws everything: delegates to pGrid->UpdateInterface(pGameState)
+	void UpdateInterface();    // Redraws everything: delegates to pGrid->UpdateInterface(pGameState)
 
 	// ========== Action-Related ==========
 

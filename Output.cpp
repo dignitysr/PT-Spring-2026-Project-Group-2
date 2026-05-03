@@ -383,8 +383,6 @@ void Output::CreatePlayModeToolBar() const
 		}
 	}
 
-	CreateCommandsBar(defaultSaved, 5, defaultAvailable, 8);
-
 }
 
 void Output::CreateCommandsBar(Command savedCommands[], int savedCommandsCount, Command availableCommands[], int availableCommandsCount) const

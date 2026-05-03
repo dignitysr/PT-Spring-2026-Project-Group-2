@@ -2,6 +2,7 @@
 #include "Grid.h"
 #include "GameState.h"
 #include "Output.h"
+#include "Player.h"
 
 SwitchToPlayModeAction::SwitchToPlayModeAction(ApplicationManager* pApp) : Action(pApp)
 {
@@ -26,6 +27,9 @@ void SwitchToPlayModeAction::Execute()
 
 	// 3. Reset game state for the new play session
 	pState->SetCurrentPhase(PHASE_MOVEMENT);
+
+	pState->SetFirstPlayer(0);
+	pState->GetPlayer(0)->RandomizeAvailableCommands(); // Set to player 0 and randomize commands
 
 	// 4. Redraw the full interface (board + player info bar)
 	pManager->UpdateInterface();

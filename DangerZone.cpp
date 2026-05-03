@@ -1,5 +1,6 @@
 #include "DangerZone.h"
 #include "Player.h"
+#include "GameState.h"
 
 
 DangerZone::DangerZone(const CellPosition & dangerZonePosition): GameObject(dangerZonePosition)
@@ -18,7 +19,14 @@ void DangerZone::Apply(Grid* pGrid, GameState* pState, Player* pPlayer)
 	pGrid->GetInput()->GetPointClicked(x, y);
 	int newhealth = pPlayer->GetHealth()-1;
 	pPlayer->SetHealth(newhealth);
+
+	if (pPlayer->GetHealth() <= 0) {
+		pState->AdvanceCurrentPlayer();
+		pState->SetEndGame(true);
+	}
+
 	pGrid->UpdateInterface(pState);
+
 
 
 	///TODO: Implement this function as mentioned in the guideline steps (numbered below) below

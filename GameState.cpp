@@ -48,6 +48,8 @@ Player* GameState::GetPlayer(int playerNum) const
 void GameState::AdvanceCurrentPlayer()
 {
 	currPlayerNumber = (currPlayerNumber + 1) % MaxPlayerCount;
+	PlayerList[currPlayerNumber]->RandomizeAvailableCommands();
+	
 }
 
 void GameState::SetFirstPlayer(int playerNum)

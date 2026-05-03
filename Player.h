@@ -23,6 +23,9 @@ class Player
 	Command savedCommands[MaxSavedCommands];
 	int savedCommandCount; // how many commands have been saved so far (0..MaxSavedCommands)
 
+	Command availableCommands[MaxAvailableCommands]; // the commands available to the player this round (depends on health)
+	int availabeCommandCount = MaxAvailableCommands; // how many commands are available this round (0..MaxAvailableCommands)
+
 	// ---- [OPTIONAL BONUS] Shooting Phase data members ----
 	// Uncomment when adding the shooting phase (see DEFS.h PhaseType):
 	int laserDamage; // damage per shot (default = 1; double-laser consumable = 2)
@@ -50,6 +53,8 @@ public:
 
 	///TODO: Add more setters/getters here as needed
 
+	int GetPlayerNum() const; // Returns the player number (0..MaxPlayerCount-1)
+
 	// ====== Saved Commands ======
 
 	void    AddSavedCommand(Command cmd);         // Appends cmd to savedCommands (called by SelectCommandAction)
@@ -57,9 +62,15 @@ public:
 	int     GetSavedCommandCount() const;
 	Command GetSavedCommand(int index) const;
 
+	Command GetAvailableCommand(int index) const; // Returns the available command at the given index (called by SelectCommandAction)
+	int    GetAvailableCommandCount() const;    // Returns the number of available commands (called by SelectCommandAction)
+
+	void RandomizeAvailableCommands(); // Fills availableCommands based on current health (called by gamestate)
+
 	// ====== Drawing ======
 
 	void Draw(Output* pOut) const;         // Draws the player token on its current cell
+	void DrawCommands(Output* pOut);      // Draws the player's saved commands in the commands bar (since they're all here i thought it was appropriate)
 	void ClearDrawing(Output* pOut) const; // Erases the player token (restores cell colour)
 
 	// ====== Game Logic ======

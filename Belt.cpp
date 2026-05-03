@@ -15,7 +15,7 @@ void Belt::Draw(Output* pOut) const
 void Belt::Apply(Grid* pGrid, GameState* pState, Player* pPlayer)
 {
 
-	pGrid->GetOutput()->PrintMessage("You have reached a danger zone. Click to continue ... ");
+	pGrid->GetOutput()->PrintMessage("You have reached a belt. Click to continue ... ");
 	int x, y;
 	pGrid->GetInput()->GetPointClicked(x, y);
 	pGrid->UpdatePlayerCell(pPlayer, endCellPos);

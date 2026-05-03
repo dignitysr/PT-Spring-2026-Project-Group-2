@@ -12,12 +12,7 @@
 
 SelectCommandAction::SelectCommandAction(ApplicationManager* pApp) : Action(pApp)
 {
-	availableCommandsCount = 0;
 
-	for (int i = 0; i < MaxAvailableCommands; i++)
-	{
-		availableCommands[i] = NO_COMMAND;
-	}
 }
 
 bool SelectCommandAction::ReadActionParameters()
@@ -40,28 +35,6 @@ bool SelectCommandAction::ReadActionParameters()
 		pGrid->PrintErrorMessage("Player has no health points. Click to continue ...");
 		return false;
 	}
-
-	availableCommandsCount = health;
-
-	if (availableCommandsCount > MaxAvailableCommands)
-	{
-		availableCommandsCount = MaxAvailableCommands;
-	}
-
-	static bool seeded = false;
-
-	if (!seeded)
-	{
-		srand((unsigned int)time(0));
-		seeded = true;
-	}
-
-	for (int i = 0; i < availableCommandsCount; i++)
-	{
-		int randomCommand = 1 + rand() % (COMMANDS_COUNT - 1);
-		availableCommands[i] = (Command)randomCommand;
-	}
-
 	return true;
 }
 
@@ -96,16 +69,19 @@ void SelectCommandAction::Execute()
 		savedCommands[i] = NO_COMMAND;
 	}
 
-	int maxCommandsToSelect = MaxSavedCommands;
-
-	if (pPlayer->GetHealth() < MaxSavedCommands)
-	{
-		maxCommandsToSelect = pPlayer->GetHealth();
-	}
+	int maxCommandsToSelect = min(5, pPlayer->GetHealth());
 
 	int savedCount = 0;
 
-	pOut->CreateCommandsBar(savedCommands, MaxSavedCommands, availableCommands, availableCommandsCount);
+	Command availableCommands[MaxAvailableCommands];
+	int availableCommandsCount = pPlayer->GetAvailableCommandCount();
+
+	for (int i = 0; i < availableCommandsCount; i++)
+	{
+		availableCommands[i] = pPlayer->GetAvailableCommand(i);
+	}
+
+	pOut->CreateCommandsBar(savedCommands, maxCommandsToSelect, availableCommands, availableCommandsCount);
 
 	while (savedCount < maxCommandsToSelect)
 	{
@@ -121,7 +97,7 @@ void SelectCommandAction::Execute()
 		if (cmdIndex < 0 || cmdIndex >= availableCommandsCount)
 		{
 			pGrid->PrintErrorMessage("Invalid command selection. Click to continue ...");
-			pOut->CreateCommandsBar(savedCommands, MaxSavedCommands, availableCommands, availableCommandsCount);
+			pOut->CreateCommandsBar(savedCommands, maxCommandsToSelect, availableCommands, availableCommandsCount);
 			continue;
 		}
 
@@ -132,7 +108,7 @@ void SelectCommandAction::Execute()
 		savedCommands[savedCount] = selectedCmd;
 		savedCount++;
 
-		pOut->CreateCommandsBar(savedCommands, MaxSavedCommands, availableCommands, availableCommandsCount);
+		pOut->CreateCommandsBar(savedCommands, maxCommandsToSelect, availableCommands, availableCommandsCount);
 	}
 
 	if (savedCount == 0)

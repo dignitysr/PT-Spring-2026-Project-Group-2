@@ -59,10 +59,19 @@ GameState* ApplicationManager::GetGameState() const
 	return pGameState;
 }
 
-void ApplicationManager::UpdateInterface() const
+void ApplicationManager::UpdateInterface()
 {
 	// Grid draws the board; GameState provides player data for drawing.
 	pGrid->UpdateInterface(pGameState);
+
+	if (pGameState->GetEndGame()) {
+		pOut->PrintMessage("Player no. " + to_string(pGameState->GetCurrentPlayer()->GetPlayerNum()) + " is victorious! Click to continue ...");
+		pIn->GetCellClicked();
+		Action* pAct = new NewGameAction(this);
+		pAct->Execute();
+		delete pAct;
+		pOut->ClearStatusBar();
+	}
 }
 
 //==================================================================================//
