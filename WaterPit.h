@@ -11,6 +11,7 @@ public:
 	void WaterPit::Save(ofstream& OutFile, GameObjectType type);
 	bool IsType(GameObjectType type) const;
 	void WaterPit::Load(ifstream& InFile);
+	WaterPit* Clone() const; // Creates and returns a pointer to a new copy of the WaterPit (used in copy/cut/paste)
 	virtual ~WaterPit();
 };
 

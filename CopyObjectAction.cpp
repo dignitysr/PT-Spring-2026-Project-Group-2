@@ -1,4 +1,5 @@
 #include "CopyObjectAction.h"
+#include "GameObject.h"
 
 
 CopyObjectAction::CopyObjectAction(ApplicationManager* pApp) : Action(pApp) {
@@ -29,7 +30,7 @@ void CopyObjectAction::Execute() {
 	Grid* pGrid = pManager->GetGrid();
 	GameObject* gameObj = cellToCopy->GetGameObject();
 
-	pGrid->SetClipboard(gameObj);
+	pGrid->SetClipboard(gameObj->Clone());
 }
 
 CopyObjectAction::~CopyObjectAction() {}

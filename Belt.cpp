@@ -52,6 +52,11 @@ void Belt::Load(ifstream& InFile) {
 
 bool Belt::IsType(GameObjectType type) const { return type == BELT_TYPE;}
 
+Belt* Belt::Clone() const
+{
+	return new Belt(*this);
+}
+
 
 Belt::~Belt()
 {

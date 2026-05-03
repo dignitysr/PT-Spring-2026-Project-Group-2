@@ -45,6 +45,11 @@ void Flag::Load(ifstream& InFile)
 	}
 }
 
+Flag* Flag::Clone() const
+{
+	return new Flag(*this);
+}
+
 bool Flag::IsType(GameObjectType type) const { return type == FLAG_TYPE; }
 Flag::~Flag()
 {

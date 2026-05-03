@@ -80,6 +80,11 @@ void Antenna::Load(ifstream& InFile)
 	}
 }
 
+Antenna* Antenna::Clone() const
+{
+	return new Antenna(*this);
+}
+
 
 
 Antenna::~Antenna()

@@ -15,6 +15,7 @@ public:
 	void RotatingGear::Save(ofstream& OutFile, GameObjectType type);
 	bool IsType(GameObjectType type) const;
 	void RotatingGear::Load(ifstream& InFile);
+	RotatingGear* Clone() const; // Creates and returns a pointer to a new copy of the RotatingGear (used in copy/cut/paste)
 	virtual ~RotatingGear();
 };
 
