@@ -14,11 +14,11 @@ bool CopyObjectAction::ReadActionParameters() {
 	cellToCopy = pGrid->GetCell(pIn->GetCellClicked());
 	if (!cellToCopy) {
 		pGrid->PrintErrorMessage("Error: Invalid cell selected! Click to continue ...");
-		return false;
+		pIn->GetCellClicked(); pOut->ClearStatusBar(); return false;
 	}
 	if (!cellToCopy->GetGameObject()) {
 		pGrid->PrintErrorMessage("Error: No object in the selected cell! Click to continue ...");
-		return false;
+		pIn->GetCellClicked(); pOut->ClearStatusBar(); return false;
 	}
 	pOut->ClearStatusBar();
 	return true;

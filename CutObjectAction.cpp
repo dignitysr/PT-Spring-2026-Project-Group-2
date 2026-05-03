@@ -14,11 +14,11 @@ bool CutObjectAction::ReadActionParameters() {
 	cellToCut = pGrid->GetCell(pIn->GetCellClicked());
 	if (!cellToCut) {
 		pGrid->PrintErrorMessage("Error: Invalid cell selected! Click to continue ...");
-		return false;
+		pIn->GetCellClicked(); pOut->ClearStatusBar(); return false;
 	}
 	if (!cellToCut->GetGameObject()) {
 		pGrid->PrintErrorMessage("Error: No object in the selected cell! Click to continue ...");
-		return false;
+		pIn->GetCellClicked(); pOut->ClearStatusBar(); return false;
 	}
 	pOut->ClearStatusBar();
 	return true;

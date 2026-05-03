@@ -51,7 +51,8 @@ public:
 	void UpdatePlayerCell(Player* player, const CellPosition& newPosition); // Update the player's pCell with the CellList's Cell pointer of the "newPosition",
 	                                                                          // Clears the player's circle from the previous cell
 	    																	  // and Draws it in the new cell
-
+	
+	bool FlagExists() const; // Checks if there is a flag on the board and returns true if there is at least one flag or returns false if there is no flag
 	// Returns the first Belt found at or after 'position' (used when adding connected belts).
 	Belt* GetNextBelt(const CellPosition& position);
 

@@ -11,7 +11,7 @@ AddFlagAction::AddFlagAction(ApplicationManager *pApp) : Action(pApp)
 
 bool AddFlagAction::ReadActionParameters()
 {
-
+	
 	///TODO: Implement this function as mentioned in the guideline steps (numbered below) below
 
 
@@ -28,17 +28,21 @@ bool AddFlagAction::ReadActionParameters()
 	Output* pOut = pGrid->GetOutput();
 	Input* pIn = pGrid->GetInput();
 
-	pOut->PrintMessage("New Flag: Click on the cell to place the flag ...");
-	CellPosition flagPos = pIn->GetCellClicked();
+	if (pGrid->FlagExists()) {
+		pOut->PrintMessage("A flag already exists on the board. Cannot add another flag.");
+		pIn->GetCellClicked(); pOut->ClearStatusBar(); return false;
+	}
 
+	pOut->PrintMessage("New Flag: Click on the cell to place the flag ...");
+	flagPos = pIn->GetCellClicked();
 
 	if (!flagPos.IsValidCell()) {
 		pOut->PrintMessage("Invalid cell selection for the flag. Try again...");
-		return false;
+		pIn->GetCellClicked(); pOut->ClearStatusBar(); return false;
 	}
 	if (pGrid->GetCell(flagPos)->GetGameObject() != nullptr) {
 		pOut->PrintMessage("Cell is already occupied, try a different cell.");
-		return false;
+		pIn->GetCellClicked(); pOut->ClearStatusBar(); return false;
 	}
 	pOut->ClearStatusBar();
 	return true;
@@ -59,7 +63,6 @@ void AddFlagAction::Execute()
 	Flag* pFlag = new Flag(flagPos);
 
 	Grid* pGrid = pManager->GetGrid();
-	cout << "im working!!";
 
 	bool added = pGrid->AddObjectToCell(pFlag);
 	if (!added) {

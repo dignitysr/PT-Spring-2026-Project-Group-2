@@ -5,6 +5,7 @@
 #include "Belt.h"
 #include "Player.h"
 #include "GameState.h"
+#include <iostream>
 
 Grid::Grid(Input* pIn, Output* pOut) : pIn(pIn), pOut(pOut)
 {
@@ -56,6 +57,15 @@ void Grid::UpdatePlayerCell(Player* player, const CellPosition& newPosition)
 	player->Draw(pOut);
 }
 
+bool Grid::FlagExists() const
+{
+	for (int i = NumVerticalCells - 1; i >= 0; i--)
+		for (int j = 0; j < NumHorizontalCells; j++)
+			if (CellList[i][j]->HasFlag())
+				return true;
+	return false;
+}
+
 Belt* Grid::GetNextBelt(const CellPosition& position)
 {
 	int startH = position.HCell(); // represents the start hCell in the current row to search for the belt in
@@ -80,7 +90,10 @@ Belt* Grid::GetNextBelt(const CellPosition& position)
 Input* Grid::GetInput() const  { return pIn; }
 Output* Grid::GetOutput() const { return pOut; }
 
-void Grid::SetClipboard(GameObject* gameObject) { Clipboard = gameObject; } // to be used in copy/cut
+void Grid::SetClipboard(GameObject* gameObject) {
+	if (Clipboard) delete Clipboard; //mem management
+	Clipboard = gameObject;
+} // to be used in copy/cut
 GameObject* Grid::GetClipboard() const          { return Clipboard; }       // to be used in paste
 
 Cell* Grid::GetStartCell() const

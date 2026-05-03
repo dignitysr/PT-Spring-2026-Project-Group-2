@@ -19,12 +19,12 @@ bool AddAntennaAction::ReadActionParameters()
 
     if (!pos.IsValidCell()) {
         pOut->PrintMessage("Invalid cell selection. Try again...");
-        return false;
+        pIn->GetCellClicked(); pOut->ClearStatusBar(); return false;
     }
 
     if (pGrid->GetCell(pos)->GetGameObject() != nullptr) {
         pOut->PrintMessage("Cannot place the antenna on an occupied cell.");
-        return false;
+        pIn->GetCellClicked(); pOut->ClearStatusBar(); return false;
     }
 
     pOut->ClearStatusBar(); 

@@ -28,11 +28,11 @@ bool AddRotatingGearAction::ReadActionParameters()
 
 	if (!gearPos.IsValidCell()) {
 		pOut->PrintMessage("Invalid cell selection for the gear. Try again...");
-		return false;
+		pIn->GetCellClicked(); pOut->ClearStatusBar(); return false;
 	}
 	if (pGrid->GetCell(gearPos)->GetGameObject() != nullptr) {
 		pOut->PrintMessage("Cell is already occupied. Try a different cell.");
-		return false;
+		pIn->GetCellClicked(); pOut->ClearStatusBar(); return false;
 	}
 	pOut->PrintMessage("Click to set the rotation direction (clockwise or counter-clockwise)...");
 	int x, y;
