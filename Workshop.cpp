@@ -20,6 +20,8 @@ void Workshop::Apply(Grid* pGrid, GameState* pState, Player* pPlayer, Output* pO
 	///TODO: Implement this function
 	// Apply the workshop's effect on the player
 	
+	Output* pOut = pGrid->GetOutput();
+
 	//start of addition
 	//1.validity of player
 	if (!pPlayer) return;

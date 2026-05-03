@@ -14,6 +14,6 @@ private:
 public:
     SelectCommandAction(ApplicationManager* pApp);  
     virtual void Execute();                         
-    virtual void ReadActionParameters();            
+    virtual bool ReadActionParameters();            
     virtual ~SelectCommandAction();                 
 };

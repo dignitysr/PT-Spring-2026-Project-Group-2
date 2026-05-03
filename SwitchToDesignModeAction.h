@@ -12,7 +12,7 @@ class SwitchToDesignModeAction : public Action
 public:
 	SwitchToDesignModeAction(ApplicationManager* pApp);
 
-	virtual void ReadActionParameters(); // No parameters needed for a mode switch
+	virtual bool ReadActionParameters(); // No parameters needed for a mode switch
 
 	virtual void Execute(); // Performs the switch to Design Mode
 

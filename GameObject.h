@@ -27,8 +27,8 @@ public:
 
 	// Abdallah edited this part
 	// Save / Load (uncomment and implement in derived classes when needed):
-	virtual void Save(ofstream& OutFile,GameObjectType type) = 0;
-	virtual void Load(ifstream& Infile)  = 0;
+	//virtual void Save(ofstream& OutFile,GameObjectType type) = 0;
+	//virtual void Load(ifstream& Infile)  = 0;
 	//end of editing
 
 	virtual ~GameObject();

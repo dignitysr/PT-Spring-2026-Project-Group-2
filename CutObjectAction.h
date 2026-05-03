@@ -10,7 +10,7 @@ class CutObjectAction :public Action
 public:
 
 	CutObjectAction(ApplicationManager* pApp);
-	virtual void ReadActionParameters(); // Reads action parameters 
+	virtual bool ReadActionParameters(); // Reads action parameters 
 
 	virtual void Execute(); // copies object to clipboard
 

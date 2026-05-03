@@ -11,7 +11,7 @@ private:
 
 public:
     AddAntennaAction(ApplicationManager* pApp);  
-    virtual void ReadActionParameters();         
+    virtual bool ReadActionParameters();         
     virtual void Execute();                      
     virtual ~AddAntennaAction();                 
 };

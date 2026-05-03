@@ -5,6 +5,7 @@
 #include "Belt.h"
 #include "Player.h"
 #include "GameState.h"
+#include <iostream>
 
 Grid::Grid(Input* pIn, Output* pOut) : pIn(pIn), pOut(pOut)
 {
@@ -42,8 +43,8 @@ GameObject* Grid::RemoveObjectFromCell(const CellPosition& pos)
 		// Note: deallocate the object here before NULLing if ownership requires it
 		GameObject* cellObj = CellList[pos.VCell()][pos.HCell()]->GetGameObject();
 		if (cellObj) {
-			return cellObj;
 			CellList[pos.VCell()][pos.HCell()]->SetGameObject(NULL);
+			return cellObj;
 		} else CellList[pos.VCell()][pos.HCell()]->SetGameObject(NULL);
 	}
 }
@@ -54,6 +55,15 @@ void Grid::UpdatePlayerCell(Player* player, const CellPosition& newPosition)
 	Cell* newCell = CellList[newPosition.VCell()][newPosition.HCell()];
 	player->SetCell(newCell);
 	player->Draw(pOut);
+}
+
+bool Grid::FlagExists() const
+{
+	for (int i = NumVerticalCells - 1; i >= 0; i--)
+		for (int j = 0; j < NumHorizontalCells; j++)
+			if (CellList[i][j]->HasFlag())
+				return true;
+	return false;
 }
 
 Belt* Grid::GetNextBelt(const CellPosition& position)
@@ -80,7 +90,10 @@ Belt* Grid::GetNextBelt(const CellPosition& position)
 Input* Grid::GetInput() const  { return pIn; }
 Output* Grid::GetOutput() const { return pOut; }
 
-void Grid::SetClipboard(GameObject* gameObject) { Clipboard = gameObject; } // to be used in copy/cut
+void Grid::SetClipboard(GameObject* gameObject) {
+	if (Clipboard) delete Clipboard; //mem management
+	Clipboard = gameObject;
+} // to be used in copy/cut
 GameObject* Grid::GetClipboard() const          { return Clipboard; }       // to be used in paste
 
 Cell* Grid::GetStartCell() const
