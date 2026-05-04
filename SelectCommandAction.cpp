@@ -10,39 +10,31 @@
 #include <cstdlib>
 #include <ctime>
 
+// Constructor: Initializes the action with the ApplicationManager
 SelectCommandAction::SelectCommandAction(ApplicationManager* pApp) : Action(pApp)
 {
 
 }
 
+// Reads parameters: checks if player exists and has health
 bool SelectCommandAction::ReadActionParameters()
 {
 	Grid* pGrid = pManager->GetGrid();
 	GameState* pState = pManager->GetGameState();
-
 	Player* pPlayer = pState->GetCurrentPlayer();
 
-	if (pPlayer == NULL)
+	if (pPlayer == NULL || pPlayer->GetHealth() <= 0)
 	{
-		pGrid->PrintErrorMessage("Error: No current player. Click to continue ...");
-		return false;
-	}
-
-	int health = pPlayer->GetHealth();
-
-	if (health <= 0)
-	{
-		pGrid->PrintErrorMessage("Player has no health points. Click to continue ...");
+		pGrid->PrintErrorMessage("Error: No current player or health. Click to continue ...");
 		return false;
 	}
 	return true;
 }
 
+// Executes the action: allows player to select commands and saves them
 void SelectCommandAction::Execute()
 {
-	bool valid = ReadActionParameters();
-
-	if (!valid)
+	if (!ReadActionParameters())
 	{
 		return;
 	}
@@ -54,78 +46,69 @@ void SelectCommandAction::Execute()
 
 	Player* pPlayer = pState->GetCurrentPlayer();
 
-	if (pPlayer == NULL)
-	{
-		pGrid->PrintErrorMessage("Error: No current player. Click to continue ...");
-		return;
-	}
-
+	// Clear saved commands
 	pPlayer->ClearSavedCommands();
 
 	int maxCommandsToSelect = pPlayer->GetMaxCommands();
-
-	if (pPlayer->GetHealth() < maxCommandsToSelect)
-	{
-		maxCommandsToSelect = pPlayer->GetHealth();
-	}
+	int savedCount = 0;
 
 	Command savedCommands[MaxSavedCommandsWithExtendedMemory];
 
-	for (int i = 0; i < MaxSavedCommandsWithExtendedMemory; i++)
+	// Initialize saved commands
+	for (int i = 0; i < maxCommandsToSelect; i++)
 	{
 		savedCommands[i] = NO_COMMAND;
 	}
 
-	int savedCount = 0;
-
 	Command availableCommands[MaxAvailableCommands];
 	int availableCommandsCount = pPlayer->GetAvailableCommandCount();
 
-	for (int i = 0; i < availableCommandsCount; i++)
-	{
-		availableCommands[i] = pPlayer->GetAvailableCommand(i);
-	}
-
+	// Display available commands
 	pOut->CreateCommandsBar(savedCommands, maxCommandsToSelect, availableCommands, availableCommandsCount);
 
+	// Allow player to select commands
 	while (savedCount < maxCommandsToSelect)
 	{
-		pOut->PrintMessage("Select a command from Available Commands. Click outside commands to stop.");
+		pOut->PrintMessage("Select a command. Click outside to stop.");
 
 		int cmdIndex = pIn->GetSelectedCommandIndex();
 
+		// Stop if clicked outside the commands
 		if (cmdIndex == -1)
 		{
 			break;
 		}
 
+		// Check for invalid selection
 		if (cmdIndex < 0 || cmdIndex >= availableCommandsCount)
 		{
-			pGrid->PrintErrorMessage("Invalid command selection. Click to continue ...");
-			pOut->CreateCommandsBar(savedCommands, maxCommandsToSelect, availableCommands, availableCommandsCount);
+			pGrid->PrintErrorMessage("Invalid selection. Click to continue ...");
 			continue;
 		}
 
+		// Save selected command
 		Command selectedCmd = availableCommands[cmdIndex];
-
 		pPlayer->AddSavedCommand(selectedCmd);
 
 		savedCommands[savedCount] = selectedCmd;
 		savedCount++;
 
+		// Update displayed saved commands
 		pOut->CreateCommandsBar(savedCommands, maxCommandsToSelect, availableCommands, availableCommandsCount);
 	}
 
+	// Inform player about selected commands
 	if (savedCount == 0)
 	{
-		pGrid->PrintErrorMessage("No commands selected. Movement phase skipped. Click to continue ...");
+		pGrid->PrintErrorMessage("No commands selected. Movement skipped.");
 	}
 	else
 	{
-		pGrid->PrintErrorMessage("Commands saved successfully. Click to continue ...");
+		pGrid->PrintErrorMessage("Commands saved successfully.");
 	}
 }
 
+// Destructor: Cleans up the action 
 SelectCommandAction::~SelectCommandAction()
 {
 }

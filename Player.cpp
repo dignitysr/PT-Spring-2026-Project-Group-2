@@ -5,7 +5,7 @@
 #include <random>
 
 Player::Player(Cell* pCell, int playerNum)
-	: playerNum(playerNum), health(10), currDirection(RIGHT), savedCommandCount(0)
+	: playerNum(playerNum), health(10), currDirection(RIGHT), savedCommandCount(0) , isHacked(false)
 {
 	this->pCell = pCell;
 
@@ -31,6 +31,18 @@ Direction Player::GetDirection() const      { return currDirection; }
 void      Player::SetDirection(Direction d) { currDirection = d; }
 
 int Player::GetPlayerNum() const {return playerNum;}
+
+void Player::AddToolkit(){ hasToolkit = true; }
+void Player::AddHackDevice(){ hasHackDevice = true;}
+
+bool Player::HasToolkit() const{ return hasToolkit; }
+bool Player::HasHackDevice() const{ return hasHackDevice;}
+
+void Player::UseToolkit(){ hasToolkit = false; }
+void Player::UseHackDevice(){ hasHackDevice = false;}
+
+void Player::SetHacked(bool value){	isHacked = value;}
+bool Player::IsHacked() const{ return isHacked;}
 
 // ====== Saved Commands ======
 

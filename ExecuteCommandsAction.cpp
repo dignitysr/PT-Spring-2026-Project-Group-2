@@ -3,6 +3,7 @@
 #include "Player.h"
 #include "GameState.h"
 #include "Output.h"
+#include "Input.h"
 
 // constructor
 ExecuteCommandsAction::ExecuteCommandsAction(ApplicationManager* pApp) : Action(pApp)
@@ -46,6 +47,61 @@ void ExecuteCommandsAction::Execute()
 	GameState* pState = pManager->GetGameState();
 
 	Player* pPlayer = pState->GetCurrentPlayer();
+
+	// check if player is hacked
+	if (pPlayer->IsHacked())
+	{
+		pPlayer->SetHacked(false);
+		pPlayer->ClearSavedCommands();
+		pGrid->PrintErrorMessage("This player is hacked and skips this turn. Click to continue ...");
+
+		pState->AdvanceCurrentPlayer();
+		pManager->UpdateInterface();
+		return;
+	}
+
+	// use consumable before executing commands
+	Output* pOut = pGrid->GetOutput();
+	Input* pIn = pGrid->GetInput();
+
+	if (pPlayer->HasToolkit() || pPlayer->HasHackDevice())
+	{
+		pOut->PrintMessage("Use consumable? 0 Cancel, 1 Toolkit, 2 Hack Device: ");
+		int choice = pIn->GetInteger(pOut);
+
+		if (choice == 1)
+		{
+			if (pPlayer->HasToolkit())
+			{
+				pPlayer->SetHealth(MaxHealth);
+				pPlayer->UseToolkit();
+				pGrid->PrintErrorMessage("Toolkit used. Robot repaired. Click to continue ...");
+			}
+			else
+			{
+				pGrid->PrintErrorMessage("You do not have a Toolkit. Click to continue ...");
+			}
+		}
+		else if (choice == 2)
+		{
+			if (pPlayer->HasHackDevice())
+			{
+				Player* opponent = pState->GetPlayer((pPlayer->GetPlayerNum() + 1) % MaxPlayerCount);
+
+				if (opponent != NULL)
+				{
+					opponent->SetHacked(true);
+				}
+
+				pPlayer->UseHackDevice();
+				pGrid->PrintErrorMessage("Hack Device used. Opponent will skip their next turn. Click to continue ...");
+			}
+			else
+			{
+				pGrid->PrintErrorMessage("You do not have a Hack Device. Click to continue ...");
+			}
+		}
+	}
 
 	// keep track of the moving player
 	Player* movingPlayer = pPlayer;

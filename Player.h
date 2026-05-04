@@ -36,6 +36,8 @@ class Player
 	// Uncomment when adding consumables (see Workshop.h):
 	//   Consumable* inventory[MaxConsumables];
 	//   int inventoryCount;
+	bool hasToolkit = false;
+	bool hasHackDevice = false;
 
 public:
 
@@ -58,6 +60,18 @@ public:
 	void ActivateExtendedMemory() { extendedMemory = true; }
 	bool HasExtendedMemory() const { return extendedMemory; }
 	int GetMaxCommands() const { return extendedMemory ? MaxSavedCommandsWithExtendedMemory : MaxSavedCommands; }
+
+	void AddToolkit();
+	void AddHackDevice();
+
+	bool HasToolkit() const;
+	bool HasHackDevice() const;
+
+	void UseToolkit();
+	void UseHackDevice();
+
+	void SetHacked(bool value);
+	bool IsHacked() const;
 	// ====== Saved Commands ======
 
 	void    AddSavedCommand(Command cmd);         // Appends cmd to savedCommands (called by SelectCommandAction)

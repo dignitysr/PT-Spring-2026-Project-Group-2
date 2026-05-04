@@ -34,7 +34,7 @@ void Workshop::Apply(Grid* pGrid, GameState* pState, Player* pPlayer)
 	// [OPTIONAL BONUS] Consumables can be given to the player here
 	Input* pIn = pGrid->GetInput();
 
-	pOut->PrintMessage("Enter 1 to buy Extended Memory, or 0 to skip: ");
+	pOut->PrintMessage("Buy item: 0 Skip, 1 Extended Memory, 2 Toolkit, 3 Hack Device: ");
 	int choice = pIn->GetInteger(pOut);
 
 	if (choice == 1)
@@ -49,6 +49,35 @@ void Workshop::Apply(Grid* pGrid, GameState* pState, Player* pPlayer)
 			pGrid->PrintErrorMessage("Extended Memory purchased. You can now save 6 commands. Click to continue ...");
 		}
 	}
+	else if (choice == 2)
+	{
+		if (pPlayer->HasToolkit())
+		{
+			pGrid->PrintErrorMessage("You already have a Toolkit. Click to continue ...");
+		}
+		else
+		{
+			pPlayer->AddToolkit();
+			pGrid->PrintErrorMessage("Toolkit purchased. Click to continue ...");
+		}
+	}
+	else if (choice == 3)
+	{
+		if (pPlayer->HasHackDevice())
+		{
+			pGrid->PrintErrorMessage("You already have a Hack Device. Click to continue ...");
+		}
+		else
+		{
+			pPlayer->AddHackDevice();
+			pGrid->PrintErrorMessage("Hack Device purchased. Click to continue ...");
+		}
+	}
+	else
+	{
+		pGrid->PrintErrorMessage("Workshop action finished. Click to continue ...");
+	}
+	
 }
 
 void Workshop::Save(ofstream& OutFile, GameObjectType type)
