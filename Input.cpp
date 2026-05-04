@@ -57,7 +57,7 @@ int Input::GetInteger(Output *pO) const
 	
 	//start of additions//
 	//Clearing the status bar and preparing for input
-
+	pO->ClearStatusBar();
 	//Call GetString() to handle the actual keyboard typing and backspacing
 	string Label = GetString(pO);
 
