@@ -85,6 +85,21 @@ void Workshop::Apply(Grid* pGrid, GameState* pState, Player* pPlayer)
 			pGrid->PrintErrorMessage("Hack Device purchased. Click to continue ...");
 		}
 	}
+	else if (choice == 4)
+	{
+		if (pPlayer->HasDoubleLaser())
+		{
+			pGrid->PrintErrorMessage("You already have a Double Laser. Click to continue ...");
+		}
+		else
+		{
+			pPlayer->SetHasDoubleLaser(true);
+			int newHealth = pPlayer->GetHealth() - 2;
+			pPlayer->SetHealth(newHealth);
+			pGrid->UpdateInterface(pState);
+			pGrid->PrintErrorMessage("Double Laser purchased! You now deal double damage. Click to continue ...");
+		}
+	}
 	else
 	{
 		pGrid->PrintErrorMessage("Workshop action finished. Click to continue ...");

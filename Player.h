@@ -38,6 +38,7 @@ class Player
 	//   int inventoryCount;
 	bool hasToolkit = false;
 	bool hasHackDevice = false;
+	bool hasDoubleLaser = false;
 
 public:
 
@@ -66,6 +67,9 @@ public:
 
 	bool HasToolkit() const;
 	bool HasHackDevice() const;
+
+	bool HasDoubleLaser() const;
+	void SetHasDoubleLaser(bool status);
 
 	void UseToolkit();
 	void UseHackDevice();

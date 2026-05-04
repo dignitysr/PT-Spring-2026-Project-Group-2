@@ -47,6 +47,10 @@ void Player::UseHackDevice(){ hasHackDevice = false;}
 void Player::SetHacked(bool value){	isHacked = value;}
 bool Player::IsHacked() const{ return isHacked;}
 
+bool Player::HasDoubleLaser() const { return hasDoubleLaser; }
+void Player::SetHasDoubleLaser(bool status) { hasDoubleLaser = status; }
+
+
 // ====== Saved Commands ======
 
 void Player::AddSavedCommand(Command cmd)
@@ -192,8 +196,19 @@ void Player::Shoot(GameState* pState, Output* pOut, Input* pIn) {
 		return;
 	}
 
-	otherPlayer->SetHealth(otherPlayer->GetHealth() - 3);
-	pOut->PrintMessage("Player " + to_string(otherPlayer->GetPlayerNum()) + " shot. -3 health. Click to continue ...");
+	//Boolean check for the double laser
+	if (this->HasDoubleLaser()) 
+	{
+		//Deducting 2 health if boolean is true
+		otherPlayer->SetHealth(otherPlayer->GetHealth() - 2);
+		pOut->PrintMessage("player" + to_string(otherPlayer->GetPlayerNum()) + "shot with Double Laser! -2 health. Click to continue ...");
+	}
+	else
+	{
+		//Deducting 1 health if the boolean is false
+		otherPlayer->SetHealth(otherPlayer->GetHealth() - 1);
+		pOut->PrintMessage("Player " + to_string(otherPlayer->GetPlayerNum()) + " shot. -1 health. Click to continue ...");
+	}
 	pIn->GetCellClicked();
 	pOut->ClearStatusBar();
 
