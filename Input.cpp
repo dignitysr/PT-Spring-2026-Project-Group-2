@@ -57,9 +57,10 @@ int Input::GetInteger(Output *pO) const
 	
 	//start of additions//
 	//Clearing the status bar and preparing for input
+	pO->ClearStatusBar();
 
-	//Call GetString() to handle the actual keyboard typing and backspacing
-	string Label = GetString(pO);
+	//Call GetString() to handle the actual keyboard typing and backspacing which is defined above
+	string Label = GetString(pO); 
 
 	//Handling cases where the user enters nothing or cancels (Escape)
 	if (Label == "")
@@ -70,11 +71,11 @@ int Input::GetInteger(Output *pO) const
 	// Note: stoi(s) converts string s into its equivalent integer (for example, "55" is converted to 55)
 
 	try {
-		return stoi(Label);
+		return stoi(Label); //convert string -> into integer
 	}
 	catch (...) {
 		pO->PrintMessage("Invalid input! Please enter an integer: ");
-		return GetInteger(pO); // recursively call GetInteger until a valid integer is entered
+		return GetInteger(pO); // ba call GetInteger repetitevly le7ad a valid integer is entered
 	}
 }
 
@@ -90,17 +91,15 @@ ActionType Input::GetUserAction() const
 	//  ============ GUI in the Design mode ============
 	if ( UI.InterfaceMode == MODE_DESIGN )	
 	{
-		// [1] If user clicks on the Toolbar
+		//if the user clicked on the Toolbar
 		if ( y >= 0 && y < UI.ToolBarHeight)
 		{	
 			// Check which Menu item was clicked
 			// ==> This assumes that menu items are lined up horizontally <==
-
-			int clickedItemOrder = (x / UI.MenuItemWidth);
-
 			// Divide x coord of the point clicked by the menu item width (integer division)
-			// If division result is 0 ==> first item is clicked, if 1 ==> 2nd item and so on
+			int clickedItemOrder = (x / UI.MenuItemWidth); 
 
+			// If division result is 0 ==> first item is clicked, if 1 ==> 2nd item and so on
 			switch (clickedItemOrder)
 			{
 			case ITM_SET_FLAG_CELL: return SET_FLAG_CELL;
@@ -121,7 +120,7 @@ ActionType Input::GetUserAction() const
 			case ITM_DELETE: return DELETE_OBJECT;
 			case ITM_SAVE: return SAVE_GRID;
 			case ITM_LOAD: return LOAD_GRID;
-			//end of adjustments & all of the above was adding Items needed for design mode
+			//end of adjustments & all of the above was adding Items needed for design mode 
 
 			default: return EMPTY;	// A click on empty place in toolbar
 			}
@@ -130,16 +129,16 @@ ActionType Input::GetUserAction() const
 		// [2] User clicks on the grid area
 		if ( (y >= UI.ToolBarHeight) && (y < UI.height - UI.StatusBarHeight - UI.CommandsBarHeight))
 		{
-			return GRID_AREA;	
+			return GRID_AREA;	//click in middle of screen
 		}
 
 		if ((y >= UI.height - UI.StatusBarHeight - UI.CommandsBarHeight) && (y < UI.height - UI.StatusBarHeight))
 		{
-			return COMMAND;
+			return COMMAND; //click was in command bar
 		}
 
 		// [3] User clicks on the status bar
-		return STATUS;
+		return STATUS; // clicked in status line at bottom
 	}
 
 	// ============ GUI in the Play mode ============
@@ -151,7 +150,7 @@ ActionType Input::GetUserAction() const
 		//start of adjustments(Abdallah)
 		if (y >= 0 && y <= UI.ToolBarHeight) {
 			int clickedItemOrder = (x / UI.MenuItemWidth);
-
+			//all of the cases beneth represent gameplay actions
 			switch (clickedItemOrder)
 			{
 			case ITM_EXECUTE_COMMANDS: return EXECUTE_COMMANDS;
@@ -199,13 +198,13 @@ CellPosition Input::GetCellClicked() const
 			
 			//start of adjustments
 			// 
-			//subtracting the ToolBarHeight to get the position wrt the grid start
+			//subtracting the ToolBarHeight to get the position wrt the grid start aka origin
 			int vCell = (y - UI.ToolBarHeight) / UI.CellHeight;
 
 			//calculating the Horizantal cell
 			int hCell = x / UI.CellWidth;
 
-			//setting the cell pos using the setter functions
+			//setting the cell pos calculated above using the setter functions
 			cellPos.SetVCell(vCell);
 			cellPos.SetHCell(hCell);
 		}
