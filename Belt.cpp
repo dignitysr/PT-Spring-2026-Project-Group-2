@@ -15,10 +15,11 @@ void Belt::Draw(Output* pOut) const
 void Belt::Apply(Grid* pGrid, GameState* pState, Player* pPlayer)
 {
 
-	pGrid->GetOutput()->PrintMessage("You have reached a belt. Click to continue ... ");
+	pGrid->GetOutput()->PrintMessage("You have reached a belt. Click to continue ... ");//print the massege
 	int x, y;
-	pGrid->GetInput()->GetPointClicked(x, y);
-	pGrid->UpdatePlayerCell(pPlayer, endCellPos);
+	pGrid->GetInput()->GetPointClicked(x, y);//waiting for the  mouse click
+	pGrid->GetOutput()->ClearStatusBar();
+	pGrid->UpdatePlayerCell(pPlayer, endCellPos); // make player go from his curent place to the end position of belt
 	///TODO: Implement this function as mentioned in the guideline steps (numbered below) below
 
 

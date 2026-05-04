@@ -1,6 +1,6 @@
 #include "WaterPit.h"
 #include "Player.h"
-
+#include "GameState.h"
 
 
 WaterPit::WaterPit(const CellPosition & waterPitPosition):GameObject(waterPitPosition)
@@ -15,13 +15,20 @@ void WaterPit::Draw(Output * pOut) const
 void WaterPit::Apply(Grid* pGrid, GameState* pState, Player* pPlayer)
 {
 	Output* pOut = pGrid->GetOutput();
-	pOut->PrintMessage("You drowned in a water pit. Click to continue ... ");
+	pOut->PrintMessage("You drowned in a water pit. Click to continue ... ");//print the massege
 	int x, y;
-	pGrid->GetInput()->GetPointClicked(x, y);
+	pGrid->GetInput()->GetPointClicked(x, y);//waiting for the  mouse click
+	pGrid->GetOutput()->ClearStatusBar();
 	CellPosition startcell(4,0);
-	pGrid->UpdatePlayerCell(pPlayer,startcell);
+	pGrid->UpdatePlayerCell(pPlayer,startcell);// return player to start cell
+	//set new health of player
 	int newhealth = pPlayer->GetHealth() - 3;
-	pPlayer->SetHealth(newhealth); 
+	pPlayer->SetHealth(newhealth);
+	// if player health is zero then he dies and game end
+	if (pPlayer->GetHealth() <= 0) {
+		pState->AdvanceCurrentPlayer();
+		pState->SetEndGame(true);
+	}
 	pGrid->UpdateInterface(pState);
 	pOut->ClearStatusBar();
 	

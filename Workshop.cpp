@@ -20,7 +20,7 @@ void Workshop::Apply(Grid* pGrid, GameState* pState, Player* pPlayer)
 	// Apply the workshop's effect on the player
 	
 	Output* pOut = pGrid->GetOutput();
-
+	Input* pIn = pGrid->GetInput();
 	//start of addition
 	//1.validity of player
 	if (!pPlayer) return;
@@ -28,15 +28,18 @@ void Workshop::Apply(Grid* pGrid, GameState* pState, Player* pPlayer)
 	//2.Landing on a workshop repairs the robot.
 	pPlayer->SetHealth(MaxHealth);
 
-	// 3.Feedback to the User
-	pOut->PrintMessage("You reached a Workshop! Health repaired.");
-
+	// 3.Feedback to the User and Offers him to purchase additional equipment or consumables
+	pOut->PrintMessage("You reached a Workshop! Health repaired. Click to continue ... .");
+	pIn->GetCellClicked();
+	pGrid->GetOutput()->ClearStatusBar();
+	pOut->PrintMessage("You can now purchase additional equipment or consumables IF WANTED .Click to continue ... ");
+	pIn->GetCellClicked();
+	pGrid->GetOutput()->ClearStatusBar();
 	// [OPTIONAL BONUS] Consumables can be given to the player here
-	Input* pIn = pGrid->GetInput();
-
-	pOut->PrintMessage("Buy item: 0 Skip, 1 Extended Memory, 2 Toolkit, 3 Hack Device: ");
+	pOut->PrintMessage("Buy item: 0 Skip, 1 Extended Memory, 2 Toolkit, 3 Hack Device, 4 Double Laser NOTE:Each equipment or consumables cost you -1 of your health !. Click to continue ...  ");
+	pIn->GetCellClicked();
+	pGrid->GetOutput()->ClearStatusBar();
 	int choice = pIn->GetInteger(pOut);
-
 	if (choice == 1)
 	{
 		if (pPlayer->HasExtendedMemory())
@@ -46,6 +49,9 @@ void Workshop::Apply(Grid* pGrid, GameState* pState, Player* pPlayer)
 		else
 		{
 			pPlayer->ActivateExtendedMemory();
+			int newHealth = pPlayer->GetHealth() - 1;
+			pPlayer->SetHealth(newHealth);
+			pGrid->UpdateInterface(pState);
 			pGrid->PrintErrorMessage("Extended Memory purchased. You can now save 6 commands. Click to continue ...");
 		}
 	}
@@ -58,6 +64,9 @@ void Workshop::Apply(Grid* pGrid, GameState* pState, Player* pPlayer)
 		else
 		{
 			pPlayer->AddToolkit();
+			int newHealth = pPlayer->GetHealth() - 1;
+			pPlayer->SetHealth(newHealth);
+			pGrid->UpdateInterface(pState);
 			pGrid->PrintErrorMessage("Toolkit purchased. Click to continue ...");
 		}
 	}
@@ -70,6 +79,9 @@ void Workshop::Apply(Grid* pGrid, GameState* pState, Player* pPlayer)
 		else
 		{
 			pPlayer->AddHackDevice();
+			int newHealth = pPlayer->GetHealth() - 1;
+			pPlayer->SetHealth(newHealth);
+			pGrid->UpdateInterface(pState);
 			pGrid->PrintErrorMessage("Hack Device purchased. Click to continue ...");
 		}
 	}

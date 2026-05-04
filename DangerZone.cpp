@@ -14,12 +14,14 @@ void DangerZone::Draw(Output * pOut) const
 
 void DangerZone::Apply(Grid* pGrid, GameState* pState, Player* pPlayer)
 {
-	pGrid->GetOutput()->PrintMessage("You have reached a danger zone. Click to continue ... ");
+	pGrid->GetOutput()->PrintMessage("You have reached a danger zone. Click to continue ... ");//print the massege
 	int x, y;
-	pGrid->GetInput()->GetPointClicked(x, y);
+	pGrid->GetInput()->GetPointClicked(x, y);//waiting for the  mouse click
+	pGrid->GetOutput()->ClearStatusBar();
+	// seting the new health of player
 	int newhealth = pPlayer->GetHealth()-1;
 	pPlayer->SetHealth(newhealth);
-
+	// if player health is zero then he dies and game end
 	if (pPlayer->GetHealth() <= 0) {
 		pState->AdvanceCurrentPlayer();
 		pState->SetEndGame(true);
