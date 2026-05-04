@@ -63,6 +63,11 @@ void SelectCommandAction::Execute()
 	Command availableCommands[MaxAvailableCommands];
 	int availableCommandsCount = pPlayer->GetAvailableCommandCount();
 
+	for (int i = 0; i < availableCommandsCount; i++)
+	{
+		availableCommands[i] = pPlayer->GetAvailableCommand(i);
+	}
+
 	// Display available commands
 	pOut->CreateCommandsBar(savedCommands, maxCommandsToSelect, availableCommands, availableCommandsCount);
 
