@@ -231,7 +231,7 @@ int Input::GetSelectedCommandIndex() const
 
 	if ((y >= UI.height - UI.StatusBarHeight - (UI.CommandsBarHeight / 2) - UI.AvailableCommandsYOffset) && (y < UI.height - UI.StatusBarHeight - (UI.CommandsBarHeight / 2) + UI.AvailableCommandsYOffset))
 	{
-		if (x < (UI.width/2) + UI.AvailableCommandsTextWidth || x > (UI.width / 2) + UI.AvailableCommandsTextWidth + (UI.CommandItemWidth / 2) * MaxAvailableCommands)
+		if (x < (UI.width/2) + UI.AvailableCommandsTextWidth || x > (UI.width / 2) + UI.AvailableCommandsTextWidth + (UI.CommandItemWidth / 2) * (MaxAvailableCommands + 1))
 			return -1;
 
 		return (x - ((UI.width / 2) + UI.AvailableCommandsTextWidth + (2*UI.AvailableCommandsXOffset))) / (UI.CommandItemWidth / 2);

@@ -45,12 +45,9 @@ void ExecuteCommandsAction::Execute()
 
 	pPlayer->Move(pGrid, pState);
 
-	pPlayer->ClearSavedCommands();
+	pState->AdvancePhase();
 
-	if (pState->GetCurrentPlayer() == movingPlayer)
-	{
-		pState->AdvanceCurrentPlayer();
-	}
+	pPlayer->Shoot(pState, pGrid->GetOutput(), pGrid->GetInput());
 
 	pManager->UpdateInterface();
 }

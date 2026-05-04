@@ -5,13 +5,16 @@
 #include <random>
 
 Player::Player(Cell* pCell, int playerNum)
-	: playerNum(playerNum), health(10), currDirection(RIGHT), savedCommandCount(0)
+	: playerNum(playerNum), health(2), currDirection(RIGHT), savedCommandCount(0)
 {
 	this->pCell = pCell;
 
 	// Initialise saved commands to NO_COMMAND
 	for (int i = 0; i < MaxSavedCommands; i++)
 		savedCommands[i] = NO_COMMAND;
+
+	availabeCommandCount = 10;
+	RandomizeAvailableCommands();
 }
 
 // ====== Setters and Getters ======
@@ -164,6 +167,32 @@ void Player::Move(Grid* pGrid, GameState* pState)
 		if (obj) obj->Apply(pGrid, pState, this);
 	}
 }
+
+void Player::Shoot(GameState* pState, Output* pOut, Input* pIn) {
+	Player* otherPlayer = pState->FindShotPlayer(this);
+	if (!otherPlayer) {
+		pOut->PrintMessage("No player to shoot! Movement phase imminent. Click to continue ...");
+		pIn->GetCellClicked();
+		pOut->ClearStatusBar();
+
+		ClearSavedCommands();
+		pState->AdvanceCurrentPlayer();
+		return;
+	}
+
+	otherPlayer->SetHealth(otherPlayer->GetHealth() - 3);
+	pOut->PrintMessage("Player " + to_string(otherPlayer->GetPlayerNum()) + " shot. -3 health. Click to continue ...");
+	pIn->GetCellClicked();
+	pOut->ClearStatusBar();
+
+	if (otherPlayer->GetHealth() <= 0) pState->SetEndGame(true);
+
+	ClearSavedCommands();
+	pState->AdvanceCurrentPlayer();
+
+	return;
+}
+
 
 void Player::AppendPlayerInfo(string& playersInfo) const
 {
