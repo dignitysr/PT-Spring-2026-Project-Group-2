@@ -1,4 +1,5 @@
 #include "Action.h"
+#include "Grid.h"
 #include "DeleteObjectAction.h"
 
 DeleteObjectAction::DeleteObjectAction(ApplicationManager* pApp):Action(pApp)//constructor
@@ -37,6 +38,7 @@ void DeleteObjectAction::Execute()
     {
         return;
     }
+    Grid* pGrid = pManager->GetGrid();
     //delete object action
     delete pGrid->RemoveObjectFromCell(celltodelete->GetCellPosition());
     delete pGrid->RemoveObjectFromCell(celltodelete->GetCellPosition());// no memory leak !!!!
