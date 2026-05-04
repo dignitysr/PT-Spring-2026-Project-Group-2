@@ -10,7 +10,7 @@ Player::Player(Cell* pCell, int playerNum)
 	this->pCell = pCell;
 
 	// Initialise saved commands to NO_COMMAND
-	for (int i = 0; i < MaxSavedCommands; i++)
+	for (int i = 0; i < MaxSavedCommandsWithExtendedMemory; i++)
 		savedCommands[i] = NO_COMMAND;
 }
 
@@ -36,13 +36,13 @@ int Player::GetPlayerNum() const {return playerNum;}
 
 void Player::AddSavedCommand(Command cmd)
 {
-	if (savedCommandCount < MaxSavedCommands)
+	if (savedCommandCount < GetMaxCommands())
 		savedCommands[savedCommandCount++] = cmd;
 }
 
 void Player::ClearSavedCommands()
 {
-	for (int i = 0; i < MaxSavedCommands; i++)
+	for (int i = 0; i < MaxSavedCommandsWithExtendedMemory; i++)
 		savedCommands[i] = NO_COMMAND;
 	savedCommandCount = 0;
 }

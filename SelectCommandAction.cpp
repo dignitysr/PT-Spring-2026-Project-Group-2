@@ -62,14 +62,19 @@ void SelectCommandAction::Execute()
 
 	pPlayer->ClearSavedCommands();
 
-	Command savedCommands[MaxSavedCommands];
+	int maxCommandsToSelect = pPlayer->GetMaxCommands();
 
-	for (int i = 0; i < MaxSavedCommands; i++)
+	if (pPlayer->GetHealth() < maxCommandsToSelect)
+	{
+		maxCommandsToSelect = pPlayer->GetHealth();
+	}
+
+	Command savedCommands[MaxSavedCommandsWithExtendedMemory];
+
+	for (int i = 0; i < MaxSavedCommandsWithExtendedMemory; i++)
 	{
 		savedCommands[i] = NO_COMMAND;
 	}
-
-	int maxCommandsToSelect = min(5, pPlayer->GetHealth());
 
 	int savedCount = 0;
 

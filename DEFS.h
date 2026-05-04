@@ -89,6 +89,7 @@ enum Command
 };
 
 const int MaxSavedCommands = 5;
+const int MaxSavedCommandsWithExtendedMemory = 6;
 
 enum CommandType
 {

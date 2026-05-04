@@ -6,6 +6,8 @@
 
 class SelectCommandAction : public Action
 {
+	Command availableCommands[MaxAvailableCommands];
+	int availableCommandsCount;
 
 public:
 	SelectCommandAction(ApplicationManager* pApp);

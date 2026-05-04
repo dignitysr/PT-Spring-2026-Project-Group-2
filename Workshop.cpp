@@ -1,8 +1,7 @@
 #include "Workshop.h"
 #include "Player.h"
 #include "Output.h"
-
-
+#include "Input.h"
 
 Workshop::Workshop(const CellPosition & workshopPosition):GameObject( workshopPosition)
 {
@@ -33,7 +32,23 @@ void Workshop::Apply(Grid* pGrid, GameState* pState, Player* pPlayer)
 	pOut->PrintMessage("You reached a Workshop! Health repaired.");
 
 	// [OPTIONAL BONUS] Consumables can be given to the player here
-	
+	Input* pIn = pGrid->GetInput();
+
+	pOut->PrintMessage("Enter 1 to buy Extended Memory, or 0 to skip: ");
+	int choice = pIn->GetInteger(pOut);
+
+	if (choice == 1)
+	{
+		if (pPlayer->HasExtendedMemory())
+		{
+			pGrid->PrintErrorMessage("You already have Extended Memory. Click to continue ...");
+		}
+		else
+		{
+			pPlayer->ActivateExtendedMemory();
+			pGrid->PrintErrorMessage("Extended Memory purchased. You can now save 6 commands. Click to continue ...");
+		}
+	}
 }
 
 void Workshop::Save(ofstream& OutFile, GameObjectType type)
