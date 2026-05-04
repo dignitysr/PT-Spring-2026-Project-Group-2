@@ -85,7 +85,8 @@ void LoadGridAction::Execute()
 		// Belt constructor requires two positions; dummy values are overwritten in Load()
 		Belt* pBelt = new Belt(tempPos, tempPos);
 		pBelt->Load(InFile);          // Belt reads start_cell and end_cell
-		pGrid->AddObjectToCell(pBelt);
+		pGrid->AddObjectToCell(pBelt); // Add belt to its start cell
+		pGrid->AddObjectToCell(pBelt, pBelt->GetEndPosition());
 	}
 
 	// 5. Workshops

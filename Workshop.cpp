@@ -2,6 +2,10 @@
 #include "Player.h"
 #include "Output.h"
 #include "Input.h"
+#include "Consumable.h"
+#include "ToolKit.h"
+#include "DoubleLaser.h"
+#include "HackDevice.h"
 
 Workshop::Workshop(const CellPosition & workshopPosition):GameObject( workshopPosition)
 {
@@ -40,71 +44,73 @@ void Workshop::Apply(Grid* pGrid, GameState* pState, Player* pPlayer)
 	pIn->GetCellClicked();
 	pGrid->GetOutput()->ClearStatusBar();
 	int choice = pIn->GetInteger(pOut);
-	if (choice == 1)
-	{
-		if (pPlayer->HasExtendedMemory())
-		{
-			pGrid->PrintErrorMessage("You already have Extended Memory. Click to continue ...");
-		}
-		else
-		{
-			pPlayer->ActivateExtendedMemory();
+	switch (choice) {
+		case 1:
+			if (pPlayer->HasExtendedMemory())
+			{
+				pGrid->PrintErrorMessage("You already have Extended Memory. Click to continue ...");
+			}
+			else
+			{
+				pPlayer->ActivateExtendedMemory();
+				int newHealth = pPlayer->GetHealth() - 1;
+				pPlayer->SetHealth(newHealth);
+				pGrid->UpdateInterface(pState);
+				pGrid->PrintErrorMessage("Extended Memory purchased. You can now save 6 commands. Click to continue ...");
+			}
+			break;
+		case 2:
+			{
+			ToolKit * toolkit = new ToolKit();
 			int newHealth = pPlayer->GetHealth() - 1;
-			pPlayer->SetHealth(newHealth);
-			pGrid->UpdateInterface(pState);
-			pGrid->PrintErrorMessage("Extended Memory purchased. You can now save 6 commands. Click to continue ...");
-		}
-	}
-	else if (choice == 2)
-	{
-		if (pPlayer->HasToolkit())
-		{
-			pGrid->PrintErrorMessage("You already have a Toolkit. Click to continue ...");
-		}
-		else
-		{
-			pPlayer->AddToolkit();
+
+			if (pPlayer->SetInventoryItem(toolkit)) {
+				pPlayer->SetHealth(newHealth);
+				pGrid->UpdateInterface(pState);
+				pGrid->PrintErrorMessage("Toolkit purchased. Click to continue ...");
+			}
+			else {
+				pGrid->PrintErrorMessage("Inventory full! Cannot purchase Toolkit. Click to continue ...");
+			}
+
+			}
+			break;
+		case 3:
+			{
+			HackDevice* hackDevice = new HackDevice();
 			int newHealth = pPlayer->GetHealth() - 1;
-			pPlayer->SetHealth(newHealth);
-			pGrid->UpdateInterface(pState);
-			pGrid->PrintErrorMessage("Toolkit purchased. Click to continue ...");
-		}
-	}
-	else if (choice == 3)
-	{
-		if (pPlayer->HasHackDevice())
-		{
-			pGrid->PrintErrorMessage("You already have a Hack Device. Click to continue ...");
-		}
-		else
-		{
-			pPlayer->AddHackDevice();
-			int newHealth = pPlayer->GetHealth() - 1;
-			pPlayer->SetHealth(newHealth);
-			pGrid->UpdateInterface(pState);
-			pGrid->PrintErrorMessage("Hack Device purchased. Click to continue ...");
-		}
-	}
-	else if (choice == 4)
-	{
-		if (pPlayer->HasDoubleLaser())
-		{
-			pGrid->PrintErrorMessage("You already have a Double Laser. Click to continue ...");
-		}
-		else
-		{
-			pPlayer->SetHasDoubleLaser(true);
+
+			if (pPlayer->SetInventoryItem(hackDevice)) {
+				pPlayer->SetHealth(newHealth);
+				pGrid->UpdateInterface(pState);
+				pGrid->PrintErrorMessage("Hack Device purchased. Click to continue ...");
+			}
+			else {
+				pGrid->PrintErrorMessage("Inventory full! Cannot purchase Hack Device. Click to continue ...");
+			}
+
+			}
+			break;
+		case 4:
+			{
+			DoubleLaser* doubleLaser = new DoubleLaser();
 			int newHealth = pPlayer->GetHealth() - 2;
-			pPlayer->SetHealth(newHealth);
-			pGrid->UpdateInterface(pState);
-			pGrid->PrintErrorMessage("Double Laser purchased! You now deal double damage. Click to continue ...");
-		}
-	}
-	else
-	{
-		pGrid->PrintErrorMessage("Workshop action finished. Click to continue ...");
-	}
+
+			if (pPlayer->SetInventoryItem(doubleLaser)) {
+				pPlayer->SetHealth(newHealth);
+				pGrid->UpdateInterface(pState);
+				pGrid->PrintErrorMessage("Double Laser purchased. Click to continue ...");
+			}
+			else {
+				pGrid->PrintErrorMessage("Inventory full! Cannot purchase Double Laser. Click to continue ...");
+			}
+
+			}
+			break;
+		default:
+			pGrid->PrintErrorMessage("Workshop action finished. Click to continue ...");
 	
+	}
 }
 
 void Workshop::Save(ofstream& OutFile, GameObjectType type)

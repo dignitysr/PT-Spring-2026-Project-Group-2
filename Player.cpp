@@ -5,7 +5,7 @@
 #include <random>
 
 Player::Player(Cell* pCell, int playerNum)
-	: playerNum(playerNum), health(10), currDirection(RIGHT), savedCommandCount(0), isHacked(false)
+	: playerNum(playerNum), health(10), currDirection(RIGHT), savedCommandCount(0), isHacked(false), laserDamage(1), inventoryCount(0), usedRepair(false)
 {
 	this->pCell = pCell;
 
@@ -33,22 +33,65 @@ int Player::GetHealth() const       { return health; }
 Direction Player::GetDirection() const      { return currDirection; }
 void      Player::SetDirection(Direction d) { currDirection = d; }
 
+bool Player::GetUsedRepair() const { return usedRepair; }
+void Player::SetUsedRepair(bool value) { usedRepair = value; }
+
 int Player::GetPlayerNum() const {return playerNum;}
-
-void Player::AddToolkit(){ hasToolkit = true; }
-void Player::AddHackDevice(){ hasHackDevice = true;}
-
-bool Player::HasToolkit() const{ return hasToolkit; }
-bool Player::HasHackDevice() const{ return hasHackDevice;}
-
-void Player::UseToolkit(){ hasToolkit = false; }
-void Player::UseHackDevice(){ hasHackDevice = false;}
 
 void Player::SetHacked(bool value){	isHacked = value;}
 bool Player::IsHacked() const{ return isHacked;}
 
-bool Player::HasDoubleLaser() const { return hasDoubleLaser; }
-void Player::SetHasDoubleLaser(bool status) { hasDoubleLaser = status; }
+int Player::GetLaserDamage() const { return laserDamage; }
+void Player::SetLaserDamage(int damage) { laserDamage = damage; }
+
+bool Player::SetInventoryItem(Consumable* item) {
+	if (inventoryCount < MaxConsumables) {
+		inventory[inventoryCount++] = item;
+		return true;
+	}
+	return false;
+}
+void Player::RemoveInventoryItem(int index) {
+	if (index >= 0 && index < inventoryCount) {
+		for (int i = index; i < inventoryCount - 1; i++) {
+			inventory[i] = inventory[i + 1];
+		}
+		inventory[--inventoryCount] = nullptr; // Clear last item and decrease count
+	}
+}
+Consumable* Player::GetInventoryItem(int index) const {
+	if (index >= 0 && index < inventoryCount) {
+		return inventory[index];
+	}
+	return nullptr;
+}
+
+
+void Player::GetInventoryInfo(int& toolKits, int& hackDevices, int& doubleLasers) const {
+	for (int i = 0; i < inventoryCount; i++) {
+		switch (inventory[i]->GetType()) {
+			case TOOLKIT:
+				toolKits++;
+				break;
+			case HACK_DEVICE:
+				hackDevices++;
+				break;
+			case DOUBLE_LASER:
+				doubleLasers++;
+				break;
+		}
+	}
+}
+
+Consumable* Player::GetItemOfType(ConsumableType type, int& index) const {
+	for (int i = 0; i < inventoryCount; i++) {
+		if (inventory[i]->GetType() == type) {
+			index = i;
+			return inventory[i];
+		}
+	}
+	return nullptr;
+}
 
 
 // ====== Saved Commands ======
@@ -196,26 +239,33 @@ void Player::Shoot(GameState* pState, Output* pOut, Input* pIn) {
 		return;
 	}
 
-	//Boolean check for the double laser
-	if (this->HasDoubleLaser()) 
-	{
-		//Deducting 2 health if boolean is true
-		otherPlayer->SetHealth(otherPlayer->GetHealth() - 2);
-		pOut->PrintMessage("player" + to_string(otherPlayer->GetPlayerNum()) + "shot with Double Laser! -2 health. Click to continue ...");
+	Consumable* doubleLaserConsumable = nullptr;
+	int doubleLaserIndex;
+
+	doubleLaserConsumable = GetItemOfType(DOUBLE_LASER, doubleLaserIndex);
+
+	if (doubleLaserConsumable) {
+		pOut->PrintMessage("Double Laser engaged! 2x damage! Click to continue ...");
+		doubleLaserConsumable->ApplyEffect(this, pState);
+		pIn->GetCellClicked();
 	}
-	else
-	{
-		//Deducting 1 health if the boolean is false
-		otherPlayer->SetHealth(otherPlayer->GetHealth() - 1);
-		pOut->PrintMessage("Player " + to_string(otherPlayer->GetPlayerNum()) + " shot. -1 health. Click to continue ...");
-	}
+
+
+	otherPlayer->SetHealth(otherPlayer->GetHealth() - laserDamage);
+	pOut->PrintMessage("Player " + to_string(otherPlayer->GetPlayerNum()) + " shot. " + to_string(laserDamage) + " health. Click to continue ...");
 	pIn->GetCellClicked();
 	pOut->ClearStatusBar();
+
+	if (doubleLaserConsumable) {
+		doubleLaserConsumable->DisengageEffect(this, pState);
+		RemoveInventoryItem(doubleLaserIndex);
+		delete doubleLaserConsumable;
+	}
 
 	if (otherPlayer->GetHealth() <= 0) pState->SetEndGame(true);
 
 	ClearSavedCommands();
-	pState->AdvanceCurrentPlayer();
+	if (!pState->GetEndGame()) pState->AdvanceCurrentPlayer();
 
 	return;
 }

@@ -64,47 +64,64 @@ void ExecuteCommandsAction::Execute()
 	Output* pOut = pGrid->GetOutput();
 	Input* pIn = pGrid->GetInput();
 
-	if (pPlayer->HasToolkit() || pPlayer->HasHackDevice())
+	int toolKits = 0, hackDevices = 0, doubleLasers = 0;
+	pPlayer->GetInventoryInfo(toolKits, hackDevices, doubleLasers);
+	if (toolKits > 0 || hackDevices > 0 || doubleLasers > 0) {
+		pOut->PrintMessage("You have " + to_string(toolKits) + " Toolkit(s), " + to_string(hackDevices) + " Hack Device(s), and " + to_string(doubleLasers) + " Double Laser(s). Click to continue ...");
+		pIn->GetCellClicked(); // wait for input
+	}
+
+	if (toolKits > 0 || hackDevices > 0)
 	{
 		pOut->PrintMessage("Use consumable? 0 Cancel, 1 Toolkit, 2 Hack Device: ");
 		int choice = pIn->GetInteger(pOut);
 
-		if (choice == 1)
-		{
-			if (pPlayer->HasToolkit())
-			{
-				pPlayer->SetHealth(MaxHealth);
-				pPlayer->UseToolkit();
-				pGrid->PrintErrorMessage("Toolkit used. Robot repaired. Click to continue ...");
-			}
-			else
-			{
-				pGrid->PrintErrorMessage("You do not have a Toolkit. Click to continue ...");
-			}
-		}
-		else if (choice == 2)
-		{
-			if (pPlayer->HasHackDevice())
-			{
-				Player* opponent = pState->GetPlayer((pPlayer->GetPlayerNum() + 1) % MaxPlayerCount);
-
-				if (opponent != NULL)
+		switch (choice) { 
+			case 1:
+				if (toolKits > 0)
 				{
-					opponent->SetHacked(true);
+					int toolKitIndex;
+					Consumable* pToolkit = pPlayer->GetItemOfType(TOOLKIT, toolKitIndex);
+					if (pToolkit)
+					{
+						pToolkit->ApplyEffect(pPlayer, pState);
+						pPlayer->RemoveInventoryItem(toolKitIndex); // remove from inventory
+						delete pToolkit; // free memory
+					}
+					pOut->PrintMessage("Toolkit used. Robot repaired. Click to continue ...");
 				}
-
-				pPlayer->UseHackDevice();
-				pGrid->PrintErrorMessage("Hack Device used. Opponent will skip their next turn. Click to continue ...");
-			}
-			else
-			{
-				pGrid->PrintErrorMessage("You do not have a Hack Device. Click to continue ...");
-			}
+				else
+				{
+					pGrid->PrintErrorMessage("You do not have a Toolkit. Click to continue ...");
+				}
+				break;
+			case 2:
+				if (hackDevices > 0)
+				{
+					Player* opponent = pState->GetPlayer((pPlayer->GetPlayerNum() + 1) % MaxPlayerCount);
+					int hackDeviceIndex;
+					Consumable* pHackDevice = pPlayer->GetItemOfType(HACK_DEVICE, hackDeviceIndex);
+					if (opponent != NULL)
+					{
+						pHackDevice->ApplyEffect(opponent, pState);
+						pPlayer->RemoveInventoryItem(hackDeviceIndex); // remove from inventory
+						delete pHackDevice; // free memory
+					}
+					pOut->PrintMessage("Hack Device used. Opponent will skip their next turn. Click to continue ...");
+				}
+				else
+				{
+					pGrid->PrintErrorMessage("You do not have a Hack Device. Click to continue ...");
+				}
+				break;
 		}
 	}
-
+	pIn->GetCellClicked(); // wait for input
+	pOut->ClearStatusBar();
 	// keep track of the moving player
 	Player* movingPlayer = pPlayer;
+
+	pOut->FlushMouseQueue();
 
 	// move using saved commands
 	pPlayer->Move(pGrid, pState);
