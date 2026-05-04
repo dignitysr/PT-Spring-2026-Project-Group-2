@@ -7,11 +7,11 @@
 class AddDangerZoneAction : public Action
 {
 private:
-    CellPosition pos;  
+    CellPosition pos; // The position of the danger zone
 
 public:
-    AddDangerZoneAction(ApplicationManager* pApp);  
-    virtual bool ReadActionParameters();        
-    virtual void Execute();                     
-    virtual ~AddDangerZoneAction();               
+    AddDangerZoneAction(ApplicationManager* pApp); // Constructor
+    virtual bool ReadActionParameters(); // Reads and checks the selected position
+    virtual void Execute(); // Creates a new danger zone object and adds it to the grid
+    virtual ~AddDangerZoneAction(); // Destructor
 };

@@ -8,8 +8,8 @@
 class RebootRepairAction : public Action
 {
 public:
-    RebootRepairAction(ApplicationManager* pApp); 
-    virtual bool ReadActionParameters();           
-    virtual void Execute();                        
-    virtual ~RebootRepairAction();                 
+    RebootRepairAction(ApplicationManager* pApp); // constructor
+    virtual bool ReadActionParameters(); // reads action data
+    virtual void Execute(); // repairs the current player
+    virtual ~RebootRepairAction(); // destructor
 };

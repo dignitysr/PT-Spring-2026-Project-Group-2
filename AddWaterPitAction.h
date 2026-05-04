@@ -7,11 +7,11 @@
 class AddWaterPitAction : public Action
 {
 private:
-    CellPosition pos;  
+    CellPosition pos; // The position of the water pit
 
 public:
-    AddWaterPitAction(ApplicationManager* pApp);  
-    virtual bool ReadActionParameters();          
-    virtual void Execute();                       
-    virtual ~AddWaterPitAction();                
+    AddWaterPitAction(ApplicationManager* pApp); // Constructor
+    virtual bool ReadActionParameters(); // Reads and checks the selected position
+    virtual void Execute(); // Creates a new water pit object and adds it to the grid
+    virtual ~AddWaterPitAction(); // Destructor
 };

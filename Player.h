@@ -20,8 +20,9 @@ class Player
 	// ---- Saved Commands (the player's "program" for this round) ----
 	// Owned here because they are player-specific state.
 	// SelectCommandAction fills this array; Move() executes it; ClearSavedCommands() resets it.
-	Command savedCommands[MaxSavedCommands];
-	int savedCommandCount; // how many commands have been saved so far (0..MaxSavedCommands)
+	Command savedCommands[MaxSavedCommandsWithExtendedMemory];
+	int savedCommandCount; // how many commands have been saved so far 
+	bool extendedMemory = false;
 
 	Command availableCommands[MaxAvailableCommands]; // the commands available to the player this round (depends on health)
 	int availabeCommandCount = MaxAvailableCommands; // how many commands are available this round (0..MaxAvailableCommands)
@@ -35,6 +36,8 @@ class Player
 	// Uncomment when adding consumables (see Workshop.h):
 	//   Consumable* inventory[MaxConsumables];
 	//   int inventoryCount;
+	bool hasToolkit = false;
+	bool hasHackDevice = false;
 
 public:
 
@@ -54,7 +57,21 @@ public:
 	///TODO: Add more setters/getters here as needed
 
 	int GetPlayerNum() const; // Returns the player number (0..MaxPlayerCount-1)
+	void ActivateExtendedMemory() { extendedMemory = true; }
+	bool HasExtendedMemory() const { return extendedMemory; }
+	int GetMaxCommands() const { return extendedMemory ? MaxSavedCommandsWithExtendedMemory : MaxSavedCommands; }
 
+	void AddToolkit();
+	void AddHackDevice();
+
+	bool HasToolkit() const;
+	bool HasHackDevice() const;
+
+	void UseToolkit();
+	void UseHackDevice();
+
+	void SetHacked(bool value);
+	bool IsHacked() const;
 	// ====== Saved Commands ======
 
 	void    AddSavedCommand(Command cmd);         // Appends cmd to savedCommands (called by SelectCommandAction)

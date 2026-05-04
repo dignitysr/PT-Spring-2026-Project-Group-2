@@ -5,12 +5,12 @@
 #include <random>
 
 Player::Player(Cell* pCell, int playerNum)
-	: playerNum(playerNum), health(2), currDirection(RIGHT), savedCommandCount(0)
+	: playerNum(playerNum), health(10), currDirection(RIGHT), savedCommandCount(0), isHacked(false)
 {
 	this->pCell = pCell;
 
 	// Initialise saved commands to NO_COMMAND
-	for (int i = 0; i < MaxSavedCommands; i++)
+	for (int i = 0; i < MaxSavedCommandsWithExtendedMemory; i++)
 		savedCommands[i] = NO_COMMAND;
 
 	availabeCommandCount = 10;
@@ -35,17 +35,29 @@ void      Player::SetDirection(Direction d) { currDirection = d; }
 
 int Player::GetPlayerNum() const {return playerNum;}
 
+void Player::AddToolkit(){ hasToolkit = true; }
+void Player::AddHackDevice(){ hasHackDevice = true;}
+
+bool Player::HasToolkit() const{ return hasToolkit; }
+bool Player::HasHackDevice() const{ return hasHackDevice;}
+
+void Player::UseToolkit(){ hasToolkit = false; }
+void Player::UseHackDevice(){ hasHackDevice = false;}
+
+void Player::SetHacked(bool value){	isHacked = value;}
+bool Player::IsHacked() const{ return isHacked;}
+
 // ====== Saved Commands ======
 
 void Player::AddSavedCommand(Command cmd)
 {
-	if (savedCommandCount < MaxSavedCommands)
+	if (savedCommandCount < GetMaxCommands())
 		savedCommands[savedCommandCount++] = cmd;
 }
 
 void Player::ClearSavedCommands()
 {
-	for (int i = 0; i < MaxSavedCommands; i++)
+	for (int i = 0; i < MaxSavedCommandsWithExtendedMemory; i++)
 		savedCommands[i] = NO_COMMAND;
 	savedCommandCount = 0;
 }
