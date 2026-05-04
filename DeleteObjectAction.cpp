@@ -38,11 +38,13 @@ void DeleteObjectAction::Execute()
         return;
     }
     //delete object action
-    Grid* pGrid = pManager->GetGrid();
+    delete pGrid->RemoveObjectFromCell(celltodelete->GetCellPosition());
     delete pGrid->RemoveObjectFromCell(celltodelete->GetCellPosition());// no memory leak !!!!
     pGrid->GetOutput()->PrintMessage("Object deleted successfully!");
+    delete pGrid->RemoveObjectFromCell(celltodelete->GetCellPosition());
     pGrid->GetInput()->GetCellClicked();
     pGrid->GetOutput()->ClearStatusBar();
+    pGrid->GetOutput()->PrintMessage("Object deleted successfully!");
 
 }
 

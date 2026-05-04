@@ -109,14 +109,11 @@ void ExecuteCommandsAction::Execute()
 	// move using saved commands
 	pPlayer->Move(pGrid, pState);
 
-	// clear commands after execution
-	pPlayer->ClearSavedCommands();
 
-	// advance turn only if the current player was not changed by another object
-	if (pState->GetCurrentPlayer() == movingPlayer)
-	{
-		pState->AdvanceCurrentPlayer();
-	}
+	pState->AdvancePhase();
+
+
+	pPlayer->Shoot(pState, pGrid->GetOutput(), pGrid->GetInput());
 
 	// redraw the interface
 	pManager->UpdateInterface();

@@ -161,7 +161,6 @@ void Grid::UpdateInterface(const GameState* pState) const
 		pState->AppendPlayersInfo(playersInfo);
 		pOut->PrintPlayersInfo(playersInfo);
 		pState->GetCurrentPlayer()->DrawCommands(pOut); // Draw the current player's saved commands in the commands bar.
-
 		// Note: UpdatePlayerCell() already redraws players step-by-step during Play mode.
 	}
 }

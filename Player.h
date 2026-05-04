@@ -94,6 +94,7 @@ public:
 
 	void ExecuteCommand(Command cmd, Grid* pGrid, GameState* pState); // Helper function for Move()
 	void Move(Grid* pGrid, GameState* pState);
+	void Shoot(GameState* pState, Output* pOut, Input* pIn);
 
 	void AppendPlayerInfo(string& playersInfo) const; // Appends "P0(direction, health)" to the string
 };

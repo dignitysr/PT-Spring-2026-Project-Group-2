@@ -42,6 +42,7 @@ public:
 
 	Player* GetCurrentPlayer() const;           // Returns the player whose turn it is
 	Player* GetPlayer(int playerNum) const;     // Returns any player by index (0-based)
+	void ResetAllPlayers(Grid* pGrid);
 
 	// ========== Turn Management ==========
 
@@ -68,6 +69,8 @@ public:
 	// [OPTIONAL BONUS] To add PHASE_SHOOTING, update this function body:
 	//   MOVEMENT --> SHOOTING --> MOVEMENT
 	void AdvancePhase();
+
+	Player* FindShotPlayer(Player* shootingPlayer) const;
 
 	// ========== End-Game ==========
 
