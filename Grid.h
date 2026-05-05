@@ -12,6 +12,7 @@ class Cell;
 class GameObject;
 class Player;
 class Belt;
+class Antenna;
 class GameState;
 
 // ============================================================
@@ -58,6 +59,7 @@ public:
 	bool FlagExists() const; // Checks if there is a flag on the board and returns true if there is at least one flag or returns false if there is no flag
 	// Returns the first Belt found at or after 'position' (used when adding connected belts).
 	Belt* GetNextBelt(const CellPosition& position);
+	Antenna* GetAntenna();
 
 	void ClearBoard(); // Deletes all game objects on the board and sets the cells' pGameObject to NULL (used in LoadGridAction)
 

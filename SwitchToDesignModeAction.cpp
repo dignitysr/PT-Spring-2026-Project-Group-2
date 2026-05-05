@@ -21,19 +21,7 @@ void SwitchToDesignModeAction::Execute()
 	Output* pOut = pGrid->GetOutput();
 	GameState* pState = pManager->GetGameState();
 
-    for (int i = 0; i < MaxPlayerCount; i++)
-    {
-        Player* currentPlayer = pState->GetPlayer(i);
-
-        // Reset health to 10 and clear saved commands
-        currentPlayer->SetHealth(MaxHealth);
-        currentPlayer->ClearSavedCommands();
-        currentPlayer->SetDirection(RIGHT);
-
-        // Reset position to start cell
-        Cell* startCell = pGrid->GetStartCell();
-        currentPlayer->SetCell(startCell);
-    }
+	pState->ResetAllPlayers(pGrid);
 
     // Set player 1 as the first player
     pState->SetFirstPlayer(1);

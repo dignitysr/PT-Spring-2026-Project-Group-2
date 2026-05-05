@@ -7,6 +7,7 @@
 #include "WaterPit.h"
 #include "Player.h"
 #include "DangerZone.h"
+#include "Antenna.h"
 #include "Workshop.h"
 #include "Output.h"
 Cell::Cell(const CellPosition & pos) : position(pos)
@@ -77,6 +78,11 @@ DangerZone * Cell::HasDangerZone() const
 Workshop * Cell::HasWorkshop() const
 {
 	return dynamic_cast<Workshop*>(pGameObject);
+}
+
+Antenna* Cell::HasAntenna() const
+{
+	return dynamic_cast<Antenna*>(pGameObject);
 }
 
 // ======= Drawing Functions ======= 

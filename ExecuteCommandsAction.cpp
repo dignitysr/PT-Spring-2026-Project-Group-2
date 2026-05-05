@@ -135,7 +135,7 @@ void ExecuteCommandsAction::Execute()
 	pState->AdvancePhase();
 
 
-	pPlayer->Shoot(pState, pGrid->GetOutput(), pGrid->GetInput());
+	pPlayer->Shoot(pGrid, pState, pGrid->GetOutput(), pGrid->GetInput());
 
 	// redraw the interface
 	pManager->UpdateInterface();

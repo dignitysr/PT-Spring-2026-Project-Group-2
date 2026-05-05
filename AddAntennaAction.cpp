@@ -38,6 +38,13 @@ bool AddAntennaAction::ReadActionParameters()
         return false;
     }
 
+	if (pGrid->GetAntenna() != nullptr) {
+        pOut->PrintMessage("An antenna already exists on the board. Cannot place another one.");
+        pIn->GetCellClicked();
+        pOut->ClearStatusBar();
+        return false;
+    }
+
     // clear status bar
     pOut->ClearStatusBar();
 

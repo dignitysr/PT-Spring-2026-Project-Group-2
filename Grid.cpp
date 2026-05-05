@@ -110,6 +110,14 @@ Belt* Grid::GetNextBelt(const CellPosition& position)
 	}
 }
 
+Antenna* Grid::GetAntenna() {
+	for (int i = NumVerticalCells - 1; i >= 0; i--)
+		for (int j = 0; j < NumHorizontalCells; j++)
+			if (CellList[i][j]->GetGameObject() && CellList[i][j]->GetGameObject()->IsType(ANTENNA_TYPE))
+				return dynamic_cast<Antenna*>(CellList[i][j]->GetGameObject());
+	return nullptr;
+}
+
 void Grid::ClearBoard()
 {
 	for (int i = NumVerticalCells - 1; i >= 0; i--)
@@ -233,8 +241,10 @@ Grid::~Grid()
 	delete pOut;
 
 	for (int i = NumVerticalCells - 1; i >= 0; i--)
-		for (int j = 0; j < NumHorizontalCells; j++)
-			delete CellList[i][j];
+		for (int j = 0; j < NumHorizontalCells; j++) {
+				if (CellList[i][j]->GetGameObject()) delete CellList[i][j]->GetGameObject();
+				delete CellList[i][j];
+			}
 
 	if (Clipboard) delete Clipboard;
 

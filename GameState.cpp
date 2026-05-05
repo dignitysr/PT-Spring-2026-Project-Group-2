@@ -20,6 +20,7 @@ GameState::GameState(Grid* pGrid)
 	}
 
 	currPlayerNumber = 0;         // Player 0 goes first by default
+	firstPlayerNum = 0;
 	currentPhase = PHASE_MOVEMENT;
 	endGame = false;
 }
@@ -71,9 +72,12 @@ void GameState::SetFirstPlayer(int playerNum)
 {
 	///TODO: Implement this function to set which player goes first this round
 	currPlayerNumber = playerNum;
+	firstPlayerNum = playerNum;
 }
 
 // ========== Phase Management ==========
+
+int GameState::GetFirstPlayerNum() const { return firstPlayerNum; }
 
 PhaseType GameState::GetCurrentPhase() const
 {

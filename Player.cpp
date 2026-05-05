@@ -2,7 +2,9 @@
 
 #include "GameObject.h"
 #include "GameState.h"
+#include "Antenna.h"
 #include <random>
+#include <iostream>
 
 Player::Player(Cell* pCell, int playerNum)
 	: playerNum(playerNum), health(10), currDirection(RIGHT), savedCommandCount(0), isHacked(false), laserDamage(1), inventoryCount(0), usedRepair(false)
@@ -200,7 +202,7 @@ void Player::ExecuteCommand(Command cmd, Grid* pGrid, GameState* pState) {
 	if (newPos.IsValidCell())	pGrid->UpdatePlayerCell(this, newPos);
 	else pGrid->PrintErrorMessage("Invalid move: out of bounds");
 
-	if (!pCell->HasWorkshop()) {
+	if (!pCell->HasWorkshop() && !pCell->HasAntenna()) {
 		GameObject* obj = pCell->GetGameObject();
 		if (obj) obj->Apply(pGrid, pState, this);
 	}
@@ -229,7 +231,7 @@ void Player::Move(Grid* pGrid, GameState* pState)
 	}
 }
 
-void Player::Shoot(GameState* pState, Output* pOut, Input* pIn) {
+void Player::Shoot(Grid* pGrid, GameState* pState, Output* pOut, Input* pIn) {
 	Player* otherPlayer = pState->FindShotPlayer(this);
 	if (!otherPlayer) {
 		pOut->PrintMessage("No player to shoot! Movement phase imminent. Click to continue ...");
@@ -237,7 +239,16 @@ void Player::Shoot(GameState* pState, Output* pOut, Input* pIn) {
 		pOut->ClearStatusBar();
 
 		ClearSavedCommands();
-		pState->AdvanceCurrentPlayer();
+		if (!pState->GetEndGame()) {
+			if (pState->GetFirstPlayerNum() != playerNum) {
+				Antenna* antenna = pGrid->GetAntenna();
+				if (antenna) {
+					cout << "kms" << endl;
+					antenna->Apply(pGrid, pState, this);
+				} else pState->AdvanceCurrentPlayer();
+			} else pState->AdvanceCurrentPlayer();
+
+		}
 		return;
 	}
 
@@ -267,7 +278,16 @@ void Player::Shoot(GameState* pState, Output* pOut, Input* pIn) {
 	if (otherPlayer->GetHealth() <= 0) pState->SetEndGame(true);
 
 	ClearSavedCommands();
-	if (!pState->GetEndGame()) pState->AdvanceCurrentPlayer();
+	if (!pState->GetEndGame()) {
+		if (pState->GetFirstPlayerNum() != playerNum) {
+			Antenna* antenna = pGrid->GetAntenna();
+			if (antenna) {
+				cout << "kms" << endl;
+				antenna->Apply(pGrid, pState, this);
+			} else pState->AdvanceCurrentPlayer();
+		} else pState->AdvanceCurrentPlayer();
+
+	}
 
 	return;
 }

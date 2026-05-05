@@ -30,6 +30,8 @@ class GameState
 	PhaseType currentPhase; // Which phase of the current round we are in
 	bool endGame;           // True once a win/loss condition is detected
 
+	int firstPlayerNum;
+
 public:
 
 	// Constructor: creates all Player objects starting at Grid's start cell.
@@ -64,6 +66,8 @@ public:
 
 	PhaseType GetCurrentPhase() const;
 	void SetCurrentPhase(PhaseType phase);
+
+	int GetFirstPlayerNum() const;
 
 	// Advances to the next phase in the round.
 	// [OPTIONAL BONUS] To add PHASE_SHOOTING, update this function body:

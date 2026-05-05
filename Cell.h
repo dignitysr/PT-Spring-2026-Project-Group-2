@@ -12,6 +12,7 @@ class WaterPit;
 class Workshop;
 class Flag;
 class Player;
+class Antenna;
 class DangerZone;
 class Cell
 {
@@ -38,6 +39,7 @@ public:
 	WaterPit* HasWaterPit() const;
 	DangerZone* HasDangerZone() const;
 	Workshop* HasWorkshop() const;
+	Antenna* HasAntenna() const;
 	// ======= Drawing Functions ======= 
 
 	void DrawCellOrWaterPitOrDangerZone(Output* pOut) const;	// Draws the Cell either has waterpit or dangerzone(either of the gameobjects changes the cell color)

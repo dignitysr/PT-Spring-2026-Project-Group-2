@@ -16,7 +16,7 @@ void Antenna::Draw(Output * pOut) const
 
 void Antenna::Apply(Grid* pGrid, GameState* pState, Player* pPlayer)
 {
-	pGrid->GetOutput()->PrintMessage("the antenna will decide the turn of players. Click to continue ... "); //print the massege
+	pGrid->GetOutput()->PrintMessage("The antenna will decide the players' turn. Click to continue ... "); //print the massege
 	int x, y;
 	pGrid->GetInput()->GetPointClicked(x,y); //waiting for the  mouse click
 	
@@ -40,14 +40,14 @@ void Antenna::Apply(Grid* pGrid, GameState* pState, Player* pPlayer)
 		if (dist0 <= dist1) // comparing dist of players in refrence to antena
 		{
 			firstPlayerNum=0;
-			pGrid->GetOutput()->PrintMessage("player 0 will play first !");
+			pGrid->GetOutput()->PrintMessage("Player 0 will play first!");
 			pGrid->GetInput()->GetCellClicked();
 			pGrid->GetOutput()->ClearStatusBar();
 		}
 		else
 		{
 			firstPlayerNum=1;
-			pGrid->GetOutput()->PrintMessage("player 1 will play first !");
+			pGrid->GetOutput()->PrintMessage("Player 1 will play first!");
 			pGrid->GetInput()->GetCellClicked();
 			pGrid->GetOutput()->ClearStatusBar();
 		}
