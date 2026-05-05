@@ -35,7 +35,7 @@ CellPosition::CellPosition (int cellNum)
 
 bool CellPosition::SetVCell(int v) 
 {
-	if (v <= NumVerticalCells - 1 && v >= 0)
+	if (v <= NumVerticalCells - 1 && v >= 0)//validation for Vcell
 	{
 		vCell = v;
 		return true;
@@ -50,7 +50,7 @@ bool CellPosition::SetVCell(int v)
 	 // this line sould be changed with your implementation
 }
 
-bool CellPosition::SetHCell(int h) 
+bool CellPosition::SetHCell(int h) //validation for Hcell
 {
 	if (h <= NumHorizontalCells-1&& h >= 0)
 	{
@@ -78,7 +78,7 @@ int CellPosition::HCell() const
 
 bool CellPosition::IsValidCell() const 
 {
-	if (vCell >= 0 && vCell <= NumVerticalCells - 1 && hCell >= 0 && hCell <= NumHorizontalCells - 1)
+	if (vCell >= 0 && vCell <= NumVerticalCells - 1 && hCell >= 0 && hCell <= NumHorizontalCells - 1)// if Hcell and Vcell are valid
 	{
 		return true;
 	}
@@ -110,8 +110,9 @@ int CellPosition::GetCellNumFromPosition(const CellPosition& cellPosition)
 	{
 		return -1;
 	}
-	int rowsfrombottom = (NumVerticalCells - 1 - v);
-	int cellnum = (rowsfrombottom * NumHorizontalCells) + h + 1;
+	int rowsfrombottom = (NumVerticalCells - 1 - v);//get the height starting from bottom (4 is bottom ,0 is upper)
+	int cellnum = (rowsfrombottom * NumHorizontalCells) + h + 1; // going right to start counting horizontal distance
+	                                                             // the +1 bec cellnum starts at c1 and Hcell starts from 0
     return cellnum;
 
 	// Note:
@@ -130,10 +131,10 @@ CellPosition CellPosition::GetCellPositionFromNum(int cellNum)
 	CellPosition position;
 	if (cellNum >= 1 && cellNum <= (NumVerticalCells * NumHorizontalCells))
 	{
-		int h = (cellNum - 1) % NumHorizontalCells;
-		int v = (NumVerticalCells - 1) - ((cellNum - 1) / NumHorizontalCells);
-		position.SetVCell(v);
-		position.SetHCell(h);
+		int h = (cellNum - 1) % NumHorizontalCells;// getting Hcell from cellNum
+		int v = (NumVerticalCells - 1) - ((cellNum - 1) / NumHorizontalCells);// getting Vcell from cellNum
+		position.SetVCell(v);// set V
+		position.SetHCell(h);// set H
 	}
 	else return CellPosition(-1, -1); // return an invalid cell position if the passed cellNum is not valid
 
