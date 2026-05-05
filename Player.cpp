@@ -169,6 +169,7 @@ void Player::ClearDrawing(Output* pOut) const
 // ====== Game Logic ======
 
 void Player::ExecuteCommand(Command cmd, Grid* pGrid, GameState* pState) {
+	if (health <= 0) return;
 	CellPosition newPos = pCell->GetCellPosition();
 	switch (cmd) {
 		case MOVE_FORWARD_ONE_STEP:
