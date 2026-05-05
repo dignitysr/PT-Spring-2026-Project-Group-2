@@ -24,7 +24,7 @@ void WaterPit::Apply(Grid* pGrid, GameState* pState, Player* pPlayer)
 	//set new health of player
 	int newhealth = pPlayer->GetHealth() - 3;
 	pPlayer->SetHealth(newhealth);
-	// if player health is zero then he dies and game end
+	// if player health is zero then he dies and game ends
 	if (pPlayer->GetHealth() <= 0) {
 		pState->AdvanceCurrentPlayer();
 		pState->SetEndGame(true);

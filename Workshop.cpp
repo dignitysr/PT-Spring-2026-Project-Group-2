@@ -40,36 +40,36 @@ void Workshop::Apply(Grid* pGrid, GameState* pState, Player* pPlayer)
 	pIn->GetCellClicked();
 	pGrid->GetOutput()->ClearStatusBar();
 	// [OPTIONAL BONUS] Consumables can be given to the player here
-	pOut->PrintMessage("Buy item: 0 Skip, 1 Extended Memory, 2 Toolkit, 3 Hack Device, 4 Double Laser NOTE:Each equipment or consumables cost you -1 of your health !. Click to continue ...  ");
+	pOut->PrintMessage("Buy item: 0 Skip, 1 Extended Memory, 2 Toolkit, 3 Hack Device, 4 Double Laser NOTE:Each equipment or consumables cost you -2 of your health !. Click to continue ...  ");
 	pIn->GetCellClicked();
 	pGrid->GetOutput()->ClearStatusBar();
 	int choice = pIn->GetInteger(pOut);
 	switch (choice) {
 		case 1:
-			if (pPlayer->HasExtendedMemory())
+			if (pPlayer->HasExtendedMemory())//check if player has already extended his memory
 			{
 				pGrid->PrintErrorMessage("You already have Extended Memory. Click to continue ...");
 			}
-			else
+			else // if not
 			{
-				pPlayer->ActivateExtendedMemory();
-				int newHealth = pPlayer->GetHealth() - 1;
-				pPlayer->SetHealth(newHealth);
-				pGrid->UpdateInterface(pState);
+				pPlayer->ActivateExtendedMemory();//extend his memory
+				int newHealth = pPlayer->GetHealth() - 2;//decrease his health by 2
+				pPlayer->SetHealth(newHealth);// setter for his new health
+				pGrid->UpdateInterface(pState);// update interface
 				pGrid->PrintErrorMessage("Extended Memory purchased. You can now save 6 commands. Click to continue ...");
 			}
 			break;
 		case 2:
 			{
-			ToolKit * toolkit = new ToolKit();
-			int newHealth = pPlayer->GetHealth() - 1;
+			ToolKit * toolkit = new ToolKit(); //Make a ToolKit to give it to player if valid
+			int newHealth = pPlayer->GetHealth() - 2;
 
-			if (pPlayer->SetInventoryItem(toolkit)) {
-				pPlayer->SetHealth(newHealth);
-				pGrid->UpdateInterface(pState);
+			if (pPlayer->SetInventoryItem(toolkit)) { //If player can take a Toolkit
+				pPlayer->SetHealth(newHealth);// setter for his new health
+				pGrid->UpdateInterface(pState);// update interface
 				pGrid->PrintErrorMessage("Toolkit purchased. Click to continue ...");
 			}
-			else {
+			else {//if his Inventory is full
 				pGrid->PrintErrorMessage("Inventory full! Cannot purchase Toolkit. Click to continue ...");
 			}
 
@@ -77,15 +77,15 @@ void Workshop::Apply(Grid* pGrid, GameState* pState, Player* pPlayer)
 			break;
 		case 3:
 			{
-			HackDevice* hackDevice = new HackDevice();
-			int newHealth = pPlayer->GetHealth() - 1;
+			HackDevice* hackDevice = new HackDevice();//Make a hackDevice to give it to player if valid
+			int newHealth = pPlayer->GetHealth() - 2;
 
-			if (pPlayer->SetInventoryItem(hackDevice)) {
-				pPlayer->SetHealth(newHealth);
-				pGrid->UpdateInterface(pState);
+			if (pPlayer->SetInventoryItem(hackDevice)) {//If player can take a hackDevice
+				pPlayer->SetHealth(newHealth);// setter for his new health
+				pGrid->UpdateInterface(pState);// update interface
 				pGrid->PrintErrorMessage("Hack Device purchased. Click to continue ...");
 			}
-			else {
+			else {//if his Inventory is full
 				pGrid->PrintErrorMessage("Inventory full! Cannot purchase Hack Device. Click to continue ...");
 			}
 
@@ -93,21 +93,21 @@ void Workshop::Apply(Grid* pGrid, GameState* pState, Player* pPlayer)
 			break;
 		case 4:
 			{
-			DoubleLaser* doubleLaser = new DoubleLaser();
+			DoubleLaser* doubleLaser = new DoubleLaser();//Make a doupleLaser to give it to player if valid
 			int newHealth = pPlayer->GetHealth() - 2;
 
-			if (pPlayer->SetInventoryItem(doubleLaser)) {
-				pPlayer->SetHealth(newHealth);
-				pGrid->UpdateInterface(pState);
+			if (pPlayer->SetInventoryItem(doubleLaser)) {//If player can take a doubleLaser
+				pPlayer->SetHealth(newHealth);// setter for his new health
+				pGrid->UpdateInterface(pState);// update interface
 				pGrid->PrintErrorMessage("Double Laser purchased. Click to continue ...");
 			}
-			else {
+			else {//if his Inventory is full
 				pGrid->PrintErrorMessage("Inventory full! Cannot purchase Double Laser. Click to continue ...");
 			}
 
 			}
 			break;
-		default:
+		default://player dont want any additional equipment or consumables
 			pGrid->PrintErrorMessage("Workshop action finished. Click to continue ...");
 	
 	}
