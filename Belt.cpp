@@ -47,7 +47,7 @@ void Belt::SetPosition(const CellPosition newPos, Grid* pGrid) {
 
 void Belt::Save(ofstream& OutFile, GameObjectType type)
 {
-	//Format:start_cell  end_cell
+	//writes: start_cell  end_cell
 	if (type == BELT_TYPE) 	OutFile << position.GetCellNum() << " " << endCellPos.GetCellNum() << endl; 
 }
 void Belt::Load(ifstream& InFile) {

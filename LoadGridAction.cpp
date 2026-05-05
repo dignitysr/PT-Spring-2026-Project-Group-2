@@ -38,8 +38,10 @@ void LoadGridAction::Execute()
 	//Calling the Function to get the filename
 	ReadActionParameters();
 
+	//opens an "Input File Stream" it looks for the txt file on my HDD
 	ifstream InFile(filename);
 
+	//If file doesnt exist->error
 	if (!InFile.is_open())
 	{
 		pManager->GetGrid()->PrintErrorMessage("Error: File not found! Click to continue...");
@@ -50,19 +52,20 @@ void LoadGridAction::Execute()
 	//clearing the grid before loading new data
 	pGrid->ClearBoard();
 
+	//creating a temporary pos that will be passed to constructor and overwritten by load fn
 	int count;
 	CellPosition tempPos(1, 1);
 	
 
 
 	// 1. Flags
-	InFile >> count;
+	InFile >> count; // read int from file to show count of obj
 	for (int i = 0; i < count; i++) {
-		Flag* pFlag = new Flag(tempPos);
-		pFlag->Load(InFile);           // Flag reads its cell number
-		pGrid->AddObjectToCell(pFlag);
+		Flag* pFlag = new Flag(tempPos); //Dynamically allocate a new flag obj in heap
+		pFlag->Load(InFile);           // Flag reads its cell number & update position
+		pGrid->AddObjectToCell(pFlag);//put the updated flag obj in the grid's internal 2D array
 	}
-
+	// same for all remaining objects
 	// 2. Water Pits
 	InFile >> count;
 	for (int i = 0; i < count; i++) {
@@ -82,9 +85,9 @@ void LoadGridAction::Execute()
 	// 4. Belts
 	InFile >> count;
 	for (int i = 0; i < count; i++) {
-		// Belt constructor requires two positions; dummy values are overwritten in Load()
+		// Belt constructor requires two positions; Temporary values are overwritten in Load()
 		Belt* pBelt = new Belt(tempPos, tempPos);
-		pBelt->Load(InFile);          // Belt reads start_cell and end_cell
+		pBelt->Load(InFile);          // Belt reads start cell and end cell
 		pGrid->AddObjectToCell(pBelt);
 	}
 
@@ -108,11 +111,13 @@ void LoadGridAction::Execute()
 	InFile >> count;
 	for (int i = 0; i < count; i++) {
 		RotatingGear* pRG = new RotatingGear(tempPos, true);
-		pRG->Load(InFile);           // RotatingGear reads cell and rotation_direction
+		pRG->Load(InFile);           // RotatingGear reads cell and rotation direction
 		pGrid->AddObjectToCell(pRG);
 	}
 
+	//close file to free system memory
 	InFile.close();
+
 	Output* pOut = pGrid->GetOutput();
 	pOut->PrintMessage("Grid Loaded successfully! Click to continue...");
 	pOut->ClearStatusBar();
