@@ -21,6 +21,11 @@ bool PasteObjectAction::ReadActionParameters() {
 		pGrid->PrintErrorMessage("Error: There is an object in the selected cell! Click to continue ...");
 		pIn->GetCellClicked(); pOut->ClearStatusBar(); return false;
 	}
+	if (!pGrid->GetClipboard()) {
+		pGrid->PrintErrorMessage("Error: Clipboard is empty! Click to continue ...");
+		pIn->GetCellClicked(); pOut->ClearStatusBar(); return false;
+	}
+
 	pOut->ClearStatusBar();
 	return true;
 }

@@ -1,5 +1,6 @@
 #include "CutObjectAction.h"
-
+#include "GameObject.h"
+#include "Belt.h"
 
 CutObjectAction::CutObjectAction(ApplicationManager* pApp) : Action(pApp) {
 	cellToCut = nullptr;
@@ -31,6 +32,12 @@ void CutObjectAction::Execute() {
 
 	pGrid->SetClipboard(gameObj);
 	pGrid->RemoveObjectFromCell(cellToCut->GetCellPosition());
+
+	if (gameObj->IsType(BELT_TYPE))
+	{
+		Belt* belt = dynamic_cast<Belt*>(gameObj);
+		pGrid->RemoveObjectFromCell(belt->GetEndPosition());
+	}
 }
 
 CutObjectAction::~CutObjectAction() {}
