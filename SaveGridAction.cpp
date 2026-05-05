@@ -28,7 +28,7 @@ bool SaveGridAction::ReadActionParameters()
 
 void SaveGridAction::Execute()
 {
-	//Calling the Function to get the filename
+	//Calling the above function to get the filename
 	ReadActionParameters();
 
 	//get grid pointer
@@ -43,8 +43,9 @@ void SaveGridAction::Execute()
 	{
 		pGrid->CountObjects();
 
-		//This Action tells the Grid to save itself (polymorphism used)
-		//tell the grid to save and loop throughout all cells and call save()
+		//This tells the grid to scan every cell & find all objects of required GameObjectType
+		//then each object call its saveto write their cell number in outfile
+		//They need to be ordered to follow the format required
 		pGrid->SaveAll(OutFile, FLAG_TYPE);
 		pGrid->SaveAll(OutFile, WATER_PIT_TYPE);
 		pGrid->SaveAll(OutFile, DANGER_ZONE_TYPE);
@@ -53,10 +54,7 @@ void SaveGridAction::Execute()
 		pGrid->SaveAll(OutFile, ANTENNA_TYPE);
 		pGrid->SaveAll(OutFile, ROTATING_GEAR_TYPE);
 
-		//for (int i = 0; i < NUM_OBJECT_TYPES; i++) {
-		//	GameObjectType type = static_cast<GameObjectType>(i);
-		//	pGrid->SaveAll(OutFile, type);
-		//}
+
 
 
 		//closing file to save & free memory

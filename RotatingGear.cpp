@@ -76,7 +76,7 @@ bool RotatingGear::GetisClockWise() const
 
 void RotatingGear::Save(ofstream& OutFile, GameObjectType type)
 {
-	//writes cell index and 1 if clockwise and 2 if anticlockwise
+	//writes cell index and 1 if clockwise and 0 if anticlockwise
 	if (type == ROTATING_GEAR_TYPE)
 	OutFile << position.GetCellNum() << " " << (isClockWise ? 1 : 0) << endl;
 }
@@ -84,7 +84,7 @@ bool RotatingGear::IsType(GameObjectType type) const { return type == ROTATING_G
 
 void RotatingGear::Load(ifstream& InFile) {
 	int cellNum, direction;
-	InFile >> cellNum >> direction; // Read cell and 1/0
+	InFile >> cellNum >> direction; // Reads cellnum and direction -> 1/0
 
 	this->position = CellPosition::GetCellPositionFromNum(cellNum);//reconstructs the row/coloumn coord men el cell num
 
