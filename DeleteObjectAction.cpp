@@ -1,6 +1,8 @@
 #include "Action.h"
 #include "Grid.h"
 #include "DeleteObjectAction.h"
+#include "GameObject.h"
+#include "Belt.h"
 
 DeleteObjectAction::DeleteObjectAction(ApplicationManager* pApp):Action(pApp)//constructor
 {
@@ -40,6 +42,12 @@ void DeleteObjectAction::Execute()
     }
     Grid* pGrid = pManager->GetGrid();
     //delete object action
+
+    if (celltodelete->GetGameObject()->IsType(BELT_TYPE))
+    {
+		Belt* belt = dynamic_cast<Belt*>(celltodelete->GetGameObject());
+        pGrid->RemoveObjectFromCell(belt->GetEndPosition());
+    }
 
     delete pGrid->RemoveObjectFromCell(celltodelete->GetCellPosition());// no memory leak !!!!
 

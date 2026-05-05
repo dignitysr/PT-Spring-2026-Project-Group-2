@@ -115,6 +115,13 @@ void Grid::ClearBoard()
 	for (int i = NumVerticalCells - 1; i >= 0; i--)
 		for (int j = 0; j < NumHorizontalCells; j++)
 			if (CellList[i][j]->GetGameObject()) {
+				GameObject* gameObj = CellList[i][j]->GetGameObject();
+				if (gameObj->IsType(BELT_TYPE))
+				{
+					Belt* belt = dynamic_cast<Belt*>(gameObj);
+					RemoveObjectFromCell(belt->GetEndPosition());
+				}
+
 				delete CellList[i][j]->GetGameObject();
 				CellList[i][j]->SetGameObject(NULL);
 			}
