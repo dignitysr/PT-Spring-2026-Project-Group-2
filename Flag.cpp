@@ -18,6 +18,7 @@ void Flag::Apply(Grid* pGrid, GameState* pState, Player* pPlayer)
 	int x, y;
 	pGrid->GetInput()->GetPointClicked(x, y);//waiting for the  mouse click
 	pGrid->GetOutput()->ClearStatusBar();
+	pState->AdvanceCurrentPlayer(); // advance to the next player (if any)
 	pState->SetEndGame(true); // ENDGAME
 
 	///TODO: Implement this function as mentioned in the guideline steps (numbered below) below

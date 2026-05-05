@@ -65,7 +65,7 @@ void ApplicationManager::UpdateInterface()
 	pGrid->UpdateInterface(pGameState);
 
 	if (pGameState->GetEndGame()) {
-		pOut->PrintMessage("Player no. " + to_string(pGameState->GetCurrentPlayer()->GetPlayerNum() + 1 % 2) + " is victorious! Click to continue ...");
+		pOut->PrintMessage("Player no. " + to_string((pGameState->GetCurrentPlayer()->GetPlayerNum() + 1) % 2) + " is victorious! Click to continue ...");
 		pIn->GetCellClicked();
 		Action* pAct = new NewGameAction(this);
 		pAct->Execute();

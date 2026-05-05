@@ -169,7 +169,7 @@ void Player::ClearDrawing(Output* pOut) const
 // ====== Game Logic ======
 
 void Player::ExecuteCommand(Command cmd, Grid* pGrid, GameState* pState) {
-	if (health <= 0) return;
+	if (pState->GetEndGame()) return;
 	CellPosition newPos = pCell->GetCellPosition();
 	switch (cmd) {
 		case MOVE_FORWARD_ONE_STEP:
@@ -222,6 +222,7 @@ void Player::Move(Grid* pGrid, GameState* pState)
 		ExecuteCommand(cmd, pGrid, pState);
 		pGrid->GetInput()->GetPointClicked(x, y); // wait for input
 	}
+	if (pState->GetEndGame()) return;
 	if (pCell->HasWorkshop()) {
 		GameObject* obj = pCell->GetGameObject();
 		if (obj) obj->Apply(pGrid, pState, this);

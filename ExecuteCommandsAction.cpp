@@ -126,6 +126,11 @@ void ExecuteCommandsAction::Execute()
 	// move using saved commands
 	pPlayer->Move(pGrid, pState);
 
+	if (pState->GetEndGame())
+	{
+		return;
+	}
+
 
 	pState->AdvancePhase();
 
