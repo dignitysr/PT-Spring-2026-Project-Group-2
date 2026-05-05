@@ -3,6 +3,7 @@
 #include "DeleteObjectAction.h"
 #include "GameObject.h"
 #include "Belt.h"
+#include <iostream>
 
 DeleteObjectAction::DeleteObjectAction(ApplicationManager* pApp):Action(pApp)//constructor
 {
@@ -46,7 +47,12 @@ void DeleteObjectAction::Execute()
     if (celltodelete->GetGameObject()->IsType(BELT_TYPE))
     {
 		Belt* belt = dynamic_cast<Belt*>(celltodelete->GetGameObject());
-        pGrid->RemoveObjectFromCell(belt->GetEndPosition());
+        if (belt->GetEndPosition() == celltodelete->GetCellPosition()) {
+            pGrid->GetOutput()->PrintMessage("Please do not delete the end of a belt!");
+            pGrid->GetInput()->GetCellClicked();
+            pGrid->GetOutput()->ClearStatusBar();
+            return;
+        } else pGrid->RemoveObjectFromCell(belt->GetEndPosition());
     }
 
     delete pGrid->RemoveObjectFromCell(celltodelete->GetCellPosition());// no memory leak !!!!

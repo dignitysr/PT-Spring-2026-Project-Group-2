@@ -72,6 +72,8 @@ void SelectCommandAction::Execute()
 	pOut->CreateCommandsBar(savedCommands, maxCommandsToSelect, availableCommands, availableCommandsCount);
 
 	// Allow player to select commands
+	int selectedIndices[MaxAvailableCommands];
+	int selectedIndicesCount = 0;
 	while (savedCount < maxCommandsToSelect)
 	{
 		pOut->PrintMessage("Select a command. Click outside to stop.");
@@ -84,6 +86,21 @@ void SelectCommandAction::Execute()
 			break;
 		}
 
+		bool foundMatch = false;
+
+		for (int i = 0; i < selectedIndicesCount; i++)
+		{
+			if (selectedIndices[i] == cmdIndex)
+			{
+				pGrid->PrintErrorMessage("Command already selected. Click to continue ...");
+				foundMatch = true;
+				break;
+			}
+		}
+
+		if (foundMatch) continue;
+
+
 		// Check for invalid selection
 		if (cmdIndex < 0 || cmdIndex >= availableCommandsCount)
 		{
@@ -93,6 +110,8 @@ void SelectCommandAction::Execute()
 
 		// Save selected command
 		Command selectedCmd = availableCommands[cmdIndex];
+		selectedIndices[selectedIndicesCount] = cmdIndex;
+		selectedIndicesCount++;
 		pPlayer->AddSavedCommand(selectedCmd);
 
 		savedCommands[savedCount] = selectedCmd;
