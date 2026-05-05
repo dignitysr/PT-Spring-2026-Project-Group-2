@@ -34,8 +34,8 @@ bool AddRotatingGearAction::ReadActionParameters()
 		pOut->PrintMessage("Cell is already occupied. Try a different cell.");
 		pIn->GetCellClicked(); pOut->ClearStatusBar(); return false;
 	}
-	pOut->PrintMessage("Click to set the rotation direction (clockwise or counter-clockwise)...");
 	pOut->PrintMessage("Enter 1 for clockwise, 0 for anti-clockwise: ");
+	pIn->GetCellClicked();
 	int dir = pIn->GetInteger(pOut);
 
 	if (dir == 1)
