@@ -25,6 +25,9 @@
     <Filter Include="Util">
       <UniqueIdentifier>{31bd5a7c-b1f1-4a24-868b-3ed452fbbdcb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Consumables">
+      <UniqueIdentifier>{17fb859a-88c9-45db-a750-a1df79dd151c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CMUgraphicsLib\auxil.cpp">
@@ -206,6 +209,31 @@
     <ClCompile Include="CopyObjectAction.cpp">
       <Filter>ActionImps</Filter>
     </ClCompile>
+    <ClCompile Include="AddAntennaAction.cpp" />
+    <ClCompile Include="AddDangerZoneAction.cpp" />
+    <ClCompile Include="AddWaterPitAction.cpp" />
+    <ClCompile Include="AddWorkshopAction.cpp" />
+    <ClCompile Include="CutObjectAction.cpp" />
+    <ClCompile Include="DeleteObjectAction.cpp" />
+    <ClCompile Include="ExecuteCommandsAction.cpp" />
+    <ClCompile Include="LoadGridAction.cpp" />
+    <ClCompile Include="NewGameAction.cpp" />
+    <ClCompile Include="PasteObjectAction.cpp" />
+    <ClCompile Include="RebootRepairAction.cpp" />
+    <ClCompile Include="SaveGridAction.cpp" />
+    <ClCompile Include="SelectCommandAction.cpp" />
+    <ClCompile Include="Consumable.cpp">
+      <Filter>Consumables</Filter>
+    </ClCompile>
+    <ClCompile Include="DoubleLaser.cpp">
+      <Filter>Consumables</Filter>
+    </ClCompile>
+    <ClCompile Include="ToolKit.cpp">
+      <Filter>Consumables</Filter>
+    </ClCompile>
+    <ClCompile Include="HackDevice.cpp">
+      <Filter>Consumables</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CMUgraphicsLib\auxil.h">
@@ -340,6 +368,31 @@
     </ClInclude>
     <ClInclude Include="CopyObjectAction.h">
       <Filter>ActionHeaders</Filter>
+    </ClInclude>
+    <ClInclude Include="AddAntennaAction.h" />
+    <ClInclude Include="AddDangerZoneAction.h" />
+    <ClInclude Include="AddWaterPitAction.h" />
+    <ClInclude Include="AddWorkshopAction.h" />
+    <ClInclude Include="CutObjectAction.h" />
+    <ClInclude Include="DeleteObjectAction.h" />
+    <ClInclude Include="ExecuteCommandsAction.h" />
+    <ClInclude Include="LoadGridAction.h" />
+    <ClInclude Include="NewGameAction.h" />
+    <ClInclude Include="PasteObjectAction.h" />
+    <ClInclude Include="RebootRepairAction.h" />
+    <ClInclude Include="SaveGridAction.h" />
+    <ClInclude Include="SelectCommandAction.h" />
+    <ClInclude Include="Consumable.h">
+      <Filter>Consumables</Filter>
+    </ClInclude>
+    <ClInclude Include="DoubleLaser.h">
+      <Filter>Consumables</Filter>
+    </ClInclude>
+    <ClInclude Include="ToolKit.h">
+      <Filter>Consumables</Filter>
+    </ClInclude>
+    <ClInclude Include="HackDevice.h">
+      <Filter>Consumables</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

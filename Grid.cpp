@@ -49,6 +49,20 @@ bool Grid::AddObjectToCell(GameObject* pNewObject)
 	return false;
 }
 
+bool Grid::AddObjectToCell(GameObject* pNewObject, CellPosition pos)
+{
+	if (pos.IsValidCell())
+	{
+		GameObject* pPrevObject = CellList[pos.VCell()][pos.HCell()]->GetGameObject();
+		if (pPrevObject) // cell already has an object
+			return false;
+
+		CellList[pos.VCell()][pos.HCell()]->SetGameObject(pNewObject);
+		return true;
+	}
+	return false;
+}
+
 GameObject* Grid::RemoveObjectFromCell(const CellPosition& pos)
 {
 	if (pos.IsValidCell())

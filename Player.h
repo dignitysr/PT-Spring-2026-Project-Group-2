@@ -2,12 +2,15 @@
 
 #include "Grid.h"
 #include "Cell.h"
+#include "Consumable.h"
 
 #define MaxHealth 10
+#define MaxConsumables 5
 
 // Forward declaration: GameState is needed for Move() but we don't include it
 // here to avoid a circular dependency (GameState.h includes Player.h).
 class GameState;
+class Consumable;
 
 class Player
 {
@@ -34,11 +37,10 @@ class Player
 
 	// ---- [OPTIONAL BONUS] Workshop Consumables data members ----
 	// Uncomment when adding consumables (see Workshop.h):
-	//   Consumable* inventory[MaxConsumables];
-	//   int inventoryCount;
-	bool hasToolkit = false;
-	bool hasHackDevice = false;
-	bool hasDoubleLaser = false;
+	Consumable* inventory[MaxConsumables];
+	int inventoryCount;
+
+	bool usedRepair;
 
 public:
 
@@ -55,6 +57,12 @@ public:
 	Direction GetDirection() const;
 	void      SetDirection(Direction d);
 
+	int GetLaserDamage() const;
+	void SetLaserDamage(int damage);
+
+	bool GetUsedRepair() const;
+	void SetUsedRepair(bool value);
+
 	///TODO: Add more setters/getters here as needed
 
 	int GetPlayerNum() const; // Returns the player number (0..MaxPlayerCount-1)
@@ -62,20 +70,15 @@ public:
 	bool HasExtendedMemory() const { return extendedMemory; }
 	int GetMaxCommands() const { return extendedMemory ? MaxSavedCommandsWithExtendedMemory : MaxSavedCommands; }
 
-	void AddToolkit();
-	void AddHackDevice();
-
-	bool HasToolkit() const;
-	bool HasHackDevice() const;
-
-	bool HasDoubleLaser() const;
-	void SetHasDoubleLaser(bool status);
-
-	void UseToolkit();
-	void UseHackDevice();
-
 	void SetHacked(bool value);
 	bool IsHacked() const;
+
+	bool SetInventoryItem(Consumable* item); // Adds the given item to inventory if there is space
+	void RemoveInventoryItem(int index); // Removes the given item at the given inventory index if valid
+	Consumable* GetInventoryItem(int index) const; // Returns the item at the given inventory index, or nullptr if index is out of bounds or empty
+
+	void GetInventoryInfo(int& toolKits, int& hackDevices, int& doubleLasers) const;
+	Consumable* GetItemOfType(ConsumableType type, int& index) const; // Returns the first item of the given type in inventory, or nullptr if not found
 	// ====== Saved Commands ======
 
 	void    AddSavedCommand(Command cmd);         // Appends cmd to savedCommands (called by SelectCommandAction)

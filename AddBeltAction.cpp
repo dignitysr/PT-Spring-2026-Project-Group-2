@@ -80,6 +80,7 @@ void AddBeltAction::Execute()
 
 										
 	bool added = pGrid->AddObjectToCell(pBelt);
+	pGrid->AddObjectToCell(pBelt, pBelt->GetEndPosition()); // we add the belt to the grid using the overloaded function for belts to add the belt to both its start and end cells
 
 	// if the GameObject cannot be added
 	if (!added)

@@ -16,6 +16,17 @@ RebootRepairAction::RebootRepairAction(ApplicationManager* pApp) : Action(pApp)
 bool RebootRepairAction::ReadActionParameters()
 {
     // show repair message
+    Player* currentPlayer = pManager->GetGameState()->GetCurrentPlayer();
+    Output* pOut = pManager->GetGrid()->GetOutput();
+    Input* pIn = pManager->GetGrid()->GetInput();
+
+	if (currentPlayer->GetUsedRepair()) {
+        pOut->PrintMessage("You have already used your repair action for this round!");
+        pIn->GetCellClicked(); // wait for user
+        pOut->ClearStatusBar();
+        return false;
+    }
+
     pManager->GetGrid()->GetOutput()->PrintMessage("Reboot and repair your robot!");
     return true;
 }
@@ -23,8 +34,12 @@ bool RebootRepairAction::ReadActionParameters()
 // repair the current player's robot
 void RebootRepairAction::Execute()
 {
+	if (!ReadActionParameters()) return;
     // get current player
     Player* currentPlayer = pManager->GetGameState()->GetCurrentPlayer();
+
+	Output* pOut = pManager->GetGrid()->GetOutput();
+	Input* pIn = pManager->GetGrid()->GetInput();
 
     // increase health by 3 without exceeding max health
     int currentHealth = currentPlayer->GetHealth();
@@ -32,9 +47,13 @@ void RebootRepairAction::Execute()
 
     // update player health
     currentPlayer->SetHealth(newHealth);
+	currentPlayer->SetUsedRepair(true);
 
     // show updated health
-    pManager->GetGrid()->GetOutput()->PrintMessage("Robot repaired! Health: " + std::to_string(newHealth));
+    pOut->PrintMessage("Robot repaired! Health: " + std::to_string(newHealth));
+	pIn->GetCellClicked(); // wait for user
+    pOut->ClearStatusBar();
+
 
 }
 

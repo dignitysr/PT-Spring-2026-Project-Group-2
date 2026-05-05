@@ -97,4 +97,11 @@ enum CommandType
 	SAVED,
 };
 
+enum ConsumableType
+{
+	TOOLKIT,
+	HACK_DEVICE,
+	DOUBLE_LASER,
+};
+
 #endif
